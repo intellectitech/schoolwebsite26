@@ -2,7 +2,7 @@
 // ============================================================
 //  index.php — Homepage
 //  school-website/index.php
-//  Open at: http://localhost/school-website/
+//  Open at: http://localhost/schoolwebsite26/
 // ============================================================
 session_start();
 require_once 'config/database.php';

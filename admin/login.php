@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 //  admin/login.php — Admin Login Page
-//  Open at: http://localhost/school-website/admin/login.php
+//  Open at: http://localhost/schoolwebsite26/admin/login.php
 // ============================================================
 session_start();
 
@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
-    <link rel="stylesheet" href="/school-website/assets/css/style.css">
+    <link rel="stylesheet" href="/schoolwebsite26/assets/css/style.css">
     <style>
         body { background: var(--off); display: flex; align-items: center;
                justify-content: center; min-height: 100vh; }
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
 
     <p style="text-align:center;margin-top:1.25rem;font-size:.875rem">
-        <a href="/school-website/">← Back to website</a>
+        <a href="/schoolwebsite26/">← Back to website</a>
     </p>
 </div>
 

@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 //  contact.php — Contact Page
-//  Open at: http://localhost/school-website/contact.php
+//  Open at: http://localhost/schoolwebsite26/contact.php
 // ============================================================
 session_start();
 require_once 'config/database.php';
