@@ -55,56 +55,375 @@ img { max-width: 100%; height: auto; display: block; }
 .btn-sm       { padding: .4rem 1rem; font-size: .9rem; }
 
 /* ── TOP BAR ── */
-.top-bar { background: var(--navy); color: #A8C0E0; font-size: .85rem; padding: .4rem 0; }
-.top-bar-inner { display: flex; justify-content: flex-end; gap: 1.5rem; align-items: center; }
-.admin-link { color: var(--gold); }
+
+.top-bar {
+    background: #07182f;
+    color: #c7d4e8;
+    font-size: .82rem;
+    padding: .55rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.top-bar-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.top-contact,
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.top-contact strong {
+    color: var(--white);
+    font-weight: 600;
+}
+
+.top-actions a {
+    color: #c7d4e8;
+    transition: color .2s;
+}
+
+.top-actions a:hover {
+    color: var(--gold);
+}
+
+.top-actions .admin-link {
+    color: var(--gold);
+    font-weight: 600;
+}
+
 
 /* ── SITE HEADER ── */
-.site-header {
-    background: var(--navy);
-    position: sticky; top: 0; z-index: 1000;
-    box-shadow: 0 2px 12px rgba(0,0,0,.25);
-}
-.header-inner {
-    display: flex; align-items: center;
-    justify-content: space-between;
-    padding: .9rem 0;
-}
-.logo { display: flex; flex-direction: column; }
-.logo-name    { color: var(--white); font-size: 1.35rem; font-weight: 700; line-height: 1.2; }
-.logo-tagline { color: var(--gold); font-size: .78rem; letter-spacing: .05em; }
 
-.main-nav { display: flex; gap: 1.2rem; align-items: center; }
-.nav-link {
-    color: #A8C0E0; font-size: .95rem;
-    padding: .3rem 0; border-bottom: 2px solid transparent;
-    transition: color .2s, border-color .2s;
+.site-header {
+    background: rgba(11, 31, 58, .98);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, .15);
 }
-.nav-link:hover, .nav-link.active {
-    color: var(--white); border-bottom-color: var(--gold);
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 86px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+}
+
+.school-badge {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+}
+
+.logo-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+.logo-tagline {
+    margin-top: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+}
+
+@media (max-width: 768px) {
+    .school-badge {
+        width: 48px;
+        height: 48px;
+    }
+
+    .logo-name {
+        font-size: 1rem;
+    }
+
+    .logo-tagline {
+        font-size: 0.58rem;
+    }
+}
+
+.logo-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-name {
+    color: var(--white);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.logo-tagline {
+    color: var(--gold);
+    font-size: .72rem;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    margin-top: .25rem;
+}
+
+.main-nav {
+    display: flex;
+    gap: 1.7rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: #c7d4e8;
+    font-size: .92rem;
+    font-weight: 500;
+    padding: 2rem 0;
+    position: relative;
+    border: none;
+    transition: color .2s;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 1.25rem;
+    width: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: width .25s ease;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--white);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
 }
 
 .burger {
-    display: none; background: none; border: none;
-    cursor: pointer; padding: .3rem;
-    flex-direction: column; gap: 5px;
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: .3rem;
+    flex-direction: column;
+    gap: 5px;
 }
+
 .burger span {
-    display: block; width: 24px; height: 2px;
-    background: var(--white); border-radius: 2px;
+    display: block;
+    width: 25px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
 }
 
 /* ── HERO SECTION ── */
-.hero {
-    background: linear-gradient(135deg, var(--navy) 0%, #1A3A6A 100%);
-    color: var(--white);
-    padding: 5.5rem 0 4.5rem;
-    text-align: center;
-}
-.hero h1 { font-size: 3rem; margin-bottom: 1rem; line-height: 1.2; }
-.hero p   { font-size: 1.2rem; color: #A8C0E0; max-width: 600px; margin: 0 auto 2rem; }
-.hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
+.hero {
+    position: relative;
+    min-height: 610px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(5, 20, 42, .96) 0%,
+            rgba(7, 30, 61, .90) 45%,
+            rgba(7, 30, 61, .58) 100%
+        ),
+        url('../images/school-hero.svg');
+
+    background-size: cover;
+    background-position: center;
+    color: var(--white);
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0, 0, 0, .05),
+            rgba(0, 0, 0, .25)
+        );
+
+    pointer-events: none;
+}
+
+.hero-container {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    gap: 4rem;
+}
+
+.hero-content {
+    max-width: 720px;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+
+    background: rgba(249, 168, 37, .14);
+    border: 1px solid rgba(249, 168, 37, .55);
+
+    color: var(--gold);
+
+    padding: .5rem 1rem;
+    border-radius: 30px;
+
+    font-size: .82rem;
+    font-weight: 700;
+
+    letter-spacing: .06em;
+    text-transform: uppercase;
+
+    margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+    font-size: clamp(3rem, 5vw, 5rem);
+
+    line-height: 1.05;
+
+    margin-bottom: 1.5rem;
+
+    letter-spacing: -.035em;
+
+    color: var(--white);
+}
+
+.hero p {
+    font-size: 1.2rem;
+
+    color: #d4deed;
+
+    max-width: 640px;
+
+    margin-bottom: 2.2rem;
+
+    line-height: 1.7;
+}
+
+.hero-btns {
+    display: flex;
+
+    gap: 1rem;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+}
+
+.hero .btn {
+    padding: .9rem 1.8rem;
+
+    font-size: .95rem;
+}
+
+.hero-highlight {
+    width: 300px;
+
+    background: rgba(255, 255, 255, .10);
+
+    border: 1px solid rgba(255, 255, 255, .20);
+
+    backdrop-filter: blur(12px);
+
+    padding: 1.4rem;
+
+    border-radius: 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    margin-bottom: 1rem;
+}
+
+.highlight-icon {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 50%;
+
+    background: var(--gold);
+
+    color: var(--navy);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 1.3rem;
+
+    flex-shrink: 0;
+}
+
+.hero-highlight span {
+    display: block;
+
+    color: #b9c9df;
+
+    font-size: .75rem;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+
+    margin-bottom: .25rem;
+}
+
+.hero-highlight strong {
+    color: var(--white);
+
+    font-size: .95rem;
+
+    line-height: 1.4;
+}
 /* ── STATS BAR ── */
 .stats-bar { background: var(--teal); color: var(--white); padding: 2.5rem 0; }
 .stats-grid {
@@ -349,4 +668,53 @@ img { max-width: 100%; height: auto; display: block; }
     .main-nav.open { display: flex; }
     .burger        { display: flex; }
     .top-bar-inner { justify-content: center; gap: 1rem; font-size: .78rem; }
+}
+@media (max-width: 900px) {
+
+    .hero {
+        min-height: 560px;
+    }
+
+    .hero-container {
+        align-items: flex-start;
+    }
+
+    .hero-highlight {
+        display: none;
+    }
+
+    .hero-content {
+        max-width: 700px;
+    }
+
+}
+
+@media (max-width: 640px) {
+
+    .hero {
+        min-height: 540px;
+
+        background-position: center;
+
+        text-align: left;
+    }
+
+    .hero h1 {
+        font-size: 2.6rem;
+    }
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+    .hero-btns {
+        align-items: flex-start;
+    }
+
+    .hero .btn {
+        width: 100%;
+
+        text-align: center;
+    }
+
 }

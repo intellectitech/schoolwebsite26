@@ -46,32 +46,78 @@ $testimonials = $pdo->query(
 // Page content blocks
 $heroTitle    = getSetting($pdo, 'hero_title');
 $heroSubtitle = getSetting($pdo, 'hero_subtitle');
-$foundedYear  = getSetting($pdo, 'founded_year');
-$totalStudents= getSetting($pdo, 'total_students');
+$foundedYear   = getSetting($pdo, 'founded_year');
+$totalStudents = getSetting($pdo, 'total_students');
+$totalTeachers = getSetting($pdo, 'total_teachers');
+$totalSubjects = getSetting($pdo, 'total_subjects');
 ?>
 <?php require_once 'includes/header.php'; ?>
 
 <!-- ── HERO SECTION ── -->
 <section class="hero">
-    <div class="container">
-        <h1><?= htmlspecialchars($heroTitle ?: getSetting($pdo,'school_name')) ?></h1>
-        <p><?= htmlspecialchars($heroSubtitle ?: 'Shaping tomorrow\'s leaders through quality education.') ?></p>
-        <div class="hero-btns">
-            <a href="admissions.php" class="btn btn-primary">Apply Now</a>
-            <a href="about.php"      class="btn btn-outline">Learn More</a>
-        </div>
-    </div>
-</section>
 
+    <div class="hero-overlay"></div>
+
+    <div class="container hero-container">
+
+        <div class="hero-content">
+
+            <span class="hero-badge">
+                Admissions Open 2026/27
+            </span>
+
+            <h1>
+                <?= htmlspecialchars(
+                    $heroTitle ?: getSetting($pdo, 'school_name')
+                ) ?>
+            </h1>
+
+            <p>
+                <?= htmlspecialchars(
+                    $heroSubtitle ?: 'Shaping tomorrow\'s leaders through quality education.'
+                ) ?>
+            </p>
+
+            <div class="hero-btns">
+
+                <a href="admissions.php" class="btn btn-primary">
+                    Apply for Admission
+                </a>
+
+                <a href="about.php" class="btn btn-outline">
+                    Discover Our School
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="hero-highlight">
+
+            <div class="highlight-icon">★</div>
+
+            <div>
+                <span>Our Commitment</span>
+
+                <strong>
+                    Excellence, Discipline & Faith
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 <!-- ── STATS BAR ── -->
 <section class="stats-bar">
     <div class="container stats-grid">
         <?php
-        $stats = [
-            ['Founded',  $foundedYear ?: '1985'],
-            ['Students', ($totalStudents ?: '1200') . '+'],
-            ['Teachers', '60+'],
-            ['Subjects', '18+'],
+        $stats = [  
+        ['Founded',  $foundedYear ?: '1984'],
+        ['Students', $totalStudents ?: '1200+'],
+        ['Teachers', $totalTeachers ?: '60+'],
+        ['Subjects', $totalSubjects ?: '18+'],
         ];
         foreach ($stats as [$label, $value]):
         ?>

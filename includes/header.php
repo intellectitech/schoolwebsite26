@@ -31,9 +31,27 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 <!-- ── TOP BAR ── -->
 <div class="top-bar">
     <div class="container top-bar-inner">
-        <span>📞 <?= htmlspecialchars($schoolPhone) ?></span>
-        <span>✉ <?= htmlspecialchars($schoolEmail) ?></span>
-        <a href="/schoolwebsite26/admin/login.php" class="admin-link">Admin Login</a>
+
+        <div class="top-contact">
+            <span>
+                <strong>Call:</strong>
+                <?= htmlspecialchars($schoolPhone) ?>
+            </span>
+
+            <span>
+                <strong>Email:</strong>
+                <?= htmlspecialchars($schoolEmail) ?>
+            </span>
+        </div>
+
+        <div class="top-actions">
+            <a href="/schoolwebsite26/admissions.php">Admissions</a>
+            <a href="/schoolwebsite26/contact.php">Contact Us</a>
+            <a href="/schoolwebsite26/admin/login.php" class="admin-link">
+                Admin Portal
+            </a>
+        </div>
+
     </div>
 </div>
 
@@ -41,9 +59,22 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 <header class="site-header">
     <div class="container header-inner">
         <a href="/schoolwebsite26/" class="logo">
-            <span class="logo-name"><?= htmlspecialchars($schoolName) ?></span>
-            <span class="logo-tagline">Excellence in Education</span>
-        </a>
+    <img
+        src="/schoolwebsite26/assets/images/kalinabiri-badge.jpeg"
+        alt="<?= htmlspecialchars($schoolName) ?> School Badge"
+        class="school-badge"
+    >
+
+    <span class="logo-text">
+        <span class="logo-name">
+            <?= htmlspecialchars($schoolName) ?>
+        </span>
+
+        <span class="logo-tagline">
+            DETERMINED TO EXCEL
+        </span>
+    </span>
+    </a>
 
         <!-- Hamburger button — shown only on mobile -->
         <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
