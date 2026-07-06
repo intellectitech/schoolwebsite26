@@ -295,45 +295,263 @@ $totalSubjects = getSetting($pdo, 'total_subjects');
 
     </div>
 </section>
-<!-- ── LATEST NEWS ── -->
-<section class="section">
+<!-- ── PREMIUM LATEST NEWS ── -->
+<section class="news-section">
+
     <div class="container">
-        <h2 class="section-title">Latest News</h2>
-        <p class="section-sub">Stay up to date with what is happening at school.</p>
+
+        <div class="news-heading">
+
+            <div class="news-heading-content">
+
+                <span class="section-eyebrow">
+                    School Updates
+                </span>
+
+                <h2>
+                    Latest News & Stories
+                </h2>
+
+                <p>
+                    Discover the latest achievements, activities and important
+                    updates from the Kalinabiri Secondary School community.
+                </p>
+
+            </div>
+
+            <a href="news.php" class="news-view-all">
+                View All News
+                <span>→</span>
+            </a>
+
+        </div>
+
 
         <?php if ($latestNews): ?>
-        <div class="cards-grid">
-            <?php foreach ($latestNews as $article): ?>
-            <div class="card">
-                <?php if ($article['featured_image']): ?>
-                <img class="card-img"
-                     src="<?= htmlspecialchars($article['featured_image']) ?>"
-                     alt="<?= htmlspecialchars($article['title']) ?>">
-                <?php endif; ?>
 
-                <div class="card-body">
-                    <span class="card-badge"
-                          style="background:<?= htmlspecialchars($article['cat_color'] ?? '#1565C0') ?>">
-                        <?= htmlspecialchars($article['cat_name'] ?? 'News') ?>
-                    </span>
-                    <h3><?= htmlspecialchars($article['title']) ?></h3>
-                    <p><?= excerpt($article['excerpt'] ?? '', 120) ?></p>
-                </div>
+            <div class="news-grid">
 
-                <div class="card-footer">
-                    <a href="article.php?slug=<?= urlencode($article['slug']) ?>">Read more →</a>
-                    <span><?= date('d M Y', strtotime($article['published_at'])) ?></span>
-                </div>
+                <?php foreach ($latestNews as $index => $article): ?>
+
+                    <article class="news-card <?= $index === 0 ? 'news-card-featured' : '' ?>">
+
+                        <a
+                            href="article.php?slug=<?= urlencode($article['slug']) ?>"
+                            class="news-image"
+                        >
+
+                            <?php if (!empty($article['featured_image'])): ?>
+
+                                <img
+                                    src="<?= htmlspecialchars($article['featured_image']) ?>"
+                                    alt="<?= htmlspecialchars($article['title']) ?>"
+                                >
+
+                            <?php else: ?>
+
+                                <div class="news-image-placeholder">
+                                    <span>KSS</span>
+                                </div>
+
+                            <?php endif; ?>
+
+
+                            <span
+                                class="news-category"
+                                style="--category-color: <?= htmlspecialchars($article['cat_color'] ?? '#F9A825') ?>"
+                            >
+                                <?= htmlspecialchars($article['cat_name'] ?? 'School News') ?>
+                            </span>
+
+                        </a>
+
+
+                        <div class="news-card-content">
+
+                            <div class="news-meta">
+
+                                <span class="news-date">
+                                    <?= date('d M Y', strtotime($article['published_at'])) ?>
+                                </span>
+
+                                <span class="news-meta-dot"></span>
+
+                                <span>
+                                    Kalinabiri Secondary School
+                                </span>
+
+                            </div>
+
+
+                            <h3>
+
+                                <a href="article.php?slug=<?= urlencode($article['slug']) ?>">
+
+                                    <?= htmlspecialchars($article['title']) ?>
+
+                                </a>
+
+                            </h3>
+
+
+                            <p>
+
+                                <?= htmlspecialchars(
+                                    excerpt($article['excerpt'] ?? '', 145)
+                                ) ?>
+
+                            </p>
+
+
+                            <a
+                                href="article.php?slug=<?= urlencode($article['slug']) ?>"
+                                class="news-read-more"
+                            >
+
+                                Read Full Story
+
+                                <span>→</span>
+
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                <?php endforeach; ?>
+
             </div>
-            <?php endforeach; ?>
-        </div>
-        <p style="margin-top:2rem">
-            <a href="news.php" class="btn btn-blue">View All News</a>
-        </p>
+
+
         <?php else: ?>
-        <p style="color:var(--muted)">No news published yet.</p>
+
+            <div class="news-empty">
+
+                <div class="news-empty-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    Stories Are Coming Soon
+                </h3>
+
+                <p>
+                    News, achievements and school updates will appear here
+                    as they are published.
+                </p>
+
+            </div>
+
         <?php endif; ?>
+
     </div>
+
+</section>
+<!-- ── WHY KALINABIRI ── -->
+<section class="why-school">
+
+    <div class="container why-school-grid">
+
+        <div class="why-school-visual">
+
+            <div class="why-image-frame">
+                <img
+                    src="assets/images/why-kalinabiri.svg"
+                    alt="Students learning at Kalinabiri Secondary School"
+                >
+            </div>
+
+            <div class="why-experience-card">
+                <strong><?= htmlspecialchars($foundedYear ?: '1984') ?></strong>
+                <span>Years of Excellence</span>
+            </div>
+
+        </div>
+
+
+        <div class="why-school-content">
+
+            <span class="section-eyebrow">
+                Why Kalinabiri
+            </span>
+
+            <h2>
+                Education That Builds
+                <span>Knowledge & Character.</span>
+            </h2>
+
+            <p class="why-intro">
+                At Kalinabiri Secondary School, we nurture confident,
+                disciplined and purpose-driven learners through quality
+                education, strong values and a supportive school community.
+            </p>
+
+
+            <div class="why-features">
+
+                <div class="why-feature">
+                    <div class="why-feature-icon">✦</div>
+
+                    <div>
+                        <h3>Academic Excellence</h3>
+                        <p>
+                            A focused learning environment that inspires
+                            students to achieve their academic potential.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="why-feature">
+                    <div class="why-feature-icon">◆</div>
+
+                    <div>
+                        <h3>Discipline & Character</h3>
+                        <p>
+                            We develop responsible learners guided by
+                            discipline, integrity and respect.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="why-feature">
+                    <div class="why-feature-icon">★</div>
+
+                    <div>
+                        <h3>Faith & Values</h3>
+                        <p>
+                            Our school community promotes faith, moral
+                            values and purposeful living.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="why-feature">
+                    <div class="why-feature-icon">▣</div>
+
+                    <div>
+                        <h3>Student Development</h3>
+                        <p>
+                            Learners are encouraged to grow through
+                            leadership, sports and co-curricular activities.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <a href="about.php" class="why-link">
+                Discover More About Our School
+                <span>→</span>
+            </a>
+
+        </div>
+
+    </div>
+
 </section>
 
 <!-- ── UPCOMING EVENTS ── -->
