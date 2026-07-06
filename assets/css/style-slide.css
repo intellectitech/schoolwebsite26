@@ -1,0 +1,71 @@
+.hero .slider {
+    position: relative;
+    width: 100%;
+    height: 60vh;
+    overflow: hidden;
+}
+
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    animation: fade 20s infinite;
+}
+
+/* Set each image */
+.bg1 {
+    background-image: url("../images/images\(1\).png");
+    animation-delay: 0s;
+}
+
+.bg2 {
+    background-image: url("../images/images\(2\).png");
+    animation-delay: 5s;
+}
+
+.bg3 {
+    background-image: url("../images/IMG-20220606-WA0215.png");
+    animation-delay: 10s;
+}
+.bg4 {
+  background-image: url("../images/images\(3\).png");
+  animation-delay: 15s;
+}
+
+/* Text stays on top */
+.slider .content {
+    font-size: 3rem;
+    font-weight: bolder ;
+    position: relative;
+    z-index: 1;
+    color: white;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    40% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

@@ -44,9 +44,9 @@ $testimonials = $pdo->query(
 )->fetchAll();
 
 // Page content blocks
-$heroTitle    = getSetting($pdo, 'hero_title');
+$heroTitle = getSetting($pdo, 'hero_title');
 $heroSubtitle = getSetting($pdo, 'hero_subtitle');
-$foundedYear  = getSetting($pdo, 'founded_year');
+$foundedYear = getSetting($pdo, 'founded_year');
 $totalStudents = getSetting($pdo, 'total_students');
 ?>
 
@@ -59,6 +59,7 @@ $totalStudents = getSetting($pdo, 'total_students');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style-slide.css">
 </head>
 
 <body>
@@ -66,6 +67,24 @@ $totalStudents = getSetting($pdo, 'total_students');
     <!-- ── HERO SECTION ── -->
     <section class="hero">
         <div class="container">
+            <div class="slider">
+                <div class="background bg1">
+                    <p class="content">luigi guissani high school</p>
+                </div>
+                <div class="background bg2">
+                    <p class="content">be motivated</p>
+                </div>
+                <div class="background bg3">
+                    <p class="content">with culture</p>
+                </div>
+                <div class="background bg4">
+                    <p class="content">and ability</p>
+                </div>
+
+            </div>
+
+
+
             <h1><?= htmlspecialchars($heroTitle ?: getSetting($pdo, 'school_name')) ?></h1>
             <p><?= htmlspecialchars($heroSubtitle ?: 'Shaping tomorrow\'s leaders through quality education.') ?></p>
             <div class="hero-btns">
@@ -80,13 +99,13 @@ $totalStudents = getSetting($pdo, 'total_students');
         <div class="container stats-grid">
             <?php
             $stats = [
-                ['Founded',  $foundedYear ?: '1985'],
+                ['Founded', $foundedYear ?: '1985'],
                 ['Students', ($totalStudents ?: '1200') . '+'],
                 ['Teachers', '60+'],
                 ['Subjects', '18+'],
             ];
             foreach ($stats as [$label, $value]):
-            ?>
+                ?>
                 <div>
                     <div class="stat-num"><?= htmlspecialchars($value) ?></div>
                     <div class="stat-label"><?= htmlspecialchars($label) ?></div>
@@ -106,8 +125,7 @@ $totalStudents = getSetting($pdo, 'total_students');
                     <?php foreach ($latestNews as $article): ?>
                         <div class="card">
                             <?php if ($article['featured_image']): ?>
-                                <img class="card-img"
-                                    src="<?= htmlspecialchars($article['featured_image']) ?>"
+                                <img class="card-img" src="<?= htmlspecialchars($article['featured_image']) ?>"
                                     alt="<?= htmlspecialchars($article['title']) ?>">
                             <?php endif; ?>
 
@@ -205,7 +223,7 @@ $totalStudents = getSetting($pdo, 'total_students');
     </section>
 
     <?php require_once 'includes/footer.php'; ?>
-
+    <script src="assets\js\main.js"></script>
 </body>
 
 </html>
