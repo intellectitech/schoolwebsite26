@@ -53,82 +53,248 @@ $totalSubjects = getSetting($pdo, 'total_subjects');
 ?>
 <?php require_once 'includes/header.php'; ?>
 
-<!-- ── HERO SECTION ── -->
-<section class="hero">
+<!-- ── HERO SLIDER ── -->
+<section class="hero hero-slider" id="heroSlider">
 
-    <div class="hero-overlay"></div>
+    <div class="hero-slide active"
+         style="background-image: url('assets/images/school-hero.svg');">
 
-    <div class="container hero-container">
+        <div class="hero-overlay"></div>
 
-        <div class="hero-content">
+        <div class="container hero-container">
+            <div class="hero-content">
 
-            <span class="hero-badge">
-                Admissions Open 2026/27
-            </span>
+                <span class="hero-badge">
+                    Admissions Open 2026/27
+                </span>
 
-            <h1>
-                <?= htmlspecialchars(
-                    $heroTitle ?: getSetting($pdo, 'school_name')
-                ) ?>
-            </h1>
+                <h1>
+                    <?= htmlspecialchars(
+                        $heroTitle ?: getSetting($pdo, 'school_name')
+                    ) ?>
+                </h1>
 
-            <p>
-                <?= htmlspecialchars(
-                    $heroSubtitle ?: 'Shaping tomorrow\'s leaders through quality education.'
-                ) ?>
-            </p>
+                <p>
+                    <?= htmlspecialchars(
+                        $heroSubtitle ?: 'Shaping tomorrow\'s leaders through quality education.'
+                    ) ?>
+                </p>
 
-            <div class="hero-btns">
+                <div class="hero-btns">
+                    <a href="admissions.php" class="btn btn-primary">
+                        Apply for Admission
+                    </a>
 
-                <a href="admissions.php" class="btn btn-primary">
-                    Apply for Admission
-                </a>
-
-                <a href="about.php" class="btn btn-outline">
-                    Discover Our School
-                </a>
+                    <a href="about.php" class="btn btn-outline">
+                        Discover Our School
+                    </a>
+                </div>
 
             </div>
 
+            <div class="hero-highlight">
+                <div class="highlight-icon">★</div>
+
+                <div>
+                    <span>Our Commitment</span>
+                    <strong>Excellence, Discipline & Faith</strong>
+                </div>
+            </div>
         </div>
+    </div>
 
-        <div class="hero-highlight">
 
-            <div class="highlight-icon">★</div>
+    <!-- SLIDE 2 -->
+    <div class="hero-slide"
+         style="background-image: url('assets/images/admissions-hero.svg');">
 
-            <div>
-                <span>Our Commitment</span>
+        <div class="hero-overlay"></div>
 
-                <strong>
-                    Excellence, Discipline & Faith
-                </strong>
+        <div class="container hero-container">
+            <div class="hero-content">
+
+                <span class="hero-badge">
+                    Join Kalinabiri
+                </span>
+
+                <h1>
+                    Admissions Open for 2026/27
+                </h1>
+
+                <p>
+                    Begin your child's journey in an environment built on
+                    academic excellence, discipline and strong values.
+                </p>
+
+                <div class="hero-btns">
+                    <a href="admissions.php" class="btn btn-primary">
+                        Apply Now
+                    </a>
+
+                    <a href="admissions.php" class="btn btn-outline">
+                        Admission Requirements
+                    </a>
+                </div>
+
             </div>
 
-        </div>
+            <div class="hero-highlight">
+                <div class="highlight-icon">✓</div>
 
+                <div>
+                    <span>Now Enrolling</span>
+                    <strong>Senior One & Senior Five</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SLIDE 3 -->
+    <div class="hero-slide"
+         style="background-image: url('assets/images/excellence-hero.svg');">
+
+        <div class="hero-overlay"></div>
+
+        <div class="container hero-container">
+            <div class="hero-content">
+
+                <span class="hero-badge">
+                    Discover Excellence
+                </span>
+
+                <h1>
+                    Building Knowledge, Character & Purpose
+                </h1>
+
+                <p>
+                    We nurture confident learners through quality education,
+                    discipline, faith and a commitment to excellence.
+                </p>
+
+                <div class="hero-btns">
+                    <a href="about.php" class="btn btn-primary">
+                        Discover Our School
+                    </a>
+
+                    <a href="contact.php" class="btn btn-outline">
+                        Contact Us
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="hero-highlight">
+                <div class="highlight-icon">★</div>
+
+                <div>
+                    <span>Our Vision</span>
+                    <strong>Preparing Learners for a Better Future</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SLIDER ARROWS -->
+    <button class="hero-arrow hero-prev"
+            type="button"
+            aria-label="Previous slide">
+        &#10094;
+    </button>
+
+    <button class="hero-arrow hero-next"
+            type="button"
+            aria-label="Next slide">
+        &#10095;
+    </button>
+
+
+    <!-- SLIDER DOTS -->
+    <div class="hero-dots" aria-label="Hero slider navigation">
+        <button class="hero-dot active" type="button" data-slide="0" aria-label="Go to slide 1"></button>
+        <button class="hero-dot" type="button" data-slide="1" aria-label="Go to slide 2"></button>
+        <button class="hero-dot" type="button" data-slide="2" aria-label="Go to slide 3"></button>
     </div>
 
 </section>
-<!-- ── STATS BAR ── -->
+<!-- ── PREMIUM STATS SECTION ── -->
 <section class="stats-bar">
     <div class="container stats-grid">
-        <?php
-        $stats = [  
-        ['Founded',  $foundedYear ?: '1984'],
-        ['Students', $totalStudents ?: '1200+'],
-        ['Teachers', $totalTeachers ?: '60+'],
-        ['Subjects', $totalSubjects ?: '18+'],
-        ];
-        foreach ($stats as [$label, $value]):
-        ?>
-        <div>
-            <div class="stat-num"><?= htmlspecialchars($value) ?></div>
-            <div class="stat-label"><?= htmlspecialchars($label) ?></div>
+
+        <div class="stat-item">
+            <div class="stat-icon">◆</div>
+
+            <div class="stat-content">
+                <div class="stat-num">
+                    <?= htmlspecialchars($foundedYear ?: '1984') ?>
+                </div>
+
+                <div class="stat-label">
+                    Established
+                </div>
+            </div>
         </div>
-        <?php endforeach; ?>
+
+
+        <div class="stat-item">
+            <div class="stat-icon">♟</div>
+
+            <div class="stat-content">
+                <div
+                    class="stat-num stat-counter"
+                    data-target="<?= htmlspecialchars($totalStudents ?: '1200') ?>"
+                    data-suffix="+"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Active Students
+                </div>
+            </div>
+        </div>
+
+
+        <div class="stat-item">
+            <div class="stat-icon">✦</div>
+
+            <div class="stat-content">
+                <div
+                    class="stat-num stat-counter"
+                    data-target="60"
+                    data-suffix="+"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Dedicated Teachers
+                </div>
+            </div>
+        </div>
+
+
+        <div class="stat-item">
+            <div class="stat-icon">▣</div>
+
+            <div class="stat-content">
+                <div
+                    class="stat-num stat-counter"
+                    data-target="18"
+                    data-suffix="+"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Subjects Offered
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
-
 <!-- ── LATEST NEWS ── -->
 <section class="section">
     <div class="container">
