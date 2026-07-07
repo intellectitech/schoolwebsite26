@@ -80,11 +80,7 @@ $totalStudents = getSetting($pdo, 'total_students');
                 <div class="background bg4">
                     <p class="content">and ability</p>
                 </div>
-
             </div>
-
-
-
             <h1><?= htmlspecialchars($heroTitle ?: getSetting($pdo, 'school_name')) ?></h1>
             <p><?= htmlspecialchars($heroSubtitle ?: 'Shaping tomorrow\'s leaders through quality education.') ?></p>
             <div class="hero-btns">

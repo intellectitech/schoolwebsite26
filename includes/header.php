@@ -42,9 +42,9 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
     <!-- ── SITE HEADER ── -->
     <header class="site-header">
         <div class="container header-inner">
-            <a href="/school-website/" class="logo">
+            <a href="index.php" class="logo">
                 <img src="assets/images/LGHS2.png" alt="logo">
-                <span class="logo-name"><?= htmlspecialchars($schoolName) ?></span>
+                <span class="logo-name"><?= htmlspecialchars($schoolName) ?> LUIGI GIUSSANI HIGH SCHOOL</span>
                 <span class="logo-tagline">Excellence in Education</span>
             </a>
 
@@ -57,13 +57,13 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main menu">
                 <?php
                 $navLinks = [
-                    'index' => ['Home', '/school-website/'],
-                    'about' => ['About', '/school-website/about.php'],
-                    'news' => ['News', '/school-website/news.php'],
+                    'index' => ['Home', 'index.php'],
+                    'about' => ['About', 'about.php'],
+                    'news' => ['News', 'news.php'],
                     'admissions' => ['Admissions', '/school-website/admissions.php'],
                     'staff' => ['Staff', '/school-website/staff.php'],
                     'gallery' => ['Gallery', '/school-website/gallery.php'],
-                    'contact' => ['Contact', '/school-website/contact.php'],
+                    'contact' => ['Contact', 'contact.php'],
                 ];
                 foreach ($navLinks as $key => [$label, $href]):
                     $active = ($currentPage === $key) ? 'active' : '';
