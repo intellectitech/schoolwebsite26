@@ -1,52 +1,63 @@
-// MAIN.JS — Navigation toggle & AJAX news loader
+// ============================================================
+//  assets/js/main.js — School Website JavaScript
+//  Intellectitech Ntinda Hub Training Project
+// ============================================================
 
-// Mobile nav toggle
+// ── MOBILE NAVIGATION TOGGLE ────────────────────────────────
 const burger = document.getElementById('burger');
-const navLinks = document.getElementById('nav-links');
+const nav    = document.getElementById('main-nav');
 
-if (burger) {
+if (burger && nav) {
     burger.addEventListener('click', () => {
-        navLinks.classList.toggle('open');
+        const isOpen = nav.classList.toggle('open');
+        burger.setAttribute('aria-expanded', isOpen);
+    });
+    // Close nav when any link is clicked (mobile)
+    nav.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('open');
+            burger.setAttribute('aria-expanded', 'false');
+        });
     });
 }
 
-// AJAX — Load latest news on homepage without page refresh
-async function loadNews() {
-    const container = document.getElementById('news-feed');
-    if (!container) return; // Only runs if #news-feed exists on the page
-
-    try {
-        const res = await fetch(`${window.BASE_URL}api/news.php?limit=3`);
-        if (!res.ok) {
-            throw new Error(`HTTP error! Status: ${res.status}`);
-        }
-        const data = await res.json();
-        if (data.length === 0) {
-            container.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--gray-400);">No news available yet.</p>';
-            return;
-        }
-
-        container.innerHTML = '';
-        data.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'news-card';
-            const dateStr = item.published_at
-                ? new Date(item.published_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
-                : '';
-            div.innerHTML = `
-                <div class="news-card-img">📰</div>
-                <div class="news-card-body">
-                    <h3>${item.title}</h3>
-                    <p>${(item.body || '').substring(0, 100)}...</p>
-                    ${dateStr ? `<p class="news-card-meta">${dateStr}</p>` : ''}
-                </div>
-            `;
-            container.appendChild(div);
-        });
-    } catch (err) {
-        console.error('Failed to load news:', err);
-        container.innerHTML = '<p style="text-align:center;grid-column:1/-1;color:var(--gray-400);">Unable to load news right now.</p>';
+// ── CLOSE NAV WHEN CLICKING OUTSIDE ─────────────────────────
+document.addEventListener('click', (e) => {
+    if (nav && !nav.contains(e.target) && !burger.contains(e.target)) {
+        nav.classList.remove('open');
     }
-}
+});
 
-loadNews();
+// ── FADE-IN ON SCROLL ────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+        if (e.isIntersecting) {
+            e.target.style.opacity = '1';
+            e.target.style.transform = 'translateY(0)';
+        }
+    });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.card, .staff-card, .event-item, .testimonial-card').forEach(el => {
+    el.style.opacity    = '0';
+    el.style.transform  = 'translateY(18px)';
+    el.style.transition = 'opacity .4s ease, transform .4s ease';
+    observer.observe(el);
+});
+
+// ── GALLERY FULLSCREEN ON CLICK ──────────────────────────────
+document.querySelectorAll('.gallery-item img').forEach(img => {
+    img.addEventListener('click', () => {
+        if (img.requestFullscreen) img.requestFullscreen();
+    });
+});
+
+// ── TEXTAREA CHARACTER COUNTER ───────────────────────────────
+document.querySelectorAll('textarea[maxlength]').forEach(ta => {
+    const info = document.createElement('small');
+    info.style.cssText = 'display:block;text-align:right;color:#5A6A80;margin-top:.25rem';
+    ta.after(info);
+    const update = () => info.textContent = `${ta.value.length} / ${ta.maxLength}`;
+    ta.addEventListener('input', update);
+    update();
+});
