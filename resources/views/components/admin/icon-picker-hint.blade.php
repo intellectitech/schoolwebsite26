@@ -1,0 +1,3 @@
+<p class="text-xs text-on-surface-variant mt-1">
+    Enter any <a href="https://fonts.google.com/icons" target="_blank" rel="noopener" class="text-primary hover:underline">Material Symbols</a> icon name, e.g. <code class="bg-surface-container px-1 rounded">edit_note</code>, <code class="bg-surface-container px-1 rounded">description</code>, <code class="bg-surface-container px-1 rounded">school</code>.
+</p>
