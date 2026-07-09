@@ -25,3 +25,5 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+fix_lyceum_db.php
+verify_lyceum_db.php
