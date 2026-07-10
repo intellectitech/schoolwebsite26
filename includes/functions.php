@@ -1,80 +1,72 @@
 <?php
-// ============================================================
-//  includes/functions.php — Helper Functions
-//  Include once at the top of every PHP page.
-// ============================================================
+// includes/functions.php
 
-// ----------------------------------------------------------
-// SANITIZE user input — always call this before using
-// $_POST or $_GET values in your code or database.
-// ----------------------------------------------------------
-function clean($data) {
-    $data = trim($data);           // remove leading/trailing spaces
-    $data = stripslashes($data);   // remove backslashes
-    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8'); // convert special chars
+// Sanitize input
+function clean($input) {
+    if (is_array($input)) {
+        return array_map('clean', $input);
+    }
+    return htmlspecialchars(trim(stripslashes($input)), ENT_QUOTES, 'UTF-8');
 }
 
-// ----------------------------------------------------------
-// GET a setting from the school_info table.
-// Uses static cache so we only query the DB once per key.
-// Usage: $name = getSetting($pdo, 'school_name');
-// ----------------------------------------------------------
-function getSetting($pdo, $key) {
-    static $cache = [];
-    if (isset($cache[$key])) return $cache[$key];
-    $stmt = $pdo->prepare('SELECT setting_value FROM school_info WHERE setting_key = ?');
-    $stmt->execute([$key]);
-    return $cache[$key] = ($stmt->fetchColumn() ?: '');
+// Get setting from school_info table with caching
+function getSetting($pdo, $key, $default = '') {
+    static $settings = null;
+    if ($settings === null) {
+        $stmt = $pdo->query("SELECT setting_key, setting_value FROM school_info");
+        $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    }
+    return $settings[$key] ?? $default;
 }
 
-// ----------------------------------------------------------
-// EXCERPT — truncate text to N characters, strip HTML tags.
-// Usage: echo excerpt($article['body'], 150);
-// ----------------------------------------------------------
-function excerpt($text, $len = 150) {
-    $text = strip_tags($text);
-    return strlen($text) > $len ? substr($text, 0, $len) . '...' : $text;
+// Redirect with message
+function redirect($url, $message = '', $type = 'success') {
+    if ($message) {
+        $_SESSION['flash_message'] = $message;
+        $_SESSION['flash_type'] = $type;
+    }
+    header('Location: ' . $url);
+    exit;
 }
 
-// ----------------------------------------------------------
-// FORMAT DATE — convert DB date to readable format.
-// Usage: echo formatDate('2026-06-25');  → Wednesday 25 June 2026
-// ----------------------------------------------------------
-function formatDate($date) {
-    return date('l d F Y', strtotime($date));
-}
-
-// ----------------------------------------------------------
-// MAKE SLUG — convert text to URL-friendly slug.
-// Usage: $slug = makeSlug('S4 Wins Football!');  → s4-wins-football
-// ----------------------------------------------------------
-function makeSlug($text) {
-    $text = strtolower(trim($text));
-    $text = preg_replace('/[^a-z0-9\s-]/', '', $text);
-    return preg_replace('/[\s-]+/', '-', $text);
-}
-
-// ----------------------------------------------------------
-// REQUIRE ADMIN — redirect to login if not logged in.
-// Call this at the top of every admin page.
-// ----------------------------------------------------------
-function requireAdmin() {
-    if (!isset($_SESSION['admin_id'])) {
-        header('Location: /school-website/admin/login.php');
-        exit;
+// Display flash message
+function displayFlash() {
+    if (isset($_SESSION['flash_message'])) {
+        $type = $_SESSION['flash_type'] ?? 'success';
+        $class = $type === 'success' ? 'alert-success' : 'alert-danger';
+        echo '<div class="alert ' . $class . '">' . clean($_SESSION['flash_message']) . '</div>';
+        unset($_SESSION['flash_message'], $_SESSION['flash_type']);
     }
 }
 
-// ----------------------------------------------------------
-// AUDIT LOG — record an admin action.
-// Call after every INSERT / UPDATE / DELETE in admin pages.
-// ----------------------------------------------------------
-function auditLog($pdo, $adminId, $action, $table, $recordId, $desc) {
-    $pdo->prepare(
-        'INSERT INTO audit_log
-            (admin_id, action, table_name, record_id, description, ip_address)
-         VALUES (?, ?, ?, ?, ?, ?)'
-    )->execute([
-        $adminId, $action, $table, $recordId, $desc, $_SERVER['REMOTE_ADDR']
-    ]);
+// Format date
+function formatDate($date, $format = 'F j, Y') {
+    return date($format, strtotime($date));
 }
+
+// Truncate text
+function truncate($text, $length = 150, $ending = '...') {
+    if (strlen($text) <= $length) return $text;
+    return substr($text, 0, $length) . $ending;
+}
+
+// Check if user is logged in
+function isLoggedIn() {
+    return isset($_SESSION['admin_id']) && isset($_SESSION['admin_name']);
+}
+
+// Require login
+function requireLogin() {
+    if (!isLoggedIn()) {
+        redirect('admin/login.php', 'Please login first', 'danger');
+    }
+}
+
+// Generate slug
+function createSlug($string) {
+    $string = strtolower($string);
+    $string = preg_replace('/[^a-z0-9-]/', '-', $string);
+    $string = preg_replace('/-+/', '-', $string);
+    return trim($string, '-');
+}
+?>
