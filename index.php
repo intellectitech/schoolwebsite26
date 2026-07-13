@@ -175,7 +175,6 @@ $totalStudents= getSetting($pdo, 'total_students');
             </div>
             <?php endforeach; ?>
         </div>
-    </div>
 </section>
 <?php endif; ?>
 
@@ -186,7 +185,6 @@ $totalStudents= getSetting($pdo, 'total_students');
         <p class="section-sub" style="margin-bottom:1.5rem">
             Applications for 2026/27 are now open for S1 and S5 entry.
         </p>
-        <a href="admissions.php" class="btn btn-primary" style="font-size:1.1rem;padding:.9rem 2.5rem">
             Start Your Application
         </a>
     </div>
