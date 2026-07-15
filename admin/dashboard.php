@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 //  admin/dashboard.php — Admin Dashboard
-//  Open at: http://localhost/school-website/admin/dashboard.php
+//  Open at: http://localhost/schoolwebsite26/admin/dashboard.php
 // ============================================================
 session_start();
 require_once '../config/database.php';
@@ -35,7 +35,7 @@ $recentMessages = $pdo->query(
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/school-website/assets/css/style.css">
+    <link rel="stylesheet" href="/schoolwebsite26/assets/css/style.css">
 </head>
 <body>
 
@@ -68,7 +68,7 @@ $recentMessages = $pdo->query(
         <div style="display:flex;gap:.75rem;margin-bottom:2rem;flex-wrap:wrap">
             <a href="add-news.php" class="btn btn-blue btn-sm">+ Add Article</a>
             <a href="messages.php" class="btn btn-sm">View Messages <?= $unreadMessages > 0 ? "($unreadMessages)" : '' ?></a>
-            <a href="/school-website/" target="_blank" class="btn btn-sm">View Website ↗</a>
+            <a href="/schoolwebsite26/" target="_blank" class="btn btn-sm">View Website ↗</a>
         </div>
 
         <!-- Recent articles -->
