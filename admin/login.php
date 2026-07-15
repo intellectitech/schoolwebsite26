@@ -175,11 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>School Management Panel</p>
         </div>
         
-        <div class="demo-credentials">
-            <p><strong>Demo Credentials:</strong></p>
-            <p> Email: <strong>admin@school.ug</strong></p>
-            <p> Password: <strong>admin123</strong></p>
-        </div>
+        
         
         <?php if ($error): ?>
             <div class="error"><i class="fas fa-exclamation-circle"></i> <?= clean($error) ?></div>
