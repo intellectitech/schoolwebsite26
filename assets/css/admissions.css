@@ -1,0 +1,241 @@
+/* Color Palette Settings */
+:root {
+  --shcn-navy: #14213d;
+  --shcn-gold: #cca43b;
+  --shcn-background: #0b111e;
+  --shcn-card-surface: #162032;
+  --shcn-input-surface: #0f1624;
+  --shcn-text-main: #f8fafc;
+  --shcn-text-muted: #94a3b8;
+  --shcn-border-line: rgba(255, 255, 255, 0.08);
+}
+
+/* Page Frame Structure */
+body {
+  margin: 0;
+
+  color: var(--shcn-text-main);
+ font-family:'Poppins',sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.5;
+background:#f4f7fc;
+
+
+
+font-size: 20px;
+
+
+
+}
+
+
+
+
+
+.page-wrapper {
+
+  margin: 50px auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+/* Top Institutional Title Ribbon Banner */
+.admission-hero-header {
+  text-align: center;
+  
+}
+
+
+
+.status-indicator {
+  display: inline-block;
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+}
+
+
+
+
+.contact-orm{
+
+ background:#fff;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0
+ 
+
+}
+
+
+
+
+
+
+
+
+label{
+     display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#051728;
+
+}
+
+textarea{
+  width: 100%;
+  height: 150px;
+  border-radius: 5px;
+  color: black;
+  font-size: 30px;
+}
+
+
+
+.butto{
+    width:50%;
+    padding:16px;
+    border:none;
+    border-radius:10px;
+    background-color:#09053e;;
+    color:#fff;
+    font-size:17px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+butto{
+    margin-right:8px;
+}
+
+button:hover{
+    background:#1565c0;
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(15,76,129,.25);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Submission CTA Action Button Engine */
+.admission-submit-btn {
+  background-color: var(--shcn-gold);
+  color: #000000;
+  border: none;
+  border-radius: 6px;
+  padding: 14px 28px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+}
+
+.admission-submit-btn:hover {
+  background-color: #dfb441;
+  transform: translateY(-1px);
+}
+
+.admission-submit-btn:active {
+  transform: scale(0.99);
+}
+
+/* Media Query Adaptations for Tablet and Mobile Systems */
+@media (max-width: 900px) {
+  .form-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-sidebar-panel {
+    border-right: none;
+    border-bottom: 1px solid var(--shcn-border-line);
+    padding: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .input-grid-row.dual-column {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .admission-main-form {
+    padding: 24px;
+  }
+  
+  .page-wrapper {
+    margin: 24px auto;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*  floating admissions word the
+ screen */
+        .banner-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            background: #d32f2f; /* Academic Red Color */
+            padding: 15px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Deep black shadow */
+        }
+
+        /* The track that moves continuously from left to right */
+        .banner-track {
+            display: inline-block;
+            animation: moveRight 20s linear infinite;
+        }
+
+        /* Styling for the text */
+        .banner-text {
+            display: inline-block;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* The action highlight styling */
+        .highlight {
+            color: #ffeb3b; /* Bright yellow accent for "APPLY NOW" */
+        }
+
+        /* The logic to reset the track seamlessly halfway through */
+        @keyframes moveRight {
+            0% {
+                transform: translateX(-50%);
+            }
+            100% {
+                transform: translateX(0%);
+            }
+        }
+
+

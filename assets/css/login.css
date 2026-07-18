@@ -1,0 +1,261 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#0f4c81,#1565c0,#42a5f5);
+    overflow:hidden;
+}
+
+/*==========================
+CONTAINER
+==========================*/
+
+.container{
+    width:1100px;
+    max-width:95%;
+    height:650px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    background:#fff;
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 30px 60px rgba(0,0,0,.25);
+}
+
+/*==========================
+LEFT SIDE
+==========================*/
+
+.left{
+    background-color:  hsl(224, 81%, 17%);
+    position:relative;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(15,76,129,.88);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    text-align:center;
+    padding:50px;
+    font-size: 10px;
+    
+  
+}
+
+.logo{
+    font-size:90px;
+    margin-bottom:20px;
+}
+
+.overlay h1{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.overlay h2{
+    font-weight:400;
+    margin-bottom:25px;
+}
+
+.overlay p{
+    line-height:1.8;
+    font-size:16px;
+}
+
+/*==========================
+RIGHT SIDE
+==========================*/
+
+.right{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f8fbff;
+}
+
+.login-box{
+    width:400px;
+}
+
+.login-box h1{
+    color:#0f4c81;
+    margin-bottom:10px;
+}
+
+.login-box p{
+    color:#777;
+    margin-bottom:35px;
+}
+
+/*==========================
+INPUTS
+==========================*/
+
+.input-box{
+    position:relative;
+    margin-bottom:22px;
+}
+
+.input-box input{
+    width:100%;
+    height:55px;
+    padding-left:50px;
+    padding-right:50px;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:#eef4fb;
+    font-size:15px;
+    transition:.3s;
+}
+
+.input-box input:focus{
+    background:#fff;
+    border:2px solid #0f4c81;
+}
+
+.input-box i:first-child{
+    position:absolute;
+    left:18px;
+    top:17px;
+    font-size:20px;
+    color:#0f4c81;
+}
+
+.password #togglePassword{
+    position:absolute;
+    right:18px;
+    top:17px;
+    font-size:22px;
+    cursor:pointer;
+    color:#777;
+}
+
+/*==========================
+OPTIONS
+==========================*/
+
+.options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    font-size:14px;
+}
+
+.options a{
+    color:#0f4c81;
+    text-decoration:none;
+}
+
+.options a:hover{
+    text-decoration:underline;
+}
+
+/*==========================
+BUTTON
+==========================*/
+
+button{
+    width:100%;
+    height:55px;
+    border:none;
+    border-radius:12px;
+    background:#0f4c81;
+    color:#fff;
+    font-size:17px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#1565c0;
+    transform:translateY(-3px);
+    box-shadow:0 15px 30px rgba(15,76,129,.35);
+}
+
+/*==========================
+FOOTER
+==========================*/
+
+.footer{
+    margin-top:30px;
+    text-align:center;
+    color:#999;
+    font-size:14px;
+}
+
+/*==========================
+ANIMATION
+==========================*/
+
+.login-box{
+    animation:slide .8s ease;
+}
+
+@keyframes slide{
+
+    from{
+        opacity:0;
+        transform:translateX(50px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+
+}
+
+/*==========================
+RESPONSIVE
+==========================*/
+
+@media(max-width:900px){
+
+.container{
+
+grid-template-columns:1fr;
+
+height:auto;
+
+}
+
+.left{
+
+display:none;
+
+}
+
+.right{
+
+padding:50px 25px;
+
+}
+
+.login-box{
+
+width:100%;
+
+}
+
+}
+
+
+
+ 
