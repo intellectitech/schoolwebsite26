@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#333;
+     font-family:'Poppins',sans-serif;
+}
+
+/*==========================
+SECTION
+==========================*/
+
+
+
+
+.contact{
+    width:100%;
+    padding:80px 8%;
+}
+
+.heading{
+    text-align:center;
+    margin-bottom:60px;
+}
+
+.heading h1{
+    font-size:42px;
+    color:#0f4c81;
+    margin-bottom:15px;
+}
+
+.heading p{
+    color:#666;
+    max-width:700px;
+    margin:auto;
+    line-height:1.8;
+}
+
+/*==========================
+LAYOUT
+==========================*/
+
+.contact-container{
+    display:grid;
+    grid-template-columns:380px 1fr;
+    gap:40px;
+}
+
+/*==========================
+LEFT CARD
+==========================*/
+
+.contact-info{
+    background:#0f4c81;
+    color:#fff;
+    padding:40px;
+    border-radius:20px;
+   background-color:  hsl(224, 81%, 17%);
+  
+    box-shadow:0 15px 35px rgba(0,0,0,.15);
+}
+
+
+.contact-info h2{
+    font-size:30px;
+    margin-bottom:15px;
+}
+
+.contact-info>p{
+    margin-bottom:35px;
+    line-height:1.7;
+    color:#d9e7f7;
+}
+
+.info{
+    display:flex;
+    gap:18px;
+    margin-bottom:30px;
+}
+
+.info i{
+    font-size:20px;
+    color:#7fd4ff;
+}
+
+.info h4{
+    margin-bottom:5px;
+    color: #cca43b;
+}
+
+.info p{
+    color:#e6eef8;
+    line-height:1.6;
+}
+
+.social{
+    margin-top:40px;
+        display:flex;
+    gap:15px;
+}
+
+.social a{
+    width:40px;
+    height:45px;
+    background:rgba(255,255,255,.15);
+    color:#fff;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-decoration:none;
+    font-size:22px;
+    transition:.3s;
+}
+
+.social a:hover{
+    background:#fff;
+    color:#0f4c81;
+    transform:translateY(-5px);
+}
+
+/*==========================
+FORM
+==========================*/
+
+.contact-form{
+    background:#fff;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.input-box{
+    margin-bottom:25px;
+}
+
+.input-box label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+    color:#0f4c81;
+}
+
+.input-box input,
+.input-box select,
+.input-box textarea{
+    width:100%;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    outline:none;
+    font-size:15px;
+    transition:.3s;
+    resize:none;
+}
+
+.input-box input:focus,
+.input-box select:focus,
+.input-box textarea:focus{
+    border-color:#0f4c81;
+    box-shadow:0 0 0 3px rgba(15,76,129,.15);
+}
+
+/*==========================
+RADIO
+==========================*/
+
+.radio-group{
+    display:flex;
+    gap:25px;
+    flex-wrap:wrap;
+}
+
+.radio-group label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    color:#444;
+    font-weight:500;
+}
+
+/*==========================
+BUTTON
+==========================*/
+
+button{
+    width:50%;
+    padding:16px;
+    border:none;
+    border-radius:10px;
+    background-color:#cca43b;;
+    color:#fff;
+    font-size:17px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button i{
+    margin-right:8px;
+}
+
+button:hover{
+    background:#1565c0;
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(15,76,129,.25);
+}
+
+/*==========================
+GOOGLE MAP
+==========================*/
+
+.map{
+    margin-top:60px;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,.08);
+}
+
+.map iframe{
+    width:100%;
+    height:450px;
+    border:none;
+}
+
+/*==========================
+ANIMATION
+==========================*/
+
+.contact-info,
+.contact-form{
+    animation:fadeUp .8s ease;
+}
+
+@keyframes fadeUp{
+
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+
+}
+
+/*==========================
+RESPONSIVE
+==========================*/
+
+@media(max-width:992px){
+
+.contact-container{
+    grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:768px){
+
+.contact{
+    padding:50px 20px;
+}
+
+.row{
+    grid-template-columns:1fr;
+}
+
+.heading h1{
+    font-size:34px;
+}
+
+.contact-info,
+.contact-form{
+    padding:25px;
+}
+
+.social{
+    justify-content:center;
+}
+
+}
+
+@media(max-width:500px){
+
+.heading h1{
+    font-size:28px;
+}
+
+.heading p{
+    font-size:14px;
+}
+
+button{
+    font-size:15px;
+}
+
+}
