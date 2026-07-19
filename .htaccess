@@ -1,0 +1,22 @@
+# .htaccess
+# ---------------------------------------------------------------
+# On hosts running the older Apache "mod_php" setup (rather than
+# PHP-FPM, which reads .user.ini instead), this makes sure PHP
+# always checks whether a file has changed on disk before using a
+# cached compiled copy — so admin dashboard changes and freshly
+# uploaded files show up immediately rather than being served stale.
+# Harmless if your host doesn't support these directives; PHP will
+# simply ignore what it doesn't recognise.
+# ---------------------------------------------------------------
+<IfModule mod_php.c>
+  php_value opcache.validate_timestamps 1
+  php_value opcache.revalidate_freq 0
+</IfModule>
+<IfModule mod_php7.c>
+  php_value opcache.validate_timestamps 1
+  php_value opcache.revalidate_freq 0
+</IfModule>
+<IfModule mod_php8.c>
+  php_value opcache.validate_timestamps 1
+  php_value opcache.revalidate_freq 0
+</IfModule>
