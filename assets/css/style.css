@@ -1959,3 +1959,604 @@ img { max-width: 100%; height: auto; display: block; }
     }
 
 }
+/* ============================================================
+   ACADEMIC PROGRAMS
+============================================================ */
+
+.academic-programs {
+    padding: 7rem 0;
+    background: #f8fafc;
+}
+
+.section-header {
+    max-width: 760px;
+    margin: 0 auto 4rem;
+    text-align: center;
+}
+
+.section-header h2 {
+    color: var(--navy);
+    font-size: clamp(2.2rem, 4vw, 3.5rem);
+    margin: 1rem 0;
+    line-height: 1.1;
+}
+
+.section-header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.programs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+
+.program-card {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 18px;
+
+    border: 1px solid rgba(8,36,73,.08);
+    border-top: 4px solid var(--gold);
+
+    box-shadow: 0 12px 35px rgba(8,36,73,.06);
+
+    transition:
+        transform .35s ease,
+        box-shadow .35s ease,
+        border-color .35s ease;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.program-card:hover {
+    transform: translateY(-10px);
+
+    border-color: rgba(249,168,37,.45);
+
+    box-shadow:
+        0 30px 60px rgba(8,36,73,.15);
+}
+
+.program-icon {
+    width:72px;
+    height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:20px;
+
+    background:rgba(249,168,37,.12);
+
+    margin-bottom:1.5rem;
+
+    transition:.35s;
+}
+
+.program-icon i{
+
+    font-size:2rem;
+
+    color:var(--gold);
+
+    transition:.35s;
+
+}
+
+.program-card:hover .program-icon{
+
+    background:var(--gold);
+
+}
+
+.program-card:hover .program-icon i{
+
+    color:var(--navy);
+
+    transform:scale(1.15);
+
+}
+
+.program-card:hover .program-icon {
+    transform: scale(1.08);
+    background: rgba(249,168,37,.20);
+}
+
+.program-card h3 {
+    color: var(--navy);
+    margin-bottom: .9rem;
+    font-size: 1.25rem;
+}
+
+.program-card p {
+    color: var(--muted);
+    line-height: 1.75;
+}
+
+@media (max-width: 900px) {
+    .programs-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+@media (max-width:640px) {
+
+    .academic-programs {
+        padding:4.5rem 0;
+    }
+
+    .programs-grid {
+        grid-template-columns:1fr;
+    }
+
+}
+.program-link {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+
+    color: var(--navy);
+
+    font-weight: 700;
+    font-size: .9rem;
+
+    text-decoration: none;
+
+    transition: .3s;
+}
+
+.program-link:hover {
+    color: var(--gold);
+    transform: translateX(5px);
+}
+/* ============================================================
+   SCHOOL FACILITIES
+============================================================ */
+
+.school-facilities{
+    padding:7rem 0;
+    background:#ffffff;
+}
+
+.facilities-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5rem;
+    align-items:center;
+}
+
+.facilities-intro{
+    color:var(--muted);
+    line-height:1.8;
+    margin:1.5rem 0 2.5rem;
+}
+
+.facility-list{
+    display:flex;
+    flex-direction:column;
+    gap:1.3rem;
+}
+
+.facility-item{
+
+    display:flex;
+    gap:1rem;
+
+    align-items:flex-start;
+
+    background:#fff;
+
+    padding:1.4rem;
+
+    border-radius:16px;
+
+    border:1px solid rgba(8,36,73,.08);
+
+    transition:.35s;
+}
+
+.facility-item:hover{
+
+    transform:translateX(8px);
+
+    border-color:rgba(249,168,37,.45);
+
+    box-shadow:0 18px 40px rgba(8,36,73,.10);
+
+}
+
+.facility-item i{
+
+    width:56px;
+    height:56px;
+
+    border-radius:16px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(249,168,37,.12);
+
+    color:var(--gold);
+
+    font-size:1.5rem;
+
+    flex-shrink:0;
+
+}
+
+.facility-item h3{
+
+    color:var(--navy);
+
+    margin-bottom:.35rem;
+
+}
+
+.facility-item p{
+
+    color:var(--muted);
+
+    line-height:1.7;
+
+}
+
+.facilities-image{
+
+    position:relative;
+
+}
+
+.facilities-image img{
+
+    width:100%;
+
+    border-radius:26px;
+
+    display:block;
+
+    box-shadow:0 30px 60px rgba(7,30,61,.15);
+
+}
+
+.facility-badge{
+
+    position:absolute;
+
+    right:-25px;
+
+    bottom:35px;
+
+    background:var(--gold);
+
+    color:var(--navy);
+
+    padding:1.6rem;
+
+    border-radius:18px;
+
+    box-shadow:0 20px 45px rgba(0,0,0,.2);
+
+}
+
+.facility-badge strong{
+
+    display:block;
+
+    font-size:2.4rem;
+
+}
+
+.facility-badge span{
+
+    font-size:.8rem;
+
+    font-weight:700;
+
+    text-transform:uppercase;
+
+}
+
+@media(max-width:1000px){
+
+    .facilities-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .facility-badge{
+
+        right:20px;
+
+    }
+
+}
+
+@media(max-width:640px){
+
+    .school-facilities{
+
+        padding:4.5rem 0;
+
+    }
+
+}
+/* ============================================================
+   HEADTEACHER'S MESSAGE
+============================================================ */
+
+.headteacher-section{
+    padding:7rem 0;
+    background:#f8fafc;
+}
+
+.headteacher-grid{
+    display:grid;
+    grid-template-columns:420px 1fr;
+    gap:5rem;
+    align-items:center;
+}
+
+.headteacher-image{
+    position:relative;
+}
+
+.headteacher-image img{
+
+    width:100%;
+    display:block;
+
+    border-radius:24px;
+
+    box-shadow:0 30px 60px rgba(8,36,73,.18);
+
+}
+
+.headteacher-role{
+
+    position:absolute;
+
+    left:30px;
+    bottom:-25px;
+
+    background:#fff;
+
+    padding:1rem 1.5rem;
+
+    border-radius:16px;
+
+    box-shadow:0 18px 40px rgba(8,36,73,.12);
+
+}
+
+.headteacher-role strong{
+
+    display:block;
+
+    color:var(--navy);
+
+    font-size:1rem;
+
+}
+
+.headteacher-role span{
+
+    color:var(--muted);
+
+    font-size:.9rem;
+
+}
+
+.headteacher-content h2{
+
+    font-size:2.8rem;
+
+    line-height:1.15;
+
+    color:var(--navy);
+
+    margin:1rem 0 2rem;
+
+}
+
+.headteacher-content blockquote{
+
+    position:relative;
+
+    margin:0;
+
+    padding-left:2rem;
+
+    font-size:1.15rem;
+
+    line-height:1.9;
+
+    color:var(--muted);
+
+    font-style:italic;
+
+    border-left:5px solid var(--gold);
+
+}
+
+.headteacher-content p{
+
+    margin:2rem 0;
+
+    color:var(--muted);
+
+    line-height:1.9;
+
+}
+
+@media(max-width:1000px){
+
+    .headteacher-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .headteacher-image{
+
+        max-width:420px;
+
+        margin:auto;
+
+    }
+
+}
+
+@media(max-width:640px){
+
+    .headteacher-section{
+
+        padding:4.5rem 0;
+
+    }
+
+    .headteacher-content h2{
+
+        font-size:2rem;
+
+    }
+
+}
+/* ============================================================
+   STUDENT LIFE
+============================================================ */
+
+.student-life{
+    padding:7rem 0;
+    background:#fff;
+}
+
+.gallery-layout{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:1.5rem;
+    margin-top:4rem;
+}
+
+.gallery-large img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:24px;
+    display:block;
+    transition:.4s;
+    box-shadow:0 20px 45px rgba(8,36,73,.15);
+}
+
+.gallery-small{
+    display:grid;
+    gap:1.5rem;
+}
+
+.gallery-small img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:20px;
+    display:block;
+    transition:.4s;
+    box-shadow:0 15px 35px rgba(8,36,73,.12);
+}
+
+.gallery-large,
+.gallery-small img{
+    overflow:hidden;
+}
+
+.gallery-large img:hover,
+.gallery-small img:hover{
+    transform:scale(1.05);
+}
+
+.gallery-tags{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:1rem;
+    margin:3rem 0 2rem;
+}
+
+.gallery-tags span{
+
+    background:#f4f6f8;
+
+    color:var(--navy);
+
+    padding:.8rem 1.4rem;
+
+    border-radius:40px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+    cursor:pointer;
+
+}
+
+.gallery-tags span:hover{
+
+    background:var(--gold);
+
+    color:var(--navy);
+
+}
+
+.gallery-button{
+
+    text-align:center;
+
+}
+
+@media(max-width:900px){
+
+    .gallery-layout{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .gallery-small{
+
+        grid-template-columns:repeat(3,1fr);
+
+    }
+
+    .gallery-small img{
+
+        height:180px;
+
+    }
+
+}
+
+@media(max-width:640px){
+
+    .student-life{
+
+        padding:4.5rem 0;
+
+    }
+
+    .gallery-small{
+
+        grid-template-columns:1fr;
+
+    }
+
+}

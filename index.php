@@ -553,6 +553,331 @@ $totalSubjects = getSetting($pdo, 'total_subjects');
     </div>
 
 </section>
+<!-- ── ACADEMIC PROGRAMS ── -->
+<section class="academic-programs">
+
+    <div class="container">
+
+        <div class="section-header">
+            <span class="section-eyebrow">
+                Academic Programs
+            </span>
+
+            <h2>
+                Preparing Students for Academic Success
+            </h2>
+
+            <p>
+                Our curriculum combines academic excellence, practical skills,
+                leadership development and co-curricular activities to prepare
+                learners for university and life beyond the classroom.
+            </p>
+        </div>
+
+        <div class="programs-grid">
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-eyedropper"></i>
+                </div>
+                <h3>Sciences</h3>
+                <p>
+                    Well-equipped science subjects designed to encourage
+                    innovation, critical thinking and practical learning.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-laptop"></i>
+                </div>
+                <h3>ICT & Innovation</h3>
+                <p>
+                    Building digital skills through computer studies and
+                    technology-focused learning experiences.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-palette"></i>
+                </div>
+                <h3>Arts & Humanities</h3>
+                <p>
+                    Encouraging creativity, communication and cultural
+                    appreciation through arts and humanities.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-trophy"></i>
+                </div>
+                <h3>Sports</h3>
+                <p>
+                    Developing teamwork, discipline and healthy lifestyles
+                    through a variety of sporting activities.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-award"></i>
+                </div>
+                <h3>Leadership</h3>
+                <p>
+                    Students develop leadership qualities through prefectship,
+                    mentoring and community service.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3>Clubs & Societies</h3>
+                <p>
+                    Learners participate in debate, wildlife, music, drama and
+                    other clubs that build confidence and teamwork.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ── SCHOOL FACILITIES ── -->
+<section class="school-facilities">
+
+    <div class="container facilities-grid">
+
+        <!-- Left Side -->
+        <div class="facilities-content">
+
+            <span class="section-eyebrow">
+                School Facilities
+            </span>
+
+            <h2>
+                A Modern Learning Environment
+            </h2>
+
+            <p class="facilities-intro">
+                Kalinabiri Secondary School provides learners with a safe,
+                inspiring and well-equipped environment designed to support
+                academic excellence, creativity and holistic development.
+            </p>
+
+            <div class="facility-list">
+
+                <div class="facility-item">
+                    <i class="bi bi-book"></i>
+                    <div>
+                        <h3>Modern Library</h3>
+                        <p>Quiet study spaces with a wide range of learning resources.</p>
+                    </div>
+                </div>
+
+                <div class="facility-item">
+                    <i class="bi bi-pc-display"></i>
+                    <div>
+                        <h3>ICT Laboratory</h3>
+                        <p>Technology-enabled learning with modern computer facilities.</p>
+                    </div>
+                </div>
+
+                <div class="facility-item">
+                    <i class="bi bi-eyedropper"></i>
+                    <div>
+                        <h3>Science Laboratories</h3>
+                        <p>Hands-on practical learning in Biology, Chemistry and Physics.</p>
+                    </div>
+                </div>
+
+                <div class="facility-item">
+                    <i class="bi bi-trophy"></i>
+                    <div>
+                        <h3>Sports Facilities</h3>
+                        <p>Encouraging physical fitness, teamwork and leadership.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Right Side -->
+
+        <div class="facilities-image">
+
+            <img
+                src="assets/images/facilities.svg"
+                alt="School Facilities">
+
+            <div class="facility-badge">
+                <strong>40+</strong>
+                <span>Years of Excellence</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ── HEADTEACHER'S MESSAGE ── -->
+<section class="headteacher-section">
+
+    <div class="container headteacher-grid">
+
+        <!-- Image -->
+        <div class="headteacher-image">
+
+            <img
+                src="assets/images/headteacher.jpg"
+                alt="Headteacher">
+
+            <div class="headteacher-role">
+                <strong>Headteacher</strong>
+                <span>Kalinabiri Secondary School</span>
+            </div>
+
+        </div>
+
+        <!-- Content -->
+        <div class="headteacher-content">
+
+            <span class="section-eyebrow">
+                Headteacher's Welcome
+            </span>
+
+            <h2>
+                A Message From Our Headteacher
+            </h2>
+
+            <blockquote>
+                "Welcome to Kalinabiri Secondary School.
+
+                We believe every learner has the potential to achieve
+                excellence through discipline, hard work, integrity and
+                faith. Our commitment is to provide a safe learning
+                environment where students grow academically, socially
+                and morally."
+
+            </blockquote>
+
+            <p>
+
+                Together with our dedicated staff, supportive parents
+                and committed learners, we continue building a school
+                community that prepares young people for university,
+                leadership and responsible citizenship.
+
+            </p>
+
+            <a href="about.php" class="btn btn-primary">
+                Meet Our Leadership
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ── STUDENT LIFE ── -->
+<section class="student-life">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <span class="section-eyebrow">
+                Student Life
+            </span>
+
+            <h2>
+                Experience Life Beyond The Classroom
+            </h2>
+
+            <p>
+                Discover how our students grow through academics,
+                sports, leadership, clubs, innovation and community
+                engagement.
+            </p>
+
+        </div>
+
+        <div class="gallery-layout">
+
+            <div class="gallery-large">
+
+                <img src="assets/images/gallery1.jpeg"
+                     alt="Student Life">
+
+            </div>
+
+            <div class="gallery-small">
+
+                <img src="assets/images/gallery2.jpeg"
+                     alt="Sports">
+
+                <img src="assets/images/gallery3.jpeg"
+                     alt="Music">
+
+                <img src="assets/images/gallery4.jpeg"
+                     alt="Leadership">
+
+            </div>
+
+        </div>
+
+        <div class="gallery-tags">
+
+            <span>Classroom</span>
+
+            <span>Sports</span>
+
+            <span>Leadership</span>
+
+            <span>ICT</span>
+
+            <span>Clubs</span>
+
+            <span>Science</span>
+
+        </div>
+
+        <div class="gallery-button">
+
+            <a href="gallery.php" class="btn btn-primary">
+
+                View Full Gallery
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
 
 <!-- ── UPCOMING EVENTS ── -->
 <?php if ($events): ?>
