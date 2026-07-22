@@ -103,7 +103,7 @@ $enquiries = $enquiriesStmt->fetchAll();
     <aside class="admin-sidebar">
         <div class="logo">
             <i class="fas fa-graduation-cap"></i>
-            <h2>School Admin</h2>
+            <h2>Mbogo High School</h2>
         </div>
         <div class="user">
             <div class="name"><?= clean($_SESSION['admin_name']) ?></div>
@@ -117,6 +117,7 @@ $enquiries = $enquiriesStmt->fetchAll();
             <a href="enquiries.php" class="active"><i class="fas fa-question-circle"></i> Enquiries</a>
             <a href="manage-staff.php"><i class="fas fa-users"></i> Staff</a>
             <a href="upload-images.php"><i class="fas fa-images"></i> Hero Images</a>
+            <a href="manage-gallery.php"><i class="fas fa-images"></i> Gallery</a>
             <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
             <form method="POST" action="logout.php" style="margin-top:20px;">
                 <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>

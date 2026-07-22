@@ -95,7 +95,7 @@ include 'includes/header.php';
         <div class="stats-grid">
             <div class="stat-item">
                 <span class="stat-number"><?= clean(getSetting($pdo, 'founded_year', '1985')) ?></span>
-                <span class="stat-label">Year Founded</span>
+                <span class="stat-label">UCE </span>
             </div>
             <div class="stat-item">
                 <span class="stat-number"><?= clean(getSetting($pdo, 'total_students', '1,200')) ?>+</span>
@@ -261,5 +261,17 @@ include 'includes/header.php';
         </div>
     </div>
 </section>
+
+<!-- Neexa Widget -->
+<script>
+  window.neexaAsyncInit = function() {
+    window.neexa.init({
+      agent_id: 'a24dd7ec-8092-448d-abe6-b4f34dba983e', mobile_mini_style: 'greeting_only',
+    });
+  };
+</script>
+<script async src="https://chat-widget.neexa.ai/main.js?nonce=1784552208885.7986"></script>
+<!-- End Neexa Widget -->
+
 
 <?php include 'includes/footer.php'; ?>
