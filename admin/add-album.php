@@ -1,5 +1,5 @@
 <?php
-// admin/edit-event.php
+// admin/add-album.php
 session_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
@@ -9,66 +9,39 @@ if (!isLoggedIn()) {
     exit;
 }
 
-$pageTitle = 'Edit Event - Admin';
+$pageTitle = 'Add Album - Admin';
 $error = '';
 $success = '';
 
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-
-if (!$id) {
-    header('Location: manage-events.php');
-    exit;
-}
-
-// Fetch event
-$stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
-$stmt->execute([$id]);
-$event = $stmt->fetch();
-
-if (!$event) {
-    header('Location: manage-events.php');
-    exit;
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title = clean($_POST['title'] ?? '');
+    $name = clean($_POST['name'] ?? '');
     $description = clean($_POST['description'] ?? '');
-    $location = clean($_POST['location'] ?? '');
-    $event_date = clean($_POST['event_date'] ?? '');
-    $start_time = clean($_POST['start_time'] ?? '');
-    $end_time = clean($_POST['end_time'] ?? '');
-    $featured_image = clean($_POST['featured_image'] ?? '');
+    $cover_image = clean($_POST['cover_image'] ?? '');
+    $sort_order = (int)$_POST['sort_order'];
     $is_published = isset($_POST['is_published']) ? 1 : 0;
     
-    if (empty($title) || empty($event_date)) {
-        $error = 'Title and event date are required.';
+    if (empty($name)) {
+        $error = 'Album name is required.';
     } else {
         try {
             $stmt = $pdo->prepare("
-                UPDATE events SET 
-                    title = ?, description = ?, location = ?, event_date = ?, 
-                    start_time = ?, end_time = ?, featured_image = ?, is_published = ? 
-                WHERE id = ?
+                INSERT INTO gallery_albums (name, description, cover_image, sort_order, is_published) 
+                VALUES (?, ?, ?, ?, ?)
             ");
-            $stmt->execute([
-                $title, $description, $location, $event_date, $start_time, $end_time,
-                $featured_image, $is_published, $id
-            ]);
+            $stmt->execute([$name, $description, $cover_image, $sort_order, $is_published]);
+            
+            $albumId = $pdo->lastInsertId();
             
             $logStmt = $pdo->prepare("
                 INSERT INTO audit_log (admin_id, action, table_name, record_id, description, ip_address) 
-                VALUES (?, 'updated_event', 'events', ?, 'Updated event: ' . ?, ?)
+                VALUES (?, 'created_album', 'gallery_albums', ?, 'Created album: ' . ?, ?)
             ");
-            $logStmt->execute([$_SESSION['admin_id'], $id, $title, $_SERVER['REMOTE_ADDR']]);
+            $logStmt->execute([$_SESSION['admin_id'], $albumId, $name, $_SERVER['REMOTE_ADDR']]);
             
-            $success = 'Event updated successfully!';
-            
-            // Refresh event data
-            $stmt = $pdo->prepare("SELECT * FROM events WHERE id = ?");
-            $stmt->execute([$id]);
-            $event = $stmt->fetch();
+            $success = 'Album created successfully!';
+            $_POST = [];
         } catch (Exception $e) {
-            $error = 'Error updating event: ' . $e->getMessage();
+            $error = 'Error creating album: ' . $e->getMessage();
         }
     }
 }
@@ -83,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        /* Same styles as add-event.php */
         .admin-wrapper { display: flex; min-height: 100vh; }
         .admin-sidebar { width: 260px; background: #0d2617; color: #fff; padding: 30px 20px; min-height: 100vh; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
         .admin-sidebar .logo { text-align: center; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; }
@@ -104,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-group label .required { color: #dc3545; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 16px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s; font-family: inherit; }
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #1a4d2e; }
-        .form-group textarea { min-height: 120px; resize: vertical; }
+        .form-group textarea { min-height: 100px; resize: vertical; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .form-group.checkbox { display: flex; align-items: center; gap: 10px; }
         .form-group.checkbox label { margin-bottom: 0; cursor: pointer; }
@@ -128,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <aside class="admin-sidebar">
         <div class="logo">
             <i class="fas fa-graduation-cap"></i>
-            <h2>Mbogo High School</h2>
+            <h2>School Admin</h2>
         </div>
         <div class="user">
             <div class="name"><?= clean($_SESSION['admin_name']) ?></div>
@@ -137,12 +109,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <nav>
             <a href="dashboard.php"><i class="fas fa-home"></i> Dashboard</a>
             <a href="manage-news.php"><i class="fas fa-newspaper"></i> Manage News</a>
-            <a href="manage-events.php" class="active"><i class="fas fa-calendar"></i> Manage Events</a>
+            <a href="manage-events.php"><i class="fas fa-calendar"></i> Manage Events</a>
             <a href="messages.php"><i class="fas fa-envelope"></i> Messages</a>
             <a href="enquiries.php"><i class="fas fa-question-circle"></i> Enquiries</a>
             <a href="manage-staff.php"><i class="fas fa-users"></i> Staff</a>
-            <a href="upload-images.php"><i class="fas fa-images"></i> Hero Images</a>
-            <a href="manage-gallery.php"><i class="fas fa-images"></i> Gallery</a>
+            <a href="manage-gallery.php" class="active"><i class="fas fa-images"></i> Gallery</a>
             <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
             <form method="POST" action="logout.php" style="margin-top:20px;">
                 <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -153,8 +124,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Content -->
     <main class="admin-content">
         <div class="admin-header">
-            <h1><i class="fas fa-edit"></i> Edit Event</h1>
-            <a href="manage-events.php" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Events</a>
+            <h1><i class="fas fa-plus-circle"></i> Add Album</h1>
+            <a href="manage-gallery.php" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Gallery</a>
         </div>
 
         <?php if ($success): ?>
@@ -167,50 +138,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-container">
             <form method="POST" action="">
                 <div class="form-group">
-                    <label for="title">Event Title <span class="required">*</span></label>
-                    <input type="text" id="title" name="title" required placeholder="Event title" value="<?= clean($event['title']) ?>">
+                    <label for="name">Album Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" required placeholder="e.g. Sports Day 2026" value="<?= clean($_POST['name'] ?? '') ?>">
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea id="description" name="description" rows="4" placeholder="Event description"><?= clean($event['description']) ?></textarea>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="event_date">Event Date <span class="required">*</span></label>
-                        <input type="date" id="event_date" name="event_date" required value="<?= $event['event_date'] ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="location">Location</label>
-                        <input type="text" id="location" name="location" placeholder="School Grounds, Main Hall, etc." value="<?= clean($event['location']) ?>">
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="start_time">Start Time</label>
-                        <input type="time" id="start_time" name="start_time" value="<?= $event['start_time'] ?>">
-                    </div>
-                    <div class="form-group">
-                        <label for="end_time">End Time</label>
-                        <input type="time" id="end_time" name="end_time" value="<?= $event['end_time'] ?>">
-                    </div>
+                    <textarea id="description" name="description" placeholder="Brief description of this album"><?= clean($_POST['description'] ?? '') ?></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="featured_image">Featured Image URL</label>
-                    <input type="text" id="featured_image" name="featured_image" placeholder="assets/images/events/event.jpg" value="<?= clean($event['featured_image']) ?>">
+                    <label for="cover_image">Cover Image URL</label>
+                    <input type="text" id="cover_image" name="cover_image" placeholder="assets/images/gallery/cover.jpg" value="<?= clean($_POST['cover_image'] ?? '') ?>">
+                    <div style="font-size:0.85rem;color:#666;margin-top:5px;">
+                        <i class="fas fa-info-circle"></i> Enter the path to the cover image for this album.
+                    </div>
                 </div>
 
-                <div class="form-group checkbox">
-                    <input type="checkbox" id="is_published" name="is_published" <?= $event['is_published'] ? 'checked' : '' ?>>
-                    <label for="is_published">Published</label>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sort_order">Sort Order</label>
+                        <input type="number" id="sort_order" name="sort_order" value="<?= clean($_POST['sort_order'] ?? 0) ?>" min="0">
+                    </div>
+                    <div class="form-group checkbox">
+                        <input type="checkbox" id="is_published" name="is_published" <?= isset($_POST['is_published']) ? 'checked' : 'checked' ?>>
+                        <label for="is_published">Publish immediately</label>
+                    </div>
                 </div>
 
                 <div class="button-group">
-                    <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Update Event</button>
-                    <a href="manage-events.php" class="btn-back">Cancel</a>
+                    <button type="submit" class="btn-submit"><i class="fas fa-save"></i> Create Album</button>
+                    <a href="manage-gallery.php" class="btn-back">Cancel</a>
                 </div>
             </form>
         </div>

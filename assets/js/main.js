@@ -1,37 +1,141 @@
-// assets/js/main.js
-
 // ============================================
-// 1. Navigation Toggle
+// NAV TOGGLE (Mobile)
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
-    const navToggle = document.querySelector('.nav-toggle');
-    const navMenu = document.querySelector('.nav-menu');
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
     
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
             const isOpen = navMenu.classList.toggle('open');
+            this.classList.toggle('active');
             this.setAttribute('aria-expanded', isOpen);
         });
     }
 });
 
 // ============================================
-// 2. Hero Slider
+// STICKY NAV - SCROLL EFFECT
 // ============================================
-(function() {
-    let currentSlide = 0;
-    const slides = document.querySelectorAll('.hero-slider img');
-    const dots = document.querySelectorAll('.hero-dots .dot');
-    let slideInterval;
+document.addEventListener('DOMContentLoaded', function() {
+    const nav = document.getElementById('mainNav');
+    
+    if (!nav) return;
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+});
+
+// ============================================
+// NEWS TICKER - WORKING
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    var slide = document.getElementById('tickerSlide');
+    var link = document.getElementById('tickerLink');
+    var container = document.getElementById('tickerContainer');
+    
+    // Check if elements exist
+    if (!slide || !link || !container) {
+        console.log('Ticker elements not found');
+        return;
+    }
+    
+    // Check if data exists
+    if (typeof tickerNewsData === 'undefined') {
+        console.log('Ticker data not found');
+        return;
+    }
+    
+    if (!tickerNewsData || tickerNewsData.length === 0) {
+        console.log('No news items found');
+        return;
+    }
+    
+    console.log('Ticker loaded with ' + tickerNewsData.length + ' news items');
+    
+    // If only one news item, show it without animation
+    if (tickerNewsData.length === 1) {
+        link.textContent = tickerNewsData[0].title;
+        link.href = 'article.php?slug=' + tickerNewsData[0].slug;
+        return;
+    }
+    
+    var currentIndex = 0;
+    var timer = null;
+    
+    // Set first news item
+    link.textContent = tickerNewsData[0].title;
+    link.href = 'article.php?slug=' + tickerNewsData[0].slug;
+    
+    function showNextNews() {
+        // Move to next index
+        currentIndex = (currentIndex + 1) % tickerNewsData.length;
+        var news = tickerNewsData[currentIndex];
+        
+        // Fade out
+        slide.style.opacity = '0';
+        slide.style.transition = 'opacity 0.3s ease';
+        
+        setTimeout(function() {
+            // Change the content
+            link.textContent = news.title;
+            link.href = 'article.php?slug=' + news.slug;
+            
+            // Fade in
+            slide.style.opacity = '1';
+        }, 300);
+    }
+    
+    function startTicker() {
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+        }
+        timer = setInterval(showNextNews, 4000);
+        console.log('Ticker started');
+    }
+    
+    // Pause on hover
+    container.addEventListener('mouseenter', function() {
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+            console.log('Ticker paused');
+        }
+    });
+    
+    container.addEventListener('mouseleave', function() {
+        if (!timer) {
+            startTicker();
+            console.log('Ticker resumed');
+        }
+    });
+    
+    // Start the ticker
+    slide.style.opacity = '1';
+    startTicker();
+});
+
+// ============================================
+// HERO SLIDER
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    var currentSlide = 0;
+    var slides = document.querySelectorAll('.hero-slider img');
+    var dots = document.querySelectorAll('.hero-dots .dot');
+    var slideInterval;
     
     if (slides.length === 0) return;
     
     function goToSlide(index) {
-        // Remove active from all slides
-        slides.forEach(s => s.classList.remove('active'));
-        dots.forEach(d => d.classList.remove('active'));
+        slides.forEach(function(s) { s.classList.remove('active'); });
+        dots.forEach(function(d) { d.classList.remove('active'); });
         
-        // Set active
         currentSlide = (index + slides.length) % slides.length;
         slides[currentSlide].classList.add('active');
         if (dots[currentSlide]) {
@@ -48,49 +152,46 @@ document.addEventListener('DOMContentLoaded', function() {
         slideInterval = setInterval(nextSlide, 5000);
     }
     
-    // Add dot click handlers
-    dots.forEach((dot, index) => {
+    dots.forEach(function(dot, index) {
         dot.addEventListener('click', function() {
             goToSlide(index);
-            startSlider(); // Reset timer
+            startSlider();
         });
     });
     
-    // Start slider
     goToSlide(0);
     startSlider();
     
-    // Pause on hover
-    const hero = document.querySelector('.hero');
+    var hero = document.querySelector('.hero');
     if (hero) {
-        hero.addEventListener('mouseenter', () => {
+        hero.addEventListener('mouseenter', function() {
             if (slideInterval) clearInterval(slideInterval);
         });
         hero.addEventListener('mouseleave', startSlider);
     }
-})();
+});
 
 // ============================================
-// 3. Typewriter Effect
+// TYPEWRITER EFFECT
 // ============================================
-(function() {
-    const element = document.querySelector('.typewriter-text');
+document.addEventListener('DOMContentLoaded', function() {
+    var element = document.querySelector('.typewriter-text');
     if (!element) return;
     
-    const texts = [
+    var texts = [
         'Excellence in Education Since 1985',
         'Where Champions Are Made',
         'Your Child\'s Future Starts Here',
         '80% UACE Pass Rate'
     ];
     
-    let textIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let currentText = '';
+    var textIndex = 0;
+    var charIndex = 0;
+    var isDeleting = false;
+    var currentText = '';
     
     function type() {
-        const fullText = texts[textIndex];
+        var fullText = texts[textIndex];
         
         if (isDeleting) {
             currentText = fullText.substring(0, charIndex - 1);
@@ -100,26 +201,23 @@ document.addEventListener('DOMContentLoaded', function() {
             charIndex++;
         }
         
-        // Remove existing cursor span and set text
-        const cursorSpan = element.querySelector('.cursor');
+        var cursorSpan = element.querySelector('.cursor');
         element.textContent = currentText;
         if (cursorSpan) {
             element.appendChild(cursorSpan);
         }
         
-        // Add cursor back
         if (!element.querySelector('.cursor')) {
-            const cursor = document.createElement('span');
+            var cursor = document.createElement('span');
             cursor.className = 'cursor';
             cursor.textContent = '|';
             element.appendChild(cursor);
         }
         
-        // Speed control
-        let speed = isDeleting ? 30 : 50;
+        var speed = isDeleting ? 30 : 50;
         
         if (!isDeleting && charIndex === fullText.length) {
-            speed = 2000; // Pause at end
+            speed = 2000;
             isDeleting = true;
         } else if (isDeleting && charIndex === 0) {
             isDeleting = false;
@@ -130,116 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(type, speed);
     }
     
-    // Start typing after a short delay
     setTimeout(type, 800);
-})();
-
-// ============================================
-// 4. Smooth Scroll for Anchor Links
-// ============================================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    });
 });
 
-// ============================================
-// 5. Form Validation Helper
-// ============================================
-function validateForm(form) {
-    const inputs = form.querySelectorAll('[required]');
-    let valid = true;
-    
-    inputs.forEach(input => {
-        if (!input.value.trim()) {
-            input.style.borderColor = '#dc3545';
-            valid = false;
-        } else {
-            input.style.borderColor = '';
-        }
-    });
-    
-    return valid;
-}
-
-// ============================================
-// 6. Load News via AJAX (for homepage)
-// ============================================
-async function loadLatestNews() {
-    const container = document.getElementById('news-feed');
-    if (!container) return;
-    
-    try {
-        const response = await fetch('api/news.php?limit=3');
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.json();
-        
-        container.innerHTML = '';
-        
-        data.forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            
-            const imgHtml = item.featured_image 
-                ? `<img src="${item.featured_image}" alt="${item.title}" class="card-img" loading="lazy">`
-                : `<div class="card-img-placeholder"></div>`;
-            
-            card.innerHTML = `
-                ${imgHtml}
-                <div class="card-content">
-                    <span class="badge" style="background:${item.cat_color || '#2d7a4a'}; color:#fff;">
-                        ${item.cat_name || 'News'}
-                    </span>
-                    <h3><a href="article.php?slug=${item.slug}">${item.title}</a></h3>
-                    <p>${item.excerpt || truncateText(item.body, 120)}</p>
-                    <div class="card-meta">
-                        <span class="date"><i class="fas fa-calendar-alt"></i> ${formatDate(item.published_at || item.created_at)}</span>
-                        <a href="article.php?slug=${item.slug}" class="read-more">Read More →</a>
-                    </div>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    } catch (error) {
-        console.error('Error loading news:', error);
-        container.innerHTML = '<p class="text-center" style="padding:40px;color:#666;">Unable to load news at this time.</p>';
-    }
-}
-
-// Helper: truncate text
-function truncateText(text, length = 120) {
-    if (!text) return '';
-    if (text.length <= length) return text;
-    return text.substring(0, length) + '...';
-}
-
-// Helper: format date
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-        month: 'short', 
-        day: 'numeric', 
-        year: 'numeric' 
-    });
-}
-
-// ============================================
-// 7. Initialize
-// ============================================
-// Load news on homepage
-if (document.getElementById('news-feed')) {
-    loadLatestNews();
-}
-
-// Auto-dismiss alerts after 5 seconds
-setTimeout(() => {
-    document.querySelectorAll('.alert').forEach(alert => {
-        alert.style.transition = 'opacity 0.5s';
-        alert.style.opacity = '0';
-        setTimeout(() => alert.remove(), 500);
-    });
-}, 5000);
+console.log('All scripts loaded successfully!');
