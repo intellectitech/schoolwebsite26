@@ -29,132 +29,269 @@ include 'includes/header.php';
 ?>
 
 <style>
+/* ============================================
+   STAFF PAGE SPECIFIC STYLES (Edugrade UI)
+   ============================================ */
+
+:root {
+    --primary-red: #e91e63;
+    --primary-dark-red: #c2185b;
+    --navy-dark: #1a1a2e;
+    --navy-light: #2a2a4a;
+    --light-gray-bg: #f8f9fa;
+    --white: #ffffff;
+    --text-gray: #666666;
+    --shadow-card: 0 4px 20px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 30px rgba(233, 30, 99, 0.12);
+}
+
+/* --- Hero Section --- */
 .staff-hero {
-    background: linear-gradient(135deg, #0d2617, #1a4d2e);
-    color: #fff;
-    padding: 60px 0;
+    background: linear-gradient(135deg, var(--navy-dark) 0%, #2d2d54 100%);
+    position: relative;
+    color: var(--white);
+    padding: 80px 0 60px;
     text-align: center;
+    overflow: hidden;
 }
+
+.staff-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
 .staff-hero h1 {
-    color: #fff;
-    font-size: 2.8rem;
+    color: var(--white);
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 15px;
 }
+
+.staff-hero h1 i {
+    color: var(--primary-red);
+    margin-right: 12px;
+}
+
 .staff-hero p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.85);
     max-width: 600px;
-    margin: 15px auto 0;
+    margin: 0 auto;
+    font-size: 1.15rem;
+    line-height: 1.7;
 }
-.staff-filters {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin: 30px 0;
-    justify-content: center;
-}
-.staff-filters a {
-    padding: 8px 20px;
-    border-radius: 50px;
-    background: #e9ecef;
-    color: #333;
-    transition: all 0.3s;
-    font-size: 0.9rem;
-}
-.staff-filters a:hover,
-.staff-filters a.active {
-    background: #1a4d2e;
-    color: #fff;
-}
+
+/* --- Section Wrappers --- */
 .staff-section {
     padding: 40px 0 80px;
+    background: var(--light-gray-bg);
 }
+
+/* --- Section Title (Left Aligned) --- */
+.staff-section .section-title {
+    text-align: left;
+    margin-bottom: 40px;
+}
+.staff-section .section-title h2 {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 12px;
+    color: var(--navy-dark);
+}
+.staff-section .section-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-red);
+}
+.staff-section .section-title p {
+    color: var(--text-gray);
+    max-width: 500px;
+    margin-top: 10px;
+}
+
+/* --- Department Filters --- */
+.staff-filters {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin: 40px 0 30px;
+    justify-content: flex-start;
+}
+.staff-filters a {
+    padding: 10px 24px;
+    border-radius: 50px;
+    background: var(--white);
+    color: var(--navy-dark);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-card);
+}
+.staff-filters a:hover {
+    background: var(--light-gray-bg);
+    transform: translateY(-2px);
+}
+.staff-filters a.active {
+    background: var(--primary-red);
+    color: var(--white);
+    box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+}
+.staff-filters a.active:hover {
+    background: var(--primary-dark-red);
+}
+
+/* --- Staff Grid --- */
 .staff-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
 }
+
 .staff-card {
-    background: #fff;
-    border-radius: 12px;
+    background: var(--white);
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    transition: all 0.3s;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s ease;
     text-align: center;
+    border: 1px solid transparent;
 }
+
 .staff-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--primary-red);
 }
+
 .staff-card .photo {
     width: 100%;
-    height: 240px;
+    height: 260px;
     object-fit: cover;
     background: #e9ecef;
 }
+
 .staff-card .photo-placeholder {
     width: 100%;
-    height: 240px;
+    height: 260px;
     background: linear-gradient(135deg, #e9ecef, #dee2e6);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #999;
+    color: #adb5bd;
     font-size: 4rem;
 }
+
 .staff-card .info {
-    padding: 20px;
+    padding: 25px 20px 30px;
+    position: relative;
 }
+
 .staff-card .info .management-badge {
     display: inline-block;
-    background: #FFD700;
-    color: #1a4d2e;
-    padding: 2px 12px;
+    background: var(--primary-red);
+    color: var(--white);
+    padding: 4px 16px;
     border-radius: 50px;
     font-size: 0.7rem;
     font-weight: 700;
     text-transform: uppercase;
-    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
 }
+
 .staff-card .info h4 {
-    color: #1a4d2e;
-    margin-bottom: 4px;
+    color: var(--navy-dark);
+    margin-bottom: 5px;
+    font-size: 1.1rem;
 }
+
 .staff-card .info .role {
-    color: #FFD700;
+    color: var(--primary-red);
     font-weight: 600;
     font-size: 0.9rem;
 }
+
 .staff-card .info .department {
-    color: #666;
+    color: var(--text-gray);
     font-size: 0.85rem;
-    margin-top: 5px;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
+.staff-card .info .department i {
+    color: var(--primary-red);
+}
+
 .staff-card .info .subjects {
-    color: #888;
+    color: var(--text-gray);
     font-size: 0.85rem;
-    margin-top: 5px;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
+.staff-card .info .subjects i {
+    color: var(--primary-red);
+}
+
 .staff-card .info .qualification {
-    color: #888;
+    color: var(--text-gray);
     font-size: 0.85rem;
-    margin-top: 5px;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 }
+.staff-card .info .qualification i {
+    color: var(--primary-red);
+}
+
+/* --- Empty State --- */
+.empty-state {
+    text-align: center;
+    padding: 60px 0;
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: var(--shadow-card);
+}
+.empty-state i {
+    font-size: 4rem;
+    color: #ced4da;
+    margin-bottom: 20px;
+}
+.empty-state h3 {
+    color: var(--text-gray);
+}
+
+/* --- Responsive --- */
 @media (max-width: 1200px) {
-    .staff-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    .staff-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
 @media (max-width: 992px) {
-    .staff-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .staff-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
+@media (max-width: 768px) {
+    .staff-hero { padding: 60px 0; }
+    .staff-hero h1 { font-size: 2.2rem; }
+    .staff-hero p { font-size: 1rem; }
+    .staff-filters { justify-content: center; }
+}
+
 @media (max-width: 576px) {
-    .staff-grid {
-        grid-template-columns: 1fr;
-    }
-    .staff-hero h1 {
-        font-size: 2rem;
-    }
+    .staff-grid { grid-template-columns: 1fr; }
+    .staff-hero h1 { font-size: 1.8rem; }
+    .staff-filters a { padding: 8px 18px; font-size: 0.8rem; }
 }
 </style>
 
@@ -166,9 +303,14 @@ include 'includes/header.php';
     </div>
 </section>
 
-<!-- Filters -->
-<section style="padding-top:0;">
+<!-- Filters + Section Title -->
+<section class="staff-section" style="padding-bottom:0; background:var(--light-gray-bg);">
     <div class="container">
+        <div class="section-title">
+            <h2>Our Team</h2>
+            <p>Browse through our talented faculty and administrative staff by department.</p>
+        </div>
+        
         <div class="staff-filters">
             <a href="staff.php" class="<?= $deptFilter == 0 ? 'active' : '' ?>">All Departments</a>
             <?php foreach ($departments as $dept): ?>
@@ -181,14 +323,14 @@ include 'includes/header.php';
 </section>
 
 <!-- Staff Grid -->
-<section class="staff-section">
+<section class="staff-section" style="padding-top:20px;">
     <div class="container">
         <?php if (!empty($staff)): ?>
             <div class="staff-grid">
                 <?php foreach ($staff as $member): ?>
                     <div class="staff-card">
                         <?php if (!empty($member['photo'])): ?>
-                            <img src="<?= clean($member['photo']) ?>" alt="<?= clean($member['first_name']) ?>" class="photo">
+                            <img src="<?= clean($member['photo']) ?>" alt="<?= clean($member['first_name']) ?>" class="photo" loading="lazy">
                         <?php else: ?>
                             <div class="photo-placeholder">
                                 <i class="fas fa-user"></i>
@@ -214,10 +356,10 @@ include 'includes/header.php';
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div style="text-align:center;padding:60px 0;">
-                <i class="fas fa-users" style="font-size:4rem;color:#ccc;margin-bottom:20px;"></i>
+            <div class="empty-state">
+                <i class="fas fa-users"></i>
                 <h3>No Staff Members Found</h3>
-                <p style="color:#666;">Staff directory is being updated.</p>
+                <p style="color:#666;margin-top:5px;">Staff directory is being updated.</p>
             </div>
         <?php endif; ?>
     </div>

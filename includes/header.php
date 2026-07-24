@@ -26,8 +26,8 @@ $tickerNews = $tickerStmt->fetchAll();
     <title><?= clean($pageTitle ?? $schoolName) ?></title>
     <meta name="description" content="<?= clean(getSetting($pdo, 'meta_description', 'Welcome to our school')) ?>">
     
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Fonts (Switched to Poppins for UI match) -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Styles -->
@@ -35,7 +35,7 @@ $tickerNews = $tickerStmt->fetchAll();
 </head>
 <body>
     <!-- ============================================ -->
-    <!-- TOP BAR WITH CONTACT INFO -->
+    <!-- TOP BAR WITH CONTACT INFO (Dark Navy UI) -->
     <!-- ============================================ -->
     <div class="top-bar">
         <div class="container">
@@ -46,17 +46,17 @@ $tickerNews = $tickerStmt->fetchAll();
                     <span><i class="fas fa-map-marker-alt"></i> <?= clean(getSetting($pdo, 'school_address', 'P.O. Box 123, Kampala, Uganda')) ?></span>
                 </div>
                 <div class="top-bar-social">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ============================================ -->
-    <!-- NEWS TICKER - Between Top Bar and Navigation -->
+    <!-- NEWS TICKER (Crisp Navy Blue, Red Highlights) -->
     <!-- ============================================ -->
     <div class="ticker-bar">
         <div class="container">
@@ -65,14 +65,9 @@ $tickerNews = $tickerStmt->fetchAll();
                     <i class="fas fa-bullhorn"></i> Latest News
                 </div>
                 <div class="ticker-container" id="tickerContainer">
+                    <!-- The slide is generated dynamically via JavaScript now -->
                     <div class="ticker-slide" id="tickerSlide">
-                        <a href="#" id="tickerLink">
-                            <?php if (!empty($tickerNews)): ?>
-                                <?= clean($tickerNews[0]['title']) ?>
-                            <?php else: ?>
-                                No updates available
-                            <?php endif; ?>
-                        </a>
+                        <a href="#" id="tickerLink">Loading updates...</a>
                     </div>
                 </div>
             </div>
@@ -80,7 +75,7 @@ $tickerNews = $tickerStmt->fetchAll();
     </div>
 
     <!-- ============================================ -->
-    <!-- NAVIGATION - STICKY -->
+    <!-- NAVIGATION - STICKY (White & Clean UI) -->
     <!-- ============================================ -->
     <nav class="main-nav" id="mainNav" role="navigation">
         <div class="container">
@@ -90,7 +85,8 @@ $tickerNews = $tickerStmt->fetchAll();
                         <?php if (!empty($schoolLogo)): ?>
                             <img src="<?= clean($schoolLogo) ?>" alt="<?= clean($schoolName) ?>" class="logo-img">
                         <?php else: ?>
-                            <i class="fas fa-graduation-cap"></i>
+                            <!-- Fallback logo block matching UI's red box style -->
+                            <span class="logo-icon"><?= substr(clean($schoolName), 0, 1) ?></span>
                             <span><?= clean($schoolName) ?></span>
                         <?php endif; ?>
                     </a>
@@ -122,5 +118,74 @@ $tickerNews = $tickerStmt->fetchAll();
     <script>
         // Pass news data to JavaScript
         var tickerNewsData = <?php echo json_encode($tickerNews); ?>;
-        console.log('Ticker loaded with ' + tickerNewsData.length + ' items');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Ticker Logic
+            if (typeof tickerNewsData !== 'undefined' && tickerNewsData.length > 0) {
+                let currentIndex = 0;
+                const tickerSlide = document.getElementById('tickerSlide');
+                const tickerLink = document.getElementById('tickerLink');
+
+                // Function to update the ticker
+                function updateTicker() {
+                    const item = tickerNewsData[currentIndex];
+                    if (item) {
+                        // Set the text
+                        tickerLink.textContent = item.title;
+                        // Set the link (assuming article.php?slug=...)
+                        tickerLink.href = 'article.php?slug=' + encodeURIComponent(item.slug);
+                        
+                        // Simple fade effect
+                        tickerSlide.style.opacity = '0';
+                        setTimeout(() => {
+                            tickerSlide.style.opacity = '1';
+                        }, 300);
+                    }
+                    // Move to next index
+                    currentIndex = (currentIndex + 1) % tickerNewsData.length;
+                }
+
+                // Initial load
+                if(tickerNewsData.length > 0) {
+                    updateTicker();
+                } else {
+                    tickerLink.textContent = "No updates available";
+                }
+
+                // Run update every 5 seconds (5000ms)
+                setInterval(updateTicker, 5000);
+            } else {
+                // Fallback if no data
+                const tickerLink = document.getElementById('tickerLink');
+                if(tickerLink) {
+                    tickerLink.textContent = "No updates available";
+                }
+            }
+
+            // 2. Mobile Nav Toggle Logic
+            const navToggle = document.getElementById('navToggle');
+            const navMenu = document.getElementById('navMenu');
+
+            if (navToggle && navMenu) {
+                navToggle.addEventListener('click', function() {
+                    const isOpen = navMenu.classList.toggle('open');
+                    navToggle.classList.toggle('active');
+                    navToggle.setAttribute('aria-expanded', isOpen);
+                });
+            }
+
+            // 3. Sticky Navbar Logic (Adds .scrolled class on scroll)
+            const mainNav = document.getElementById('mainNav');
+            if (mainNav) {
+                window.addEventListener('scroll', function() {
+                    if (window.scrollY > 50) {
+                        mainNav.classList.add('scrolled');
+                    } else {
+                        mainNav.classList.remove('scrolled');
+                    }
+                });
+            }
+        });
     </script>
+</body>
+</html>

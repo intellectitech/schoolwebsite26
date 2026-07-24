@@ -48,124 +48,282 @@ include 'includes/header.php';
 ?>
 
 <style>
-.article-hero {
-    background: linear-gradient(135deg, #0d2617, #1a4d2e);
-    color: #fff;
-    padding: 60px 0 40px;
+/* ============================================
+   ARTICLE PAGE SPECIFIC STYLES (Edugrade UI)
+   ============================================ */
+
+:root {
+    --primary-red: #e91e63;
+    --primary-dark-red: #c2185b;
+    --navy-dark: #1a1a2e;
+    --navy-light: #2a2a4a;
+    --light-gray-bg: #f8f9fa;
+    --white: #ffffff;
+    --text-gray: #666666;
+    --shadow-card: 0 4px 20px rgba(0,0,0,0.06);
+    --shadow-hover: 0 8px 30px rgba(233, 30, 99, 0.12);
 }
+
+/* --- Hero Section --- */
+.article-hero {
+    background: linear-gradient(135deg, var(--navy-dark) 0%, #2d2d54 100%);
+    color: var(--white);
+    padding: 80px 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.article-hero .container {
+    position: relative;
+    z-index: 1;
+}
+
 .article-hero .category-badge {
     display: inline-block;
-    padding: 4px 16px;
+    padding: 6px 20px;
     border-radius: 50px;
     font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    letter-spacing: 0.5px;
 }
+
 .article-hero h1 {
-    color: #fff;
-    font-size: 2.5rem;
-    max-width: 800px;
+    color: var(--white);
+    font-size: 2.8rem;
+    max-width: 850px;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
 }
+
 .article-hero .meta {
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.75);
     font-size: 0.95rem;
-    margin-top: 15px;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
 }
+
 .article-hero .meta span {
-    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
+
+.article-hero .meta i {
+    color: var(--primary-red);
+}
+
+/* --- Article Body --- */
 .article-body {
-    padding: 50px 0 80px;
+    padding: 60px 0 80px;
 }
+
 .article-body .content {
-    max-width: 820px;
+    max-width: 850px;
     margin: 0 auto;
 }
-.article-body .content img {
-    max-width: 100%;
-    border-radius: 12px;
-    margin: 20px 0;
-}
-.article-body .content h2, 
-.article-body .content h3 {
-    color: #1a4d2e;
-    margin-top: 30px;
-}
-.article-body .content p {
-    margin-bottom: 18px;
-    font-size: 1.05rem;
-}
-.article-body .content ul, 
-.article-body .content ol {
-    margin: 20px 0 20px 25px;
-}
-.article-body .content li {
-    margin-bottom: 8px;
-}
+
 .article-body .featured-image {
     width: 100%;
     max-height: 500px;
     object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 30px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow-card);
 }
+
+.article-body .content img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 25px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.article-body .content h2, 
+.article-body .content h3 {
+    color: var(--navy-dark);
+    margin-top: 35px;
+    margin-bottom: 15px;
+}
+
+.article-body .content h2 {
+    font-size: 1.8rem;
+}
+.article-body .content h3 {
+    font-size: 1.4rem;
+}
+
+.article-body .content p {
+    margin-bottom: 20px;
+    font-size: 1.08rem;
+    color: #444;
+    line-height: 1.8;
+}
+
+.article-body .content ul, 
+.article-body .content ol {
+    margin: 20px 0 20px 30px;
+}
+
+.article-body .content li {
+    margin-bottom: 10px;
+    font-size: 1.05rem;
+}
+
+.article-body .content blockquote {
+    border-left: 4px solid var(--primary-red);
+    padding: 15px 25px;
+    margin: 30px 0;
+    background: var(--light-gray-bg);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #555;
+    font-size: 1.1rem;
+}
+
+/* --- Share Bar --- */
+.share-bar {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.share-bar .share-label {
+    font-weight: 600;
+    color: var(--navy-dark);
+    margin-right: 10px;
+}
+
+.share-bar a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--white);
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.share-bar a:hover {
+    transform: translateY(-3px);
+}
+
+.share-bar .fb { background: #1877f2; }
+.share-bar .tw { background: #1da1f2; }
+.share-bar .wa { background: #25d366; }
+.share-bar .email { background: var(--navy-dark); }
+
+/* --- Related Articles --- */
 .related-section {
-    background: #f8f9fa;
-    padding: 60px 0;
+    background: var(--light-gray-bg);
+    padding: 70px 0;
 }
+
+.related-section .section-title {
+    text-align: left;
+    margin-bottom: 40px;
+}
+.related-section .section-title h2 {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 12px;
+    color: var(--navy-dark);
+}
+.related-section .section-title h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--primary-red);
+}
+.related-section .section-title p {
+    color: var(--text-gray);
+    margin-top: 10px;
+}
+
 .related-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 30px;
 }
+
 .related-card {
-    background: #fff;
-    border-radius: 12px;
+    background: var(--white);
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    transition: transform 0.3s;
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
 }
+
 .related-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
 }
+
 .related-card img {
     width: 100%;
-    height: 180px;
+    height: 190px;
     object-fit: cover;
 }
+
 .related-card .info {
-    padding: 20px;
+    padding: 25px;
 }
+
 .related-card .info h4 {
-    font-size: 1rem;
-    margin-bottom: 8px;
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+    line-height: 1.4;
 }
+
 .related-card .info h4 a {
-    color: #1a1a1a;
+    color: var(--navy-dark);
+    transition: var(--transition);
 }
+
 .related-card .info h4 a:hover {
-    color: #1a4d2e;
+    color: var(--primary-red);
 }
+
 .related-card .info .date {
     font-size: 0.85rem;
-    color: #999;
+    color: var(--text-gray);
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
+
+.related-card .info .date i {
+    color: var(--primary-red);
+}
+
+/* --- Responsive --- */
 @media (max-width: 992px) {
-    .related-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .related-grid { grid-template-columns: repeat(2, 1fr); }
 }
+
 @media (max-width: 768px) {
-    .article-hero h1 {
-        font-size: 1.8rem;
-    }
-    .related-grid {
-        grid-template-columns: 1fr;
-    }
-    .article-body .content p {
-        font-size: 1rem;
-    }
+    .article-hero { padding: 60px 0 40px; }
+    .article-hero h1 { font-size: 2rem; }
+    .article-body .content p { font-size: 1rem; }
+    .article-body .content h2 { font-size: 1.5rem; }
+    .related-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 576px) {
+    .article-hero h1 { font-size: 1.6rem; }
+    .share-bar { justify-content: center; }
 }
 </style>
 
@@ -173,7 +331,7 @@ include 'includes/header.php';
 <section class="article-hero">
     <div class="container">
         <?php if (!empty($article['cat_name'])): ?>
-            <span class="category-badge" style="background:<?= clean($article['cat_color'] ?? '#2d7a4a') ?>; color:#fff;">
+            <span class="category-badge" style="background:<?= clean($article['cat_color'] ?? '#e91e63') ?>; color:#fff;">
                 <?= clean($article['cat_name']) ?>
             </span>
         <?php endif; ?>
@@ -198,15 +356,13 @@ include 'includes/header.php';
             
             <?= $article['body'] ?>
             
-            <div style="margin-top:40px;padding-top:30px;border-top:1px solid #e0e0e0;">
-                <p style="font-size:0.9rem;color:#999;">
-                    <i class="fas fa-tag"></i> 
-                    <?php if (!empty($article['cat_name'])): ?>
-                        Category: <?= clean($article['cat_name']) ?>
-                    <?php else: ?>
-                        Uncategorized
-                    <?php endif; ?>
-                </p>
+            <!-- Share Bar -->
+            <div class="share-bar">
+                <span class="share-label"><i class="fas fa-share-alt" style="color:var(--primary-red);"></i> Share this article:</span>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=<?= urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ?>" target="_blank" class="fb" title="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://twitter.com/intent/tweet?text=<?= urlencode($article['title']) ?>&url=<?= urlencode('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ?>" target="_blank" class="tw" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="https://api.whatsapp.com/send?text=<?= urlencode($article['title'] . ' - https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ?>" target="_blank" class="wa" title="Share on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                <a href="mailto:?subject=<?= urlencode($article['title']) ?>&body=<?= urlencode('Check out this article: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']) ?>" class="email" title="Share via Email"><i class="fas fa-envelope"></i></a>
             </div>
         </div>
     </div>
@@ -226,7 +382,7 @@ include 'includes/header.php';
                     <?php if (!empty($related['featured_image'])): ?>
                         <img src="<?= clean($related['featured_image']) ?>" alt="<?= clean($related['title']) ?>" loading="lazy">
                     <?php else: ?>
-                        <div style="height:180px;background:#e9ecef;display:flex;align-items:center;justify-content:center;color:#999;">
+                        <div style="height:190px;background:#e9ecef;display:flex;align-items:center;justify-content:center;color:#adb5bd;">
                             <i class="fas fa-image" style="font-size:2rem;"></i>
                         </div>
                     <?php endif; ?>
