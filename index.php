@@ -11,10 +11,10 @@ $pageTitle = getSettings($pdo, 'school_name') . '-Home';
 
 //Fetch All Data (before any HTML output)-
 $latestNews = $pdo->query(
-    "SELECT n.id, n.title, n.slug, n.excerpt, n.featured_image, n.published_at, nc.name AS cat_name, nc.color AS cat_color
+    "SELECT n.id, n.title, n.slug, n.excerpt, n.featured_image, n.published_at, nc.name AS cat_name, nc.colour AS cat_color
     FROM news n
     LEFT JOIN news_categories nc ON nc.id = n.category_id
-    WHERE n.published = 1
+    WHERE n.is_published = 1
     ORDER BY n.published_at DESC
     LIMIT 3"
 )->fetchAll();
@@ -36,8 +36,13 @@ $heroTitle = getSettings($pdo, 'hero_title');
 $heroSubtitle = getSettings($pdo, 'hero_subtitle');
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <!--Include Header-->
 <?php require_once 'includes/header.php'; ?>
+</head>
+<body>
 
 <!--HOME PAGE SECTIONS -->
 <!--Sections 1-7 go here, built below -->
@@ -112,7 +117,7 @@ $heroSubtitle = getSettings($pdo, 'hero_subtitle');
 
 <section class="section">
     <div class="container">
-        <h2 class="section-title">Why Choose Us</h2>
+        <h2 class="section-title">Why Choose Us?</h2>
         <div class="cards-grid-6">
             <div class="reason">
                 <strong>Qualified Teachers</strong>
@@ -156,3 +161,5 @@ $heroSubtitle = getSettings($pdo, 'hero_subtitle');
 
 <!--INCLUDE FOOTER-->
 <?php require_once 'includes/footer.php'; ?>
+</body>
+</html>
