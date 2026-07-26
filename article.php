@@ -4,8 +4,8 @@
 //  Open at: article.php?slug=some-article-slug
 // ============================================================
 session_start();
-require_once 'database.php';
-require_once 'functions.php';
+require_once 'config/database.php';
+require_once 'includes/functions.php';
 
 $slug = clean($_GET['slug'] ?? '');
 
@@ -63,7 +63,7 @@ if ($article) {
 </head>
 <body>
 
-<?php include 'header.php'; ?>
+<?php include 'includes/header.php'; ?>
 
 <?php if (!$article): ?>
 
@@ -144,7 +144,7 @@ if ($article) {
 
 <?php endif; ?>
 
-<?php include 'footer.php'; ?>
+<?php include 'includes/footer.php'; ?>
 
 </body>
 </html>
