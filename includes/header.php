@@ -1,77 +1,57 @@
 <?php
-// ============================================================
-//  includes/header.php — Navigation & <head>
-//  Include at the top of EVERY public page.
-//  The page must set $pageTitle before including this.
-// ============================================================
-
-// Load DB + functions if not already loaded
 if (!isset($pdo)) {
-    require_once __DIR__ . '/../config/database.php';
+    require_once __DIR__ . '/database.php';
 }
-require_once __DIR__ . '/../includes/functions.php';
+require_once __DIR__ . '/functions.php';
 
-$schoolName = getSetting($pdo, 'school_name');
-$schoolPhone = getSetting($pdo, 'school_phone');
-$schoolEmail = getSetting($pdo, 'school_email');
+// These keys exist in the school_info table straight out of the
+// supplied dump (see database_patch.sql for the ones that don't).
+$schoolName  = getSetting($pdo, 'school_name')   ?: 'Uganda Martyrs Primary School';
+$schoolPhone = getSetting($pdo, 'contact_phone');
+$schoolEmail = getSetting($pdo, 'contact_email');
 
 // Detect current page for active nav highlight
 $currentPage = basename($_SERVER['PHP_SELF'], '.php');
+
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= htmlspecialchars($pageTitle ?? $schoolName) ?></title>
-    <link rel="stylesheet" href="assets\css\style.css">
-</head>
-
-<body>
-
-    <!-- ── TOP BAR ── -->
-    <div class="top-bar">
-        <div class="container top-bar-inner">
-            <span>📞 <?= htmlspecialchars($schoolPhone) ?></span>
-            <span>✉ <?= htmlspecialchars($schoolEmail) ?></span>
-            <a href="/school-website/admin/login.php" class="admin-link">Admin Login</a>
-        </div>
+<link rel="stylesheet" href="assets/css/style.css">
+<header class="site-header">
+    <div class="header-inner">
+        <a href="index.php#top" class="brand">
+            <img src="assets/images/ESD_69e8c39b15887.webp" alt="<?= htmlspecialchars($schoolName) ?> logo" class="brand-mark" />
+            <span class="brand-text">
+                <strong><?= htmlspecialchars(explode(' Primary', $schoolName)[0]) ?></strong>
+                <small>Primary School · Namugongo</small>
+            </span>
+        </a>
+        <?php
+        $navLinks = [
+            'index.php'      => 'HOME',
+            'about.php'      => 'ABOUT',
+            'news.php'       => 'NEWS',
+            'admissions.php' => 'ADMISSIONS',
+            'staff.php'      => 'STAFF',
+            'gallery.php'    => 'GALLERY',
+            'contact.php'    => 'CONTACT',
+        ];
+        ?>
+        <nav class="main-nav">
+            <?php foreach ($navLinks as $href => $label): ?>
+                <a href="<?= $href ?>"<?= $currentPage . '.php' === $href ? ' class="current"' : '' ?>><?= $label ?></a>
+            <?php endforeach; ?>
+        </nav>
+        <a href="admissions.php" class="btn btn-primary header-cta">Begin Admissions</a>
+        <a href="admin/login.php" class="btn btn-primary header-cta">Admin Login</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
     </div>
-
-    <!-- ── SITE HEADER ── -->
-    <header class="site-header">
-        <div class="container header-inner">
-            <a href="index.php" class="logo">
-                <img src="assets/images/LGHS2.png" alt="logo">
-                <span class="logo-name"><?= htmlspecialchars($schoolName) ?> LUIGI GIUSSANI HIGH SCHOOL</span>
-                <span class="logo-tagline">Excellence in Education</span>
-            </a>
-
-            <!-- Hamburger button — shown only on mobile -->
-            <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
-                <span></span><span></span><span></span>
-            </button>
-
-            <!-- Main navigation -->
-            <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main menu">
-                <?php
-                $navLinks = [
-                    'index' => ['Home', 'index.php'],
-                    'about' => ['About', 'about.php'],
-                    'news' => ['News', 'news.php'],
-                    'admissions' => ['Admissions', '/school-website/admissions.php'],
-                    'staff' => ['Staff', '/school-website/staff.php'],
-                    'gallery' => ['Gallery', '/school-website/gallery.php'],
-                    'contact' => ['Contact', 'contact.php'],
-                ];
-                foreach ($navLinks as $key => [$label, $href]):
-                    $active = ($currentPage === $key) ? 'active' : '';
-                    ?>
-                    <a href="<?= $href ?>" class="nav-link <?= $active ?>">
-                        <?= $label ?>
-                    </a>
-                <?php endforeach; ?>
-            </nav>
-        </div>
-    </header>
+</header>
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" id="mobileNavClose" aria-label="Close menu">
+        &times;
+    </button>
+    <?php foreach ($navLinks as $href => $label): ?>
+        <a href="<?= $href ?>"<?= $currentPage . '.php' === $href ? ' class="current"' : '' ?>><?= $label ?></a>
+    <?php endforeach; ?>
+</div>
