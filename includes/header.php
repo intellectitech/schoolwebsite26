@@ -1,6 +1,6 @@
 <?php
 if (!isset($pdo)) {
-    require_once __DIR__ . '/database.php';
+    require_once '../config/database.php';
 }
 require_once __DIR__ . '/functions.php';
 
@@ -14,7 +14,21 @@ $schoolEmail = getSetting($pdo, 'contact_email');
 $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 
 ?>
+<head>
 <link rel="stylesheet" href="assets/css/style.css">
+ <!-- Neexa Widget -->
+<script>
+  window.neexaAsyncInit = function() {
+    window.neexa.init({
+      agent_id: 'a2518be7-a25d-4235-8c87-19302452120b', mobile_mini_style: 'greeting_only',
+    });
+  };
+</script>
+<script async src="https://chat-widget.neexa.ai/main.js?nonce=1784711297610.682"></script>
+<!-- End Neexa Widget -->
+</head>
+
+ 
 <header class="site-header">
     <div class="header-inner">
         <a href="index.php#top" class="brand">

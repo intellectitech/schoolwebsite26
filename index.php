@@ -2,7 +2,7 @@
 
 session_start();
 require_once 'config/database.php';
-require_once 'includes/functions.php';
+require_once './includes/functions.php';
 
 $pageTitle = getSetting($pdo, 'school_name') . ' — Home';
 
@@ -63,16 +63,7 @@ $contactEmail = getSetting($pdo, 'contact_email') ?: 'info@ugandamartyrsnamugong
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
     rel="stylesheet" />
-    <!-- Neexa Widget -->
-<script>
-  window.neexaAsyncInit = function() {
-    window.neexa.init({
-      agent_id: 'a2518be7-a25d-4235-8c87-19302452120b', mobile_mini_style: 'greeting_only',
-    });
-  };
-</script>
-<script async src="https://chat-widget.neexa.ai/main.js?nonce=1784711297610.682"></script>
-<!-- End Neexa Widget -->
+   
 </head>
 
 <body>
