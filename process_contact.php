@@ -20,9 +20,9 @@ if (!verifyCsrf($_POST['csrf_token'] ?? '')) {
 }
 
 // ── STEP 2: SANITIZE ─────────────────────────────────────────
-$name    = clean($_POST['name']    ?? '');
-$email   = clean($_POST['email']   ?? '');
-$phone   = clean($_POST['phone']   ?? '');
+$name = clean($_POST['name'] ?? '');
+$email = clean($_POST['email'] ?? '');
+$phone = clean($_POST['phone'] ?? '');
 $subject = clean($_POST['subject'] ?? '');
 $message = clean($_POST['message'] ?? '');
 
@@ -36,15 +36,22 @@ if (!empty($_POST['website'] ?? '')) {
 // ── STEP 3: VALIDATE ─────────────────────────────────────────
 $errors = [];
 
-if ($name === '')                              $errors[] = 'Your name is required.';
-if (mb_strlen($name) > 200)                     $errors[] = 'Your name is too long.';
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Please enter a valid email address.';
+if ($name === '')
+    $errors[] = 'Your name is required.';
+if (mb_strlen($name) > 200)
+    $errors[] = 'Your name is too long.';
+if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+    $errors[] = 'Please enter a valid email address.';
 if ($phone !== '' && !preg_match('/^[0-9+\-\s()]{7,30}$/', $phone))
-                                                 $errors[] = 'Please enter a valid phone number.';
-if ($subject === '')                            $errors[] = 'Please choose a subject.';
-if ($message === '')                            $errors[] = 'Please write a message.';
-if (mb_strlen($message) < 10)                   $errors[] = 'Your message must be at least 10 characters.';
-if (mb_strlen($message) > 2000)                 $errors[] = 'Your message is too long (2000 characters max).';
+    $errors[] = 'Please enter a valid phone number.';
+if ($subject === '')
+    $errors[] = 'Please choose a subject.';
+if ($message === '')
+    $errors[] = 'Please write a message.';
+if (mb_strlen($message) < 10)
+    $errors[] = 'Your message must be at least 10 characters.';
+if (mb_strlen($message) > 2000)
+    $errors[] = 'Your message is too long (2000 characters max).';
 
 if (!empty($errors)) {
     setFlashErrors($errors);
@@ -61,7 +68,12 @@ $stmt = $pdo->prepare(
      VALUES (?, ?, ?, ?, ?, ?, 0, NULL)'
 );
 $stmt->execute([
-    $name, $email, $phone, $subject, $message, $_SERVER['REMOTE_ADDR']
+    $name,
+    $email,
+    $phone,
+    $subject,
+    $message,
+    $_SERVER['REMOTE_ADDR']
 ]);
 
 // ── STEP 5: REDIRECT WITH SUCCESS ────────────────────────────

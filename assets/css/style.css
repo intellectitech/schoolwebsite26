@@ -261,17 +261,23 @@ ul {
 
 /* Set each image */
 .bg1 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),url("../images/ESD_69e8c39b62b6b.png");
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("../images/ESD_69e8c39b62b6b.png");
   animation-delay: 0s;
 }
 
 .bg2 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),url("../images/471172906_899311095647133_7745159389986555329_n.png");
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("../images/471172906_899311095647133_7745159389986555329_n.png");
   animation-delay: 5s;
 }
 
 .bg3 {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),url("../images/UMPS.png");
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("../images/UMPS.png");
   animation-delay: 10s;
 }
 /* .bg4 {
@@ -291,7 +297,7 @@ ul {
   top: 50%;
   transform: translateY(-50%);
 }
-.content .sub{
+.content .sub {
   color: red;
   font-weight: bolder;
 }
@@ -2811,7 +2817,7 @@ ul {
   display: flex;
   flex-flow: column nowrap;
   justify-content: center;
-  align-items: center;  
+  align-items: center;
 }
 .admin-login-logo {
   border-radius: 45%;
@@ -2969,7 +2975,7 @@ ul {
   border-radius: 14px;
   padding: 20px;
   border: 1px solid var(--cream-deep);
- flex: 1;
+  flex: 1;
 }
 .admin-stat-num {
   text-align: center;

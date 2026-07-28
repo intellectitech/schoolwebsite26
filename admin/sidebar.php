@@ -23,7 +23,8 @@ $upcomingEventsCount = $pdo->query('SELECT COUNT(*) FROM events WHERE event_date
     </a>
     <a href="events.php" class="<?= in_array($adminCurrentPage, ['events', 'event-form'], true) ? 'current' : '' ?>">
       Events
-      <?php if ($upcomingEventsCount > 0): ?><span class="admin-nav-badge"><?= (int) $upcomingEventsCount ?></span><?php endif; ?>
+      <?php if ($upcomingEventsCount > 0): ?><span
+          class="admin-nav-badge"><?= (int) $upcomingEventsCount ?></span><?php endif; ?>
     </a>
     <a href="messages.php" class="<?= $adminCurrentPage === 'messages' ? 'current' : '' ?>">
       Contact Messages
@@ -31,7 +32,8 @@ $upcomingEventsCount = $pdo->query('SELECT COUNT(*) FROM events WHERE event_date
     </a>
     <a href="enquiries.php" class="<?= $adminCurrentPage === 'enquiries' ? 'current' : '' ?>">
       Admission Enquiries
-      <?php if ($newEnquiryCount > 0): ?><span class="admin-nav-badge"><?= (int) $newEnquiryCount ?></span><?php endif; ?>
+      <?php if ($newEnquiryCount > 0): ?><span
+          class="admin-nav-badge"><?= (int) $newEnquiryCount ?></span><?php endif; ?>
     </a>
     <a href="../index.php" target="_blank">View Site ↗</a>
   </nav>

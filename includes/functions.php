@@ -16,7 +16,8 @@
 // in "O'Brien" would be stored as "O&#039;Brien" and then re-escaped
 // on display into the literal text "O&amp;#039;Brien".
 // ----------------------------------------------------------
-function clean($data) {
+function clean($data)
+{
     $data = trim($data);           // remove leading/trailing spaces
     $data = stripslashes($data);   // remove backslashes
     return $data;
@@ -27,9 +28,11 @@ function clean($data) {
 // Uses static cache so we only query the DB once per key.
 // Usage: $name = getSetting($pdo, 'school_name');
 // ----------------------------------------------------------
-function getSetting($pdo, $key) {
+function getSetting($pdo, $key)
+{
     static $cache = [];
-    if (isset($cache[$key])) return $cache[$key];
+    if (isset($cache[$key]))
+        return $cache[$key];
     $stmt = $pdo->prepare('SELECT setting_value FROM school_info WHERE setting_key = ?');
     $stmt->execute([$key]);
     return $cache[$key] = ($stmt->fetchColumn() ?: '');
@@ -39,7 +42,8 @@ function getSetting($pdo, $key) {
 // EXCERPT — truncate text to N characters, strip HTML tags.
 // Usage: echo excerpt($article['body'], 150);
 // ----------------------------------------------------------
-function excerpt($text, $len = 150) {
+function excerpt($text, $len = 150)
+{
     $text = strip_tags($text);
     return strlen($text) > $len ? substr($text, 0, $len) . '...' : $text;
 }
@@ -48,7 +52,8 @@ function excerpt($text, $len = 150) {
 // FORMAT DATE — convert DB date to readable format.
 // Usage: echo formatDate('2026-06-25');  → Wednesday 25 June 2026
 // ----------------------------------------------------------
-function formatDate($date) {
+function formatDate($date)
+{
     return date('l d F Y', strtotime($date));
 }
 
@@ -56,7 +61,8 @@ function formatDate($date) {
 // MAKE SLUG — convert text to URL-friendly slug.
 // Usage: $slug = makeSlug('S4 Wins Football!');  → s4-wins-football
 // ----------------------------------------------------------
-function makeSlug($text) {
+function makeSlug($text)
+{
     $text = strtolower(trim($text));
     $text = preg_replace('/[^a-z0-9\s-]/', '', $text);
     return preg_replace('/[\s-]+/', '-', $text);
@@ -68,7 +74,8 @@ function makeSlug($text) {
 // Relative redirect so it works regardless of the folder the
 // site is deployed under (no hard-coded "/school-website/").
 // ----------------------------------------------------------
-function requireAdmin() {
+function requireAdmin()
+{
     if (!isset($_SESSION['admin_id'])) {
         header('Location: login.php');
         exit;
@@ -79,21 +86,28 @@ function requireAdmin() {
 // AUDIT LOG — record an admin action.
 // Call after every INSERT / UPDATE / DELETE in admin pages.
 // ----------------------------------------------------------
-function auditLog($pdo, $adminId, $action, $table, $recordId, $desc) {
+function auditLog($pdo, $adminId, $action, $table, $recordId, $desc)
+{
     $pdo->prepare(
         'INSERT INTO audit_log
             (admin_id, action, table_name, record_id, description, ip_address)
          VALUES (?, ?, ?, ?, ?, ?)'
     )->execute([
-        $adminId, $action, $table, $recordId, $desc, $_SERVER['REMOTE_ADDR']
-    ]);
+                $adminId,
+                $action,
+                $table,
+                $recordId,
+                $desc,
+                $_SERVER['REMOTE_ADDR']
+            ]);
 }
 
 // ----------------------------------------------------------
 // REDIRECT — small wrapper so every processor redirects the
 // same way and always stops execution afterwards.
 // ----------------------------------------------------------
-function redirectTo($url) {
+function redirectTo($url)
+{
     header('Location: ' . $url);
     exit;
 }
@@ -107,23 +121,27 @@ function redirectTo($url) {
 //   ... after redirect, in the page that shows the form ...
 //   $flash = getFlash();   // ['success' => '', 'errors' => []]
 // ----------------------------------------------------------
-function setFlashSuccess($message) {
+function setFlashSuccess($message)
+{
     $_SESSION['success'] = $message;
 }
 
-function setFlashErrors(array $errors) {
+function setFlashErrors(array $errors)
+{
     $_SESSION['errors'] = $errors;
 }
 
-function setOldInput(array $data) {
+function setOldInput(array $data)
+{
     $_SESSION['old'] = $data;
 }
 
-function getFlash() {
+function getFlash()
+{
     $flash = [
         'success' => $_SESSION['success'] ?? '',
-        'errors'  => $_SESSION['errors']  ?? [],
-        'old'     => $_SESSION['old']     ?? [],
+        'errors' => $_SESSION['errors'] ?? [],
+        'old' => $_SESSION['old'] ?? [],
     ];
     unset($_SESSION['success'], $_SESSION['errors'], $_SESSION['old']);
     return $flash;
@@ -136,7 +154,8 @@ function getFlash() {
 // into $flash and pass $flash['old'].
 // Usage: value attribute set to old($flash['old'], 'email') inside a PHP block.
 // ----------------------------------------------------------
-function old($oldData, $key, $default = '') {
+function old($oldData, $key, $default = '')
+{
     return htmlspecialchars($oldData[$key] ?? $default, ENT_QUOTES, 'UTF-8');
 }
 
@@ -148,25 +167,29 @@ function old($oldData, $key, $default = '') {
 // Usage in a processor:
 //   if (!verifyCsrf($_POST['csrf_token'] ?? '')) { ...reject... }
 // ----------------------------------------------------------
-function csrfToken() {
+function csrfToken()
+{
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
     return $_SESSION['csrf_token'];
 }
 
-function csrfField() {
+function csrfField()
+{
     return '<input type="hidden" name="csrf_token" value="' . csrfToken() . '">';
 }
 
-function verifyCsrf($token) {
+function verifyCsrf($token)
+{
     return isset($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], (string) $token);
 }
 
 // ----------------------------------------------------------
 // SLUGIFY — turn "Best O-Level Results!" into "best-o-level-results"
 // ----------------------------------------------------------
-function slugify($text) {
+function slugify($text)
+{
     $text = strtolower(trim($text));
     $text = preg_replace('/[^a-z0-9]+/', '-', $text);
     $text = trim($text, '-');
@@ -179,7 +202,8 @@ function slugify($text) {
 // $table/$column are always hard-coded call sites in this
 // project, never user input, so simple interpolation is safe.
 // ----------------------------------------------------------
-function uniqueSlug($pdo, $table, $column, $baseSlug, $excludeId = null) {
+function uniqueSlug($pdo, $table, $column, $baseSlug, $excludeId = null)
+{
     $slug = $baseSlug;
     $i = 2;
     while (true) {
@@ -207,7 +231,8 @@ function uniqueSlug($pdo, $table, $column, $baseSlug, $excludeId = null) {
 // Only JPG / PNG / WEBP are accepted, verified by actually
 // reading the image data (getimagesize), not just the filename.
 // ----------------------------------------------------------
-function uploadNewsImage($fileKey) {
+function uploadNewsImage($fileKey)
+{
     if (empty($_FILES[$fileKey]['name'])) {
         return ['path' => null, 'error' => null];
     }
@@ -244,7 +269,8 @@ function uploadNewsImage($fileKey) {
 // or removed. Restricted to images/news/ so this can never be
 // used to delete an arbitrary file elsewhere on the server.
 // ----------------------------------------------------------
-function deleteNewsImageFile($relativePath) {
+function deleteNewsImageFile($relativePath)
+{
     if (!$relativePath || strpos($relativePath, 'images/news/') !== 0) {
         return;
     }
@@ -258,7 +284,8 @@ function deleteNewsImageFile($relativePath) {
 // EVENT IMAGE UPLOAD / DELETE — same rules as uploadNewsImage(),
 // stored under images/events/ instead of images/news/.
 // ----------------------------------------------------------
-function uploadEventImage($fileKey) {
+function uploadEventImage($fileKey)
+{
     if (empty($_FILES[$fileKey]['name'])) {
         return ['path' => null, 'error' => null];
     }
@@ -290,7 +317,8 @@ function uploadEventImage($fileKey) {
     return ['path' => 'images/events/' . $filename, 'error' => null];
 }
 
-function deleteEventImageFile($relativePath) {
+function deleteEventImageFile($relativePath)
+{
     if (!$relativePath || strpos($relativePath, 'images/events/') !== 0) {
         return;
     }

@@ -24,14 +24,14 @@ if (!verifyCsrf($_POST['csrf_token'] ?? '')) {
 }
 
 // ── STEP 2: SANITIZE ─────────────────────────────────────────
-$parentName    = clean($_POST['parent_name']    ?? '');
-$childName     = clean($_POST['child_name']     ?? '');
-$phone         = clean($_POST['phone']          ?? '');
-$email         = clean($_POST['email']          ?? '');
-$grade         = clean($_POST['grade']          ?? '');
-$term          = clean($_POST['term']           ?? '');
+$parentName = clean($_POST['parent_name'] ?? '');
+$childName = clean($_POST['child_name'] ?? '');
+$phone = clean($_POST['phone'] ?? '');
+$email = clean($_POST['email'] ?? '');
+$grade = clean($_POST['grade'] ?? '');
+$term = clean($_POST['term'] ?? '');
 $currentSchool = clean($_POST['current_school'] ?? '');
-$message       = clean($_POST['message']        ?? '');
+$message = clean($_POST['message'] ?? '');
 
 // Honeypot — bots fill every field, real visitors never see this one.
 if (!empty($_POST['website'] ?? '')) {
@@ -42,20 +42,28 @@ if (!empty($_POST['website'] ?? '')) {
 $validGrades = ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7'];
 $errors = [];
 
-if ($parentName === '')                                $errors[] = 'Parent / guardian name is required.';
-if ($childName === '')                                  $errors[] = "Child's name is required.";
+if ($parentName === '')
+    $errors[] = 'Parent / guardian name is required.';
+if ($childName === '')
+    $errors[] = "Child's name is required.";
 if ($phone === '' || !preg_match('/^[0-9+\-\s()]{7,30}$/', $phone))
-                                                         $errors[] = 'Please enter a valid phone number.';
+    $errors[] = 'Please enter a valid phone number.';
 if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL))
-                                                         $errors[] = 'Please enter a valid email address, or leave it blank.';
-if (!in_array($grade, $validGrades, true))              $errors[] = 'Please select the grade you are applying for.';
+    $errors[] = 'Please enter a valid email address, or leave it blank.';
+if (!in_array($grade, $validGrades, true))
+    $errors[] = 'Please select the grade you are applying for.';
 
 if (!empty($errors)) {
     setFlashErrors($errors);
     setOldInput([
-        'parent_name' => $parentName, 'child_name' => $childName, 'phone' => $phone,
-        'email' => $email, 'grade' => $grade, 'term' => $term,
-        'current_school' => $currentSchool, 'message' => $message,
+        'parent_name' => $parentName,
+        'child_name' => $childName,
+        'phone' => $phone,
+        'email' => $email,
+        'grade' => $grade,
+        'term' => $term,
+        'current_school' => $currentSchool,
+        'message' => $message,
     ]);
     redirectTo('admissions.php#enquiry');
 }
@@ -76,7 +84,13 @@ $stmt = $pdo->prepare(
      VALUES (?, ?, ?, ?, ?, ?, NULL, ?, \'new\', \'\', CURDATE())'
 );
 $stmt->execute([
-    $parentName, $phone, $email, $childName, $grade, $currentSchool, $fullMessage,
+    $parentName,
+    $phone,
+    $email,
+    $childName,
+    $grade,
+    $currentSchool,
+    $fullMessage,
 ]);
 
 // ── STEP 5: REDIRECT WITH SUCCESS ────────────────────────────

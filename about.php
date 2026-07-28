@@ -26,7 +26,7 @@ $leadership = $pdo->query(
         href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
 <body>
@@ -37,7 +37,8 @@ $leadership = $pdo->query(
         <section class="about-hero">
             <div class="container reveal">
                 <p class="breadcrumb">
-                    <a href="index.php">Home</a> / About Us</p>
+                    <a href="index.php">Home</a> / About Us
+                </p>
                 <div class="hero-top">
                     <div class="hero-copy">
                         <p class="eyebrow">About Uganda Martyrs Primary School</p>
@@ -47,7 +48,8 @@ $leadership = $pdo->query(
                             pupils to read, reason and pray, on ground that has held Ugandan faith for well over a
                             century.</p>
                     </div>
-                    <img src="assets/images/Aerial_view_of_Uganda_martyrs_Basilica_Namugongo_in_Uganda.jpg" alt="basilica" style="max-width: 60%">
+                    <img src="assets/images/Aerial_view_of_Uganda_martyrs_Basilica_Namugongo_in_Uganda.jpg"
+                        alt="basilica" style="max-width: 60%">
                 </div>
             </div>
         </section>
@@ -400,22 +402,25 @@ $leadership = $pdo->query(
                 </div>
 
                 <?php if ($leadership): ?>
-                <p class="lead-note" style="margin-top:2.5rem">Meet some of our staff:</p>
-                <div class="leader-grid">
-                    <?php foreach ($leadership as $person): ?>
-                        <div class="leader-card">
-                            <div class="leader-avatar" aria-hidden="true">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="8" r="4" />
-                                    <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-                                </svg>
+                    <p class="lead-note" style="margin-top:2.5rem">Meet some of our staff:</p>
+                    <div class="leader-grid">
+                        <?php foreach ($leadership as $person): ?>
+                            <div class="leader-card">
+                                <div class="leader-avatar" aria-hidden="true">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="8" r="4" />
+                                        <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+                                    </svg>
+                                </div>
+                                <h3><?= htmlspecialchars($person['full_name']) ?></h3>
+                                <span
+                                    class="leader-role"><?= htmlspecialchars($person['role']) ?><?= $person['department_name'] ? ' · ' . htmlspecialchars($person['department_name']) : '' ?></span>
+                                <?php if ($person['bio']): ?>
+                                    <p><?= htmlspecialchars($person['bio']) ?></p><?php endif; ?>
                             </div>
-                            <h3><?= htmlspecialchars($person['full_name']) ?></h3>
-                            <span class="leader-role"><?= htmlspecialchars($person['role']) ?><?= $person['department_name'] ? ' · ' . htmlspecialchars($person['department_name']) : '' ?></span>
-                            <?php if ($person['bio']): ?><p><?= htmlspecialchars($person['bio']) ?></p><?php endif; ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
+                        <?php endforeach; ?>
+                    </div>
                 <?php endif; ?>
             </div>
         </section>
