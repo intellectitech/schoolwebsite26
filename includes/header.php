@@ -15,6 +15,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 
 ?>
 <head>
+    <link rel="shortcut icon" href="assets/images/ESD_69e8c39b15887.webp" type="image/x-icon">
 <link rel="stylesheet" href="assets/css/style.css">
  <!-- Neexa Widget -->
 <script>
@@ -54,8 +55,8 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                 <a href="<?= $href ?>"<?= $currentPage . '.php' === $href ? ' class="current"' : '' ?>><?= $label ?></a>
             <?php endforeach; ?>
         </nav>
-        <a href="admissions.php" class="btn btn-primary header-cta">Begin Admissions</a>
-        <a href="admin/login.php" class="btn btn-primary header-cta">Admin Login</a>
+        <a href="admissions.php" class="btn btn-primary header-cta">Apply</a>
+        <a href="admin/login.php" class="btn btn-primary header-cta">🔒</a>
         <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
             <span></span><span></span><span></span>
         </button>
