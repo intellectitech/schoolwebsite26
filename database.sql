@@ -41,10 +41,10 @@ CREATE TABLE school_info (
 INSERT INTO school_info (setting_key, setting_value, description)
 VALUES
     ('school_name', 'St. Mary''s High School', 'The official name of the school.'),
-    ('school_phone', '+256-700-123456', 'Main school phone number.'),
-    ('school_email', 'info@school.ug', 'General school email address.'),
+    ('school_phone', '+256 704480341', 'Main school phone number.'),
+    ('school_email', 'mukonokings@gmail.com', 'General school email address.'),
     ('school_address', 'P.O. Box 123, Kampala, Uganda', 'Physical and postal address.'),
-    ('school_motto', 'Education for All', 'School motto displayed on the website.');
+    ('school_motto', 'Education is a Tangible Security', 'School motto displayed on the website.');
 
 -- --------------------------------------------------------
 -- TABLE 3: audit_log

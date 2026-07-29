@@ -363,7 +363,7 @@ $recentMessages = $pdo->query("
     <aside class="admin-sidebar">
         <div class="logo">
             <i class="fas fa-graduation-cap"></i>
-            <h2>Mbogo High School</h2>
+            <h2>Mukono Kings High School</h2>
         </div>
         <div class="user">
             <div class="name"><?= clean($_SESSION['admin_name']) ?></div>

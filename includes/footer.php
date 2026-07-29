@@ -8,8 +8,8 @@
                 <div class="footer-column">
                     <h3><?= clean(getSetting($pdo, 'school_name', 'School')) ?></h3>
                     <p><?= clean(getSetting($pdo, 'school_address', 'P.O. Box 123, Kampala, Uganda')) ?></p>
-                    <p><i class="fas fa-phone"></i> <?= clean(getSetting($pdo, 'school_phone', '+256-700-123456')) ?></p>
-                    <p><i class="fas fa-envelope"></i> <?= clean(getSetting($pdo, 'school_email', 'info@school.ug')) ?></p>
+                    <p><i class="fas fa-phone"></i> <?= clean(getSetting($pdo, 'school_phone', '+256 704480341')) ?></p>
+                    <p><i class="fas fa-envelope"></i> <?= clean(getSetting($pdo, 'school_email', 'mukonokings@gmail.com')) ?></p>
                 </div>
                 <div class="footer-column">
                     <h4>Quick Links</h4>

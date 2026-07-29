@@ -148,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <aside class="admin-sidebar">
         <div class="logo">
             <i class="fas fa-graduation-cap"></i>
-            <h2>Mbogo High School</h2>
+            <h2>Mukono Kings High Shool</h2>
         </div>
         <div class="user">
             <div class="name"><?= clean($_SESSION['admin_name']) ?></div>
@@ -232,7 +232,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="form-group">
                     <label for="featured_image">Featured Image URL</label>
-                    <input type="text" id="featured_image" name="featured_image" placeholder="assets/images/news/article.jpg" value="<?= clean($article['featured_image']) ?>">
+                    <input type="text" id="featured_image" name="featured_image" placeholder="assets/images/people.jpg" value="<?= clean($article['featured_image']) ?>">
                 </div>
 
                 <div class="form-row">

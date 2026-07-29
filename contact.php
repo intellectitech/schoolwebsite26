@@ -59,7 +59,10 @@ include 'includes/header.php';
 
 /* --- Hero Section --- */
 .contact-hero {
-    background: linear-gradient(135deg, var(--navy-dark) 0%, #2d2d54 100%);
+    background-image: linear-gradient(135deg, rgba(26, 26, 46, 0.86) 0%, rgba(45, 45, 84, 0.78) 100%), url('assets/images/compound.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     position: relative;
     color: var(--white);
     padding: 80px 0 60px;
@@ -334,8 +337,8 @@ include 'includes/header.php';
                         <div class="icon"><i class="fas fa-phone-alt"></i></div>
                         <div class="content">
                             <h4>Call Us</h4>
-                            <p><a href="tel:<?= clean(getSetting($pdo, 'school_phone', '+256700123456')) ?>">
-                                <?= clean(getSetting($pdo, 'school_phone', '+256-700-123456')) ?>
+                            <p><a href="tel:<?= clean(getSetting($pdo, 'school_phone', '+256 704480341')) ?>">
+                                <?= clean(getSetting($pdo, 'school_phone', '+256 704480341')) ?>
                             </a></p>
                         </div>
                     </div>
@@ -343,8 +346,8 @@ include 'includes/header.php';
                         <div class="icon"><i class="fas fa-envelope"></i></div>
                         <div class="content">
                             <h4>Email Us</h4>
-                            <p><a href="mailto:<?= clean(getSetting($pdo, 'school_email', 'info@school.ug')) ?>">
-                                <?= clean(getSetting($pdo, 'school_email', 'info@school.ug')) ?>
+                            <p><a href="mailto:<?= clean(getSetting($pdo, 'school_email', 'mukonokings@gmail.com')) ?>">
+                                <?= clean(getSetting($pdo, 'school_email', 'mukonokings@gmail.com')) ?>
                             </a></p>
                         </div>
                     </div>

@@ -33,17 +33,78 @@ $testimonialsStmt = $pdo->query("
 ");
 $testimonials = $testimonialsStmt->fetchAll();
 
-// Get hero images from settings
-$heroImagesSetting = getSetting($pdo, 'hero_images', '');
-$heroImages = $heroImagesSetting ? array_map('trim', explode(',', $heroImagesSetting)) : [];
-
-// If no images are set, use defaults
-if (empty($heroImages) || (count($heroImages) === 1 && empty($heroImages[0]))) {
-    $heroImages = [
-        'assets/images/hero1.jpg',
-        'assets/images/hero2.jpg',
-        'assets/images/hero3.jpg'
+if (count($testimonials) < 3) {
+    $fallbackTestimonials = [
+        [
+            'author_name' => 'Mrs. Nakato',
+            'author_role' => 'Parent',
+            'content' => 'The school has created a warm and disciplined environment where our children thrive academically and socially.',
+            'rating' => 5
+        ],
+        [
+            'author_name' => 'Daniel S.',
+            'author_role' => 'Student',
+            'content' => 'I love the supportive teachers and the many opportunities to grow beyond the classroom.',
+            'rating' => 5
+        ]
     ];
+
+    foreach ($fallbackTestimonials as $fallback) {
+        if (count($testimonials) >= 3) {
+            break;
+        }
+        $testimonials[] = $fallback;
+    }
+}
+
+// Get hero images from settings or fall back to real images in the assets folder
+$heroImagesSetting = getSetting($pdo, 'hero_images', '');
+$heroImages = [];
+
+if (!empty($heroImagesSetting)) {
+    $heroImages = array_values(array_filter(array_map('trim', explode(',', $heroImagesSetting)), function ($img) {
+        return !empty($img);
+    }));
+}
+
+if (!empty($heroImages)) {
+    $heroImages = array_values(array_filter($heroImages, function ($img) {
+        return file_exists(__DIR__ . DIRECTORY_SEPARATOR . ltrim($img, '/'));
+    }));
+}
+
+if (empty($heroImages)) {
+        $preferredHeroImages = [
+            'assets/images/sddefault.jpg',
+            'assets/images/background.jpg',
+            'assets/images/choir.jpg',
+            'assets/images/ASSEMBLY.jpg',
+            'assets/images/boys.jpg',
+            'assets/images/cover.jpg'
+        ];
+
+    foreach ($preferredHeroImages as $image) {
+        if (file_exists(__DIR__ . DIRECTORY_SEPARATOR . ltrim($image, '/'))) {
+            $heroImages[] = $image;
+        }
+    }
+}
+
+if (empty($heroImages)) {
+    $imageDir = __DIR__ . '/assets/images';
+    if (is_dir($imageDir)) {
+        $imageFiles = scandir($imageDir);
+        foreach ($imageFiles as $file) {
+            $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+            if (in_array($extension, ['jpg', 'jpeg', 'png', 'webp', 'gif', 'bmp', 'svg'])) {
+                $heroImages[] = 'assets/images/' . $file;
+            }
+        }
+    }
+}
+
+if (empty($heroImages)) {
+    $heroImages = ['assets/images/cover.jpg'];
 }
 
 // Get hero subtitle
@@ -68,7 +129,7 @@ include 'includes/header.php';
     <div class="hero-overlay"></div>
     <div class="container">
         <div class="hero-content">
-            <span class="hero-badge"><i class="fas fa-star"></i> Excellence in Education</span>
+            <span class="hero-badge"><i class="fas fa-star"></i> Education is a Tangible Security</span>
             <h1><?= clean(getSetting($pdo, 'school_name', 'St. Mary\'s High School')) ?></h1>
             <div class="typewriter-wrapper">
                 <span class="typewriter-text"><span class="cursor">|</span></span>
@@ -165,7 +226,7 @@ include 'includes/header.php';
             <p>Don't miss out on our school activities</p>
         </div>
         
-        <div class="events-list">
+        <div class="events-grid">
             <?php foreach ($upcomingEvents as $event): ?>
                 <div class="event-item">
                     <div class="event-date-box">

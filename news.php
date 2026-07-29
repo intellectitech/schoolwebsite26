@@ -62,7 +62,10 @@ include 'includes/header.php';
 
 /* --- Hero Section --- */
 .news-hero {
-    background: linear-gradient(135deg, var(--navy-dark) 0%, #2d2d54 100%);
+    background-image: linear-gradient(135deg, rgba(26, 26, 46, 0.86) 0%, rgba(45, 45, 84, 0.78) 100%), url('assets/images/cover.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     position: relative;
     color: var(--white);
     padding: 80px 0 60px;

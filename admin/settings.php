@@ -196,11 +196,11 @@ $schoolLogo = $currentSettings['school_logo'] ?? '';
             <div class="form-row">
                 <div class="form-group">
                     <label for="school_phone">Phone Number</label>
-                    <input type="text" id="school_phone" name="settings[school_phone]" value="<?= clean($currentSettings['school_phone'] ?? '') ?>" placeholder="+256-700-123456">
+                    <input type="text" id="school_phone" name="settings[school_phone]" value="<?= clean($currentSettings['school_phone'] ?? '') ?>" placeholder="+256 704480341">
                 </div>
                 <div class="form-group">
                     <label for="school_email">Email Address</label>
-                    <input type="email" id="school_email" name="settings[school_email]" value="<?= clean($currentSettings['school_email'] ?? '') ?>" placeholder="info@school.ug">
+                    <input type="email" id="school_email" name="settings[school_email]" value="<?= clean($currentSettings['school_email'] ?? '') ?>" placeholder="mukonokings@gmail.com">
                 </div>
             </div>
 

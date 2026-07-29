@@ -6,6 +6,9 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once 'includes/functions.php';
 
 $schoolLogo = getSetting($pdo, 'school_logo', '');
+if (empty($schoolLogo)) {
+    $schoolLogo = 'assets/images/LOGO.jpg';
+}
 $schoolName = getSetting($pdo, 'school_name', 'School');
 
 // Fetch news for ticker
@@ -41,8 +44,8 @@ $tickerNews = $tickerStmt->fetchAll();
         <div class="container">
             <div class="top-bar-content">
                 <div class="top-bar-info">
-                    <span><i class="fas fa-phone"></i> <?= clean(getSetting($pdo, 'school_phone', '+256-700-123456')) ?></span>
-                    <span><i class="fas fa-envelope"></i> <?= clean(getSetting($pdo, 'school_email', 'info@school.ug')) ?></span>
+                    <span><i class="fas fa-phone"></i> <?= clean(getSetting($pdo, 'school_phone', '+256 704480341')) ?></span>
+                    <span><i class="fas fa-envelope"></i> <?= clean(getSetting($pdo, 'school_email', 'mukonokings@gmail.com')) ?></span>
                     <span><i class="fas fa-map-marker-alt"></i> <?= clean(getSetting($pdo, 'school_address', 'P.O. Box 123, Kampala, Uganda')) ?></span>
                 </div>
                 <div class="top-bar-social">
@@ -81,14 +84,16 @@ $tickerNews = $tickerStmt->fetchAll();
         <div class="container">
             <div class="nav-wrapper">
                 <div class="logo">
-                    <a href="index.php">
+                    <a href="index.php" class="brand-link">
                         <?php if (!empty($schoolLogo)): ?>
                             <img src="<?= clean($schoolLogo) ?>" alt="<?= clean($schoolName) ?>" class="logo-img">
                         <?php else: ?>
-                            <!-- Fallback logo block matching UI's red box style -->
                             <span class="logo-icon"><?= substr(clean($schoolName), 0, 1) ?></span>
-                            <span><?= clean($schoolName) ?></span>
                         <?php endif; ?>
+                        <span class="logo-text">
+                            <span class="logo-title"><?= clean($schoolName) ?></span>
+                            <span class="logo-subtitle">Education is a Tangible Security</span>
+                        </span>
                     </a>
                 </div>
                 <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation" aria-expanded="false">

@@ -45,8 +45,10 @@ include 'includes/header.php';
 
 /* --- Hero Section --- */
 .about-hero {
-    /* Replaces the old green gradient with the UI's Navy overlay */
-    background: linear-gradient(135deg, var(--navy-dark) 0%, #2d2d54 100%);
+    background-image: linear-gradient(135deg, rgba(26, 26, 46, 0.86) 0%, rgba(45, 45, 84, 0.78) 100%), url('assets/images/aboutus.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     position: relative;
     color: var(--white);
     padding: 100px 0;

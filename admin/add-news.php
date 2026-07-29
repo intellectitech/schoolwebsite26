@@ -56,15 +56,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             $newsId = $pdo->lastInsertId();
             
-            // Log activity
-            $logStmt = $pdo->prepare("
-                INSERT INTO audit_log (admin_id, action, table_name, record_id, description, ip_address) 
-                VALUES (?, 'created_news', 'news', ?, 'Created news article: ' . ?, ?)
+           // Log activity
+           $description = 'Created news article: ' . $title;
+           $logStmt = $pdo->prepare("
+                 INSERT INTO audit_log (admin_id, action, table_name, record_id, description, ip_address) 
+                VALUES (?, 'created_news', 'news', ?, ?, ?)
             ");
-            $logStmt->execute([$_SESSION['admin_id'], $newsId, $title, $_SERVER['REMOTE_ADDR']]);
-            
-            $success = 'News article created successfully!';
-            
+            $logStmt->execute([$_SESSION['admin_id'], $newsId, $description, $_SERVER['REMOTE_ADDR']]);
+ 
             // Clear form
             $_POST = [];
         } catch (Exception $e) {
