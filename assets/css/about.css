@@ -1,0 +1,115 @@
+/* Body */
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    
+}
+
+/* Hero Section */
+
+.hero{
+    height:300px;
+    background:rgba(0,0,0,0.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.hero-content{
+    color:white;
+}
+
+.hero-content h1{
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+.hero-content p{
+    font-size:20px;
+}
+
+/* Main Container */
+
+.container{
+    width:80%;
+    margin:30px auto;
+}
+
+/* Sections */
+
+.section{
+    background:white;
+    padding:20px;
+    margin-bottom:20px;
+    border-radius:10px;
+}
+
+.section h2{
+    color:darkblue;
+}
+
+.section p{
+    color:#555;
+    line-height:1.6;
+}
+
+/* Cards */
+
+.card{
+    background:white;
+    width:28%;
+    display:inline-block;
+    vertical-align:top;
+    margin:10px;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
+    box-shadow:0 2px 8px gray;
+}
+
+.card h2,
+.card h3{
+    color:darkblue;
+}
+
+.card p{
+    color:#666;
+}
+
+/* Footer */
+
+footer{
+    background:rgb(4, 4, 49);
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:30px;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.card{
+    width:90%;
+    display:block;
+    margin:20px auto;
+}
+
+.container{
+    width:95%;
+}
+
+.hero-content h1{
+    font-size:32px;
+}
+
+.hero-content p{
+    font-size:18px;
+}
+
+}
