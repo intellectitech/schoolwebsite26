@@ -1,5 +1,15 @@
 <?php
-// 1. Database Connection
+session_start();
+
+// 1. Helper function for activity logging
+if (!function_exists('logActivity')) {
+    function logActivity($pdo, $admin_id, $action, $target_type, $target_id = null, $details = null) {
+        $stmt = $pdo->prepare("INSERT INTO admin_activity_log (admin_id, action, target_type, target_id, details, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+        $stmt->execute([$admin_id, $action, $target_type, $target_id, $details]);
+    }
+}
+
+// 2. Database Connection
 $host     = '127.0.0.1';
 $db       = 'school_website_db'; 
 $user     = 'root';              
@@ -19,7 +29,7 @@ try {
     die(json_encode(['success' => false, 'error' => "Connection failed: " . $e->getMessage()]));
 }
 
-// 2. Handle Subscription Status Toggle (AJAX Request)
+// 3. Handle Subscription Status Toggle (AJAX Request)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_POST['id'])) {
     header('Content-Type: application/json');
     $subscriberId = intval($_POST['id']);
@@ -39,6 +49,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_
             $stmt = $pdo->prepare("UPDATE newsletter_subscribers SET is_confirmed = ?, unsubscribed_at = ? WHERE id = ?");
             $stmt->execute([$isConfirmed, $currentTimestamp, $subscriberId]);
         }
+
+        // --- LOG ACTIVITY ENTRY ---
+        $adminId = $_SESSION['admin_id'] ?? null;
+        $logAction = ($action === 'subscribe') ? 'RE_SUBSCRIBE' : 'UNSUBSCRIBE';
+
+        logActivity(
+            $pdo,
+            $adminId,
+            $logAction,
+            'newsletter_subscriber',
+            $subscriberId,
+            "Changed subscription status of subscriber #$subscriberId to " . strtoupper($action)
+        );
+        // --------------------------
         
         echo json_encode(['success' => true, 'is_confirmed' => $isConfirmed]);
         exit;
@@ -48,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && isset($_
     }
 }
 
-// 3. Fetch All Subscribers matching your exact column structure
+// 4. Fetch All Subscribers matching your exact column structure
 try {
     $stmt = $pdo->query("SELECT id, email, name, is_confirmed, subscribed_at, unsubscribed_at FROM newsletter_subscribers ORDER BY subscribed_at DESC");
     $subscribers = $stmt->fetchAll();

@@ -6,77 +6,358 @@
 <title>About Us - Greenfield High School</title>
 <link rel="stylesheet" href="assets/css/about.css">
 
+<style>
+    /* Smooth Transitions & Animations */
+    .fade-in-section {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        will-change: opacity, transform;
+    }
 
+    .fade-in-section.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
 
+    /* Grid Layout for Feature Cards */
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin: 2.5rem 0;
+    }
 
+    /* Modernized Interactive Cards */
+    .interactive-card {
+        background: #ffffff;
+        border-radius: 12px;
+        padding: 1.75rem 1.5rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+        overflow: hidden;
+    }
 
+    .interactive-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, rgb(4, 4, 49), #2563eb);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
 
+    .interactive-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 30px rgba(4, 4, 49, 0.15);
+    }
+
+    .interactive-card:hover::before {
+        opacity: 1;
+    }
+
+    /* SVG Icon Containers */
+    .card-icon {
+        width: 52px;
+        height: 52px;
+        background: rgba(4, 4, 49, 0.06);
+        color: rgb(4, 4, 49);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.25rem;
+        transition: background 0.3s, color 0.3s, transform 0.3s;
+    }
+
+    .card-icon svg {
+        width: 26px;
+        height: 26px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+
+    .interactive-card:hover .card-icon {
+        background: rgb(4, 4, 49);
+        color: #ffffff;
+        transform: scale(1.05);
+    }
+
+    /* Slider Container Styles */
+    .slider-container {
+        position: relative;
+        max-width: 100%;
+        margin: 2.5rem 0;
+        overflow: hidden;
+        border-radius: 14px;
+    }
+
+    .slider-track {
+        display: flex;
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        width: 100%;
+    }
+
+    .slide {
+        min-width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    /* Navigation Controls with SVG Arrows */
+    .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(4, 4, 49, 0.8);
+        color: white;
+        border: none;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10;
+        transition: background 0.3s, transform 0.2s;
+    }
+
+    .slider-btn svg {
+        width: 20px;
+        height: 20px;
+        stroke: #ffffff;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+    }
+
+    .slider-btn:hover {
+        background: rgba(4, 4, 49, 1);
+        transform: translateY(-50%) scale(1.08);
+    }
+
+    .prev-btn { left: 15px; }
+    .next-btn { right: 15px; }
+
+    /* Slider Dots */
+    .slider-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 15px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        background: #cbd5e1;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .dot.active {
+        background: rgb(4, 4, 49);
+        width: 28px;
+        border-radius: 10px;
+    }
+</style>
 
 </head>
-<body  style="background-color: rgb(255, 255, 255) ; " >
-    
+<body style="background-color: rgb(255, 255, 255);">
 
-<section class="hero">
+<section class="hero fade-in-section">
     <div class="hero-content" style="text-align: center;">
-        <h1>St. Henry’s College Namugongo </h1>
+        <h1>St. Henry’s College Namugongo</h1>
         <p>Excellence in Education, Leadership and Innovation</p>
     </div>
 </section>
 
-<div  class="container">
+<div class="container">
 
-    <div style="box-shadow:5px 0 25px rgba(0,0,0,.15);" class="section">
+    <!-- About Section -->
+    <div style="box-shadow:5px 0 25px rgba(0,0,0,.15);" class="section fade-in-section">
         <h2>Who We Are</h2>
         <p>
-            St. Henry’s College Namugongo  is a leading institution dedicated to providing
-            quality education and nurturing future leaders. We strive to create a
+            St. Henry’s College Namugongo is a leading institution dedicated to providing
+            quality education and nurturing future leaders[cite: 2]. We strive to create a
             safe, inclusive, and inspiring environment where students can achieve
-            academic excellence and develop strong moral values.
+            academic excellence and develop strong moral values[cite: 2].
         </p>
     </div>
 
-    <div style="box-shadow:5px 0 25px rgba(0,0,0,.15);" class="section">
-        <h2>Our Mission</h2>
-        <p>
-         "To provide holistic, high-quality education and 
+    <!-- ── INTERACTIVE CAROUSEL SLIDER ── -->
+    <div class="slider-container fade-in-section">
+        <button class="slider-btn prev-btn" aria-label="Previous Slide">
+            <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button class="slider-btn next-btn" aria-label="Next Slide">
+            <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        
+        <div class="slider-track">
+            <div class="slide">
+                <div style="box-shadow:5px 0 25px rgba(0,0,0,.15);" class="section">
+                    <h2>Our Mission</h2>
+                    <p>"To provide holistic, high-quality education and nurture moral principles."</p>
+                </div>
+            </div>
 
-        </p>
-    </div>
-
-
-
-
-    <div class="card">
-        <h2>Our Vision</h2>
-        <p>
-                 "To nurture morally upright, academically excellent, and socially responsible global citizens.
-        </p>
-    </div>
-
-    
-
-        <div class="card">
-            <h3> Quality Education</h3>
-            <p>Providing modern and effective learning experiences.</p>
+            <div class="slide">
+                <div class="interactive-card">
+                    <div class="card-icon">
+                        <!-- Vision Eye Icon -->
+                        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </div>
+                    <h2>Our Vision</h2>
+                    <p>"To nurture morally upright, academically excellent, and socially responsible global citizens."[cite: 2]</p>
+                </div>
+            </div>
         </div>
 
-        <div class="card">
+        <div class="slider-dots"></div>
+    </div>
+
+    <!-- ── FEATURE CARDS WITH SVG ICONS ── -->
+    <div class="cards-grid fade-in-section">
+        
+        <!-- Graduation Cap Icon -->
+        <div class="interactive-card">
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+            </div>
+            <h3>Quality Education</h3>
+            <p>Providing modern and effective learning experiences tailored for student growth.</p>
+        </div>
+
+        <!-- Trophy Icon -->
+        <div class="interactive-card">
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M8 21h8m-4-4v4M6 4h12v5a6 6 0 01-12 0V4z"/><path d="M4 4h2v4a2 2 0 01-2-2V5a1 1 0 011-1zm16 0h-2v4a2 2 0 002-2V5a1 1 0 00-1-1z"/></svg>
+            </div>
             <h3>Excellence</h3>
-            <p>Encouraging students to achieve their highest potential.</p>
+            <p>Encouraging students to achieve their highest academic and personal potential.</p>
         </div>
 
-        <div class="card">
+        <!-- Shield Check Icon -->
+        <div class="interactive-card">
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            </div>
             <h3>Integrity</h3>
-            <p>Promoting honesty, respect, and responsibility.</p>
+            <p>Promoting honesty, respect, strong ethics, and social responsibility.</p>
+        </div>
+
+        <!-- Lightbulb Icon -->
+        <div class="interactive-card">
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 18h6m-4 3h2M12 2a7 7 0 00-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 001 1h6a1 1 0 001-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 00-7-7z"/></svg>
+            </div>
+            <h3>Innovation</h3>
+            <p>Empowering creative problem solving, technology adoption, and critical thinking.</p>
         </div>
 
     </div>
 
 </div>
 
-<footer style="  background:rgb(4, 4, 49);" >
+<footer style="background:rgb(4, 4, 49);" class="fade-in-section">
     <p>St. Henry’s College Namugongo. All Rights Reserved.</p>
 </footer>
+
+<!-- ── JAVASCRIPT ENHANCEMENTS ── -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    // 1. SCROLL REVEAL ANIMATION
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in-section').forEach(section => {
+        observer.observe(section);
+    });
+
+    // 2. SLIDER / CAROUSEL FUNCTIONALITY
+    const track = document.querySelector('.slider-track');
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const dotsContainer = document.querySelector('.slider-dots');
+
+    let currentIndex = 0;
+    let autoSlideInterval;
+
+    // Build Dots dynamically
+    slides.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (idx === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(idx));
+        dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.dot');
+
+    function updateSlider() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        dots.forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === currentIndex);
+        });
+    }
+
+    function goToSlide(index) {
+        currentIndex = index;
+        updateSlider();
+        resetAutoSlide();
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlider();
+    }
+
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateSlider();
+    }
+
+    function startAutoSlide() {
+        autoSlideInterval = setInterval(nextSlide, 4500); // Cycle every 4.5 seconds
+    }
+
+    function resetAutoSlide() {
+        clearInterval(autoSlideInterval);
+        startAutoSlide();
+    }
+
+    nextBtn.addEventListener('click', () => {
+        nextSlide();
+        resetAutoSlide();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        prevSlide();
+        resetAutoSlide();
+    });
+
+    // Start auto slide on page load
+    startAutoSlide();
+});
+</script>
 
 </body>
 </html>

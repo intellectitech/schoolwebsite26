@@ -480,10 +480,12 @@ font-size: 20px;
         }
 
         .news-img-pane {
-            width: 200px;
+            width: 150px;
             background-color: #1e293b;
             background-size: cover;
             background-position: center;
+            height: 150px;
+            border-radius: 50%;
         }
 
         .news-text-pane {

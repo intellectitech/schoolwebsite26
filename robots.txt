@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Exclude sensitive admin pages from indexing
+Disallow: /admin/
+Disallow: /login.php
+Disallow: /check.php
+Disallow: /manage_news.php
+
+# Direct search crawlers to your dynamic XML sitemap
+Sitemap: https://yourdomain.com/sitemap.xml

@@ -12,7 +12,7 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    background:linear-gradient(135deg,#0f4c81,#1565c0,#42a5f5);
+    background:rgb(5, 5, 60);
     overflow:hidden;
 }
 
@@ -26,7 +26,7 @@ CONTAINER
     height:650px;
     display:grid;
     grid-template-columns:1fr 1fr;
-    background:#fff;
+    background:#fcf8f8;
     border-radius:25px;
     overflow:hidden;
     box-shadow:0 30px 60px rgba(0,0,0,.25);
@@ -37,7 +37,7 @@ LEFT SIDE
 ==========================*/
 
 .left{
-    background-color:  hsl(224, 81%, 17%);
+    background-color:  hsl(224, 84%, 10%);
     position:relative;
 }
 
