@@ -25,20 +25,20 @@ $schoolEmail   = isset($pdo) ? getSetting($pdo, 'school_email')   : '';
         <!-- Quick links -->
         <div class="footer-col">
             <h4>Quick Links</h4>
-            <a href="/school-website/about.php">About Us</a>
-            <a href="/school-website/admissions.php">Admissions</a>
-            <a href="/school-website/news.php">News &amp; Events</a>
-            <a href="/school-website/staff.php">Our Staff</a>
-            <a href="/school-website/contact.php">Contact</a>
+            <a href="/schoolwebsite26/about.php">About Us</a>
+            <a href="/schoolwebsite26/admissions.php">Admissions</a>
+            <a href="/schoolwebsite26/news.php">News &amp; Events</a>
+            <a href="/schoolwebsite26/staff.php">Our Staff</a>
+            <a href="/schoolwebsite26/contact.php">Contact</a>
         </div>
 
         <!-- Academic links -->
         <div class="footer-col">
             <h4>Academics</h4>
-            <a href="/school-website/admissions.php#requirements">Entry Requirements</a>
-            <a href="/school-website/admissions.php#downloads">Download Forms</a>
-            <a href="/school-website/gallery.php">Photo Gallery</a>
-            <a href="/school-website/news.php?category=academics">Academic News</a>
+            <a href="/schoolwebsite26/admissions.php#requirements">Entry Requirements</a>
+            <a href="/schoolwebsite26/admissions.php#downloads">Download Forms</a>
+            <a href="/schoolwebsite26/gallery.php">Photo Gallery</a>
+            <a href="/schoolwebsite26/news.php?category=academics">Academic News</a>
         </div>
 
     </div>
@@ -51,6 +51,6 @@ $schoolEmail   = isset($pdo) ? getSetting($pdo, 'school_email')   : '';
     </div>
 </footer>
 
-<script src="/school-website/assets/js/main.js"></script>
+<script src="/schoolwebsite26/assets/js/main.js"></script>
 </body>
 </html>

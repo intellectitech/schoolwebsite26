@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 //  article.php — Single Article Page
-//  Open at: http://localhost/school-website/article.php?slug=your-slug
+//  Open at: http://localhost/schoolwebsite26/article.php?slug=your-slug
 // ============================================================
 session_start();
 require_once 'config/database.php';

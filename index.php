@@ -2,7 +2,7 @@
 // ============================================================
 //  index.php — Homepage
 //  school-website/index.php
-//  Open at: http://localhost/school-website/
+//  Open at: http://localhost/schoolwebsite26/
 // ============================================================
 session_start();
 require_once 'config/database.php';
@@ -46,82 +46,837 @@ $testimonials = $pdo->query(
 // Page content blocks
 $heroTitle    = getSetting($pdo, 'hero_title');
 $heroSubtitle = getSetting($pdo, 'hero_subtitle');
-$foundedYear  = getSetting($pdo, 'founded_year');
-$totalStudents= getSetting($pdo, 'total_students');
+$foundedYear   = getSetting($pdo, 'founded_year');
+$totalStudents = getSetting($pdo, 'total_students');
+$totalTeachers = getSetting($pdo, 'total_teachers');
+$totalSubjects = getSetting($pdo, 'total_subjects');
 ?>
 <?php require_once 'includes/header.php'; ?>
 
-<!-- ── HERO SECTION ── -->
-<section class="hero">
-    <div class="container">
-        <h1><?= htmlspecialchars($heroTitle ?: getSetting($pdo,'school_name')) ?></h1>
-        <p><?= htmlspecialchars($heroSubtitle ?: 'Shaping tomorrow\'s leaders through quality education.') ?></p>
-        <div class="hero-btns">
-            <a href="admissions.php" class="btn btn-primary">Apply Now</a>
-            <a href="about.php"      class="btn btn-outline">Learn More</a>
-        </div>
-    </div>
-</section>
+<!-- ── HERO SLIDER ── -->
+<section class="hero hero-slider" id="heroSlider">
 
-<!-- ── STATS BAR ── -->
-<section class="stats-bar">
-    <div class="container stats-grid">
-        <?php
-        $stats = [
-            ['Founded',  $foundedYear ?: '1985'],
-            ['Students', ($totalStudents ?: '1200') . '+'],
-            ['Teachers', '60+'],
-            ['Subjects', '18+'],
-        ];
-        foreach ($stats as [$label, $value]):
-        ?>
-        <div>
-            <div class="stat-num"><?= htmlspecialchars($value) ?></div>
-            <div class="stat-label"><?= htmlspecialchars($label) ?></div>
-        </div>
-        <?php endforeach; ?>
-    </div>
-</section>
+    <div class="hero-slide active"
+         style="background-image: url('assets/images/school-hero.svg');">
 
-<!-- ── LATEST NEWS ── -->
-<section class="section">
-    <div class="container">
-        <h2 class="section-title">Latest News</h2>
-        <p class="section-sub">Stay up to date with what is happening at school.</p>
+        <div class="hero-overlay"></div>
 
-        <?php if ($latestNews): ?>
-        <div class="cards-grid">
-            <?php foreach ($latestNews as $article): ?>
-            <div class="card">
-                <?php if ($article['featured_image']): ?>
-                <img class="card-img"
-                     src="<?= htmlspecialchars($article['featured_image']) ?>"
-                     alt="<?= htmlspecialchars($article['title']) ?>">
-                <?php endif; ?>
+        <div class="container hero-container">
+            <div class="hero-content">
 
-                <div class="card-body">
-                    <span class="card-badge"
-                          style="background:<?= htmlspecialchars($article['cat_color'] ?? '#1565C0') ?>">
-                        <?= htmlspecialchars($article['cat_name'] ?? 'News') ?>
-                    </span>
-                    <h3><?= htmlspecialchars($article['title']) ?></h3>
-                    <p><?= excerpt($article['excerpt'] ?? '', 120) ?></p>
+                <span class="hero-badge">
+                    Admissions Open 2026/27
+                </span>
+
+                <h1>
+                    <?= htmlspecialchars(
+                        $heroTitle ?: getSetting($pdo, 'school_name')
+                    ) ?>
+                </h1>
+
+                <p>
+                    <?= htmlspecialchars(
+                        $heroSubtitle ?: 'Shaping tomorrow\'s leaders through quality education.'
+                    ) ?>
+                </p>
+
+                <div class="hero-btns">
+                    <a href="admissions.php" class="btn btn-primary">
+                        Apply for Admission
+                    </a>
+
+                    <a href="about.php" class="btn btn-outline">
+                        Discover Our School
+                    </a>
                 </div>
 
-                <div class="card-footer">
-                    <a href="article.php?slug=<?= urlencode($article['slug']) ?>">Read more →</a>
-                    <span><?= date('d M Y', strtotime($article['published_at'])) ?></span>
+            </div>
+
+            <div class="hero-highlight">
+                <div class="highlight-icon">★</div>
+
+                <div>
+                    <span>Our Commitment</span>
+                    <strong>Excellence, Discipline & Faith</strong>
                 </div>
             </div>
-            <?php endforeach; ?>
         </div>
-        <p style="margin-top:2rem">
-            <a href="news.php" class="btn btn-blue">View All News</a>
-        </p>
-        <?php else: ?>
-        <p style="color:var(--muted)">No news published yet.</p>
-        <?php endif; ?>
     </div>
+
+
+    <!-- SLIDE 2 -->
+    <div class="hero-slide"
+         style="background-image: url('assets/images/admissions-hero.svg');">
+
+        <div class="hero-overlay"></div>
+
+        <div class="container hero-container">
+            <div class="hero-content">
+
+                <span class="hero-badge">
+                    Join Kalinabiri
+                </span>
+
+                <h1>
+                    Admissions Open for 2026/27
+                </h1>
+
+                <p>
+                    Begin your child's journey in an environment built on
+                    academic excellence, discipline and strong values.
+                </p>
+
+                <div class="hero-btns">
+                    <a href="admissions.php" class="btn btn-primary">
+                        Apply Now
+                    </a>
+
+                    <a href="admissions.php" class="btn btn-outline">
+                        Admission Requirements
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="hero-highlight">
+                <div class="highlight-icon">✓</div>
+
+                <div>
+                    <span>Now Enrolling</span>
+                    <strong>Senior One & Senior Five</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SLIDE 3 -->
+    <div class="hero-slide"
+         style="background-image: url('assets/images/excellence-hero.svg');">
+
+        <div class="hero-overlay"></div>
+
+        <div class="container hero-container">
+            <div class="hero-content">
+
+                <span class="hero-badge">
+                    Discover Excellence
+                </span>
+
+                <h1>
+                    Building Knowledge, Character & Purpose
+                </h1>
+
+                <p>
+                    We nurture confident learners through quality education,
+                    discipline, faith and a commitment to excellence.
+                </p>
+
+                <div class="hero-btns">
+                    <a href="about.php" class="btn btn-primary">
+                        Discover Our School
+                    </a>
+
+                    <a href="contact.php" class="btn btn-outline">
+                        Contact Us
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="hero-highlight">
+                <div class="highlight-icon">★</div>
+
+                <div>
+                    <span>Our Vision</span>
+                    <strong>Preparing Learners for a Better Future</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- SLIDER ARROWS -->
+    <button class="hero-arrow hero-prev"
+            type="button"
+            aria-label="Previous slide">
+        &#10094;
+    </button>
+
+    <button class="hero-arrow hero-next"
+            type="button"
+            aria-label="Next slide">
+        &#10095;
+    </button>
+
+
+    <!-- SLIDER DOTS -->
+    <div class="hero-dots" aria-label="Hero slider navigation">
+        <button class="hero-dot active" type="button" data-slide="0" aria-label="Go to slide 1"></button>
+        <button class="hero-dot" type="button" data-slide="1" aria-label="Go to slide 2"></button>
+        <button class="hero-dot" type="button" data-slide="2" aria-label="Go to slide 3"></button>
+    </div>
+
+</section>
+<!-- ── PREMIUM STATS SECTION ── -->
+<section class="stats-bar">
+    <div class="container stats-grid">
+
+        <div class="stat-item">
+            <div class="stat-icon">◆</div>
+
+            <div class="stat-content">
+                <div class="stat-num">
+                    <?= htmlspecialchars($foundedYear ?: '1984') ?>
+                </div>
+
+                <div class="stat-label">
+                    Established
+                </div>
+            </div>
+        </div>
+
+
+        <div class="stat-item">
+            <div class="stat-icon">♟</div>
+
+            <div class="stat-content">
+                <div
+                    class="stat-num stat-counter"
+                    data-target="<?= htmlspecialchars($totalStudents ?: '1200') ?>"
+                    data-suffix="+"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Active Students
+                </div>
+            </div>
+        </div>
+
+
+        <div class="stat-item">
+            <div class="stat-icon">✦</div>
+
+            <div class="stat-content">
+                <div
+                    class="stat-num stat-counter"
+                    data-target="60"
+                    data-suffix="+"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Dedicated Teachers
+                </div>
+            </div>
+        </div>
+
+
+        <div class="stat-item">
+            <div class="stat-icon">▣</div>
+
+            <div class="stat-content">
+                <div
+                    class="stat-num stat-counter"
+                    data-target="18"
+                    data-suffix="+"
+                >
+                    0
+                </div>
+
+                <div class="stat-label">
+                    Subjects Offered
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<!-- ── PREMIUM LATEST NEWS ── -->
+<section class="news-section">
+
+    <div class="container">
+
+        <div class="news-heading">
+
+            <div class="news-heading-content">
+
+                <span class="section-eyebrow">
+                    School Updates
+                </span>
+
+                <h2>
+                    Latest News & Stories
+                </h2>
+
+                <p>
+                    Discover the latest achievements, activities and important
+                    updates from the Kalinabiri Secondary School community.
+                </p>
+
+            </div>
+
+            <a href="news.php" class="news-view-all">
+                View All News
+                <span>→</span>
+            </a>
+
+        </div>
+
+
+        <?php if ($latestNews): ?>
+
+            <div class="news-grid">
+
+                <?php foreach ($latestNews as $index => $article): ?>
+
+                    <article class="news-card <?= $index === 0 ? 'news-card-featured' : '' ?>">
+
+                        <a
+                            href="article.php?slug=<?= urlencode($article['slug']) ?>"
+                            class="news-image"
+                        >
+
+                            <?php if (!empty($article['featured_image'])): ?>
+
+                                <img
+                                    src="<?= htmlspecialchars($article['featured_image']) ?>"
+                                    alt="<?= htmlspecialchars($article['title']) ?>"
+                                >
+
+                            <?php else: ?>
+
+                                <div class="news-image-placeholder">
+                                    <span>KSS</span>
+                                </div>
+
+                            <?php endif; ?>
+
+
+                            <span
+                                class="news-category"
+                                style="--category-color: <?= htmlspecialchars($article['cat_color'] ?? '#F9A825') ?>"
+                            >
+                                <?= htmlspecialchars($article['cat_name'] ?? 'School News') ?>
+                            </span>
+
+                        </a>
+
+
+                        <div class="news-card-content">
+
+                            <div class="news-meta">
+
+                                <span class="news-date">
+                                    <?= date('d M Y', strtotime($article['published_at'])) ?>
+                                </span>
+
+                                <span class="news-meta-dot"></span>
+
+                                <span>
+                                    Kalinabiri Secondary School
+                                </span>
+
+                            </div>
+
+
+                            <h3>
+
+                                <a href="article.php?slug=<?= urlencode($article['slug']) ?>">
+
+                                    <?= htmlspecialchars($article['title']) ?>
+
+                                </a>
+
+                            </h3>
+
+
+                            <p>
+
+                                <?= htmlspecialchars(
+                                    excerpt($article['excerpt'] ?? '', 145)
+                                ) ?>
+
+                            </p>
+
+
+                            <a
+                                href="article.php?slug=<?= urlencode($article['slug']) ?>"
+                                class="news-read-more"
+                            >
+
+                                Read Full Story
+
+                                <span>→</span>
+
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                <?php endforeach; ?>
+
+            </div>
+
+
+        <?php else: ?>
+
+            <div class="news-empty">
+
+                <div class="news-empty-icon">
+                    ✦
+                </div>
+
+                <h3>
+                    Stories Are Coming Soon
+                </h3>
+
+                <p>
+                    News, achievements and school updates will appear here
+                    as they are published.
+                </p>
+
+            </div>
+
+        <?php endif; ?>
+
+    </div>
+
+</section>
+<!-- ── WHY KALINABIRI ── -->
+<section class="why-school">
+
+    <div class="container why-school-grid">
+
+        <div class="why-school-visual">
+
+            <div class="why-image-frame">
+                <img
+                    src="assets/images/why-kalinabiri.svg"
+                    alt="Students learning at Kalinabiri Secondary School"
+                >
+            </div>
+
+            <div class="why-experience-card">
+                <strong><?= htmlspecialchars($foundedYear ?: '1984') ?></strong>
+                <span>Years of Excellence</span>
+            </div>
+
+        </div>
+
+
+        <div class="why-school-content">
+
+            <span class="section-eyebrow">
+                Why Kalinabiri
+            </span>
+
+            <h2>
+                Education That Builds
+                <span>Knowledge & Character.</span>
+            </h2>
+
+            <p class="why-intro">
+                At Kalinabiri Secondary School, we nurture confident,
+                disciplined and purpose-driven learners through quality
+                education, strong values and a supportive school community.
+            </p>
+
+
+            <div class="why-features">
+
+                <div class="why-feature">
+                    <div class="why-feature-icon">✦</div>
+
+                    <div>
+                        <h3>Academic Excellence</h3>
+                        <p>
+                            A focused learning environment that inspires
+                            students to achieve their academic potential.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="why-feature">
+                    <div class="why-feature-icon">◆</div>
+
+                    <div>
+                        <h3>Discipline & Character</h3>
+                        <p>
+                            We develop responsible learners guided by
+                            discipline, integrity and respect.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="why-feature">
+                    <div class="why-feature-icon">★</div>
+
+                    <div>
+                        <h3>Faith & Values</h3>
+                        <p>
+                            Our school community promotes faith, moral
+                            values and purposeful living.
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class="why-feature">
+                    <div class="why-feature-icon">▣</div>
+
+                    <div>
+                        <h3>Student Development</h3>
+                        <p>
+                            Learners are encouraged to grow through
+                            leadership, sports and co-curricular activities.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <a href="about.php" class="why-link">
+                Discover More About Our School
+                <span>→</span>
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ── ACADEMIC PROGRAMS ── -->
+<section class="academic-programs">
+
+    <div class="container">
+
+        <div class="section-header">
+            <span class="section-eyebrow">
+                Academic Programs
+            </span>
+
+            <h2>
+                Preparing Students for Academic Success
+            </h2>
+
+            <p>
+                Our curriculum combines academic excellence, practical skills,
+                leadership development and co-curricular activities to prepare
+                learners for university and life beyond the classroom.
+            </p>
+        </div>
+
+        <div class="programs-grid">
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-eyedropper"></i>
+                </div>
+                <h3>Sciences</h3>
+                <p>
+                    Well-equipped science subjects designed to encourage
+                    innovation, critical thinking and practical learning.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-laptop"></i>
+                </div>
+                <h3>ICT & Innovation</h3>
+                <p>
+                    Building digital skills through computer studies and
+                    technology-focused learning experiences.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-palette"></i>
+                </div>
+                <h3>Arts & Humanities</h3>
+                <p>
+                    Encouraging creativity, communication and cultural
+                    appreciation through arts and humanities.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-trophy"></i>
+                </div>
+                <h3>Sports</h3>
+                <p>
+                    Developing teamwork, discipline and healthy lifestyles
+                    through a variety of sporting activities.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-award"></i>
+                </div>
+                <h3>Leadership</h3>
+                <p>
+                    Students develop leadership qualities through prefectship,
+                    mentoring and community service.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+            <div class="program-card">
+                <div class="program-icon">
+                    <i class="bi bi-people"></i>
+                </div>
+                <h3>Clubs & Societies</h3>
+                <p>
+                    Learners participate in debate, wildlife, music, drama and
+                    other clubs that build confidence and teamwork.
+                </p>
+                <a href="admissions.php" class="program-link">
+                    Learn More →
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ── SCHOOL FACILITIES ── -->
+<section class="school-facilities">
+
+    <div class="container facilities-grid">
+
+        <!-- Left Side -->
+        <div class="facilities-content">
+
+            <span class="section-eyebrow">
+                School Facilities
+            </span>
+
+            <h2>
+                A Modern Learning Environment
+            </h2>
+
+            <p class="facilities-intro">
+                Kalinabiri Secondary School provides learners with a safe,
+                inspiring and well-equipped environment designed to support
+                academic excellence, creativity and holistic development.
+            </p>
+
+            <div class="facility-list">
+
+                <div class="facility-item">
+                    <i class="bi bi-book"></i>
+                    <div>
+                        <h3>Modern Library</h3>
+                        <p>Quiet study spaces with a wide range of learning resources.</p>
+                    </div>
+                </div>
+
+                <div class="facility-item">
+                    <i class="bi bi-pc-display"></i>
+                    <div>
+                        <h3>ICT Laboratory</h3>
+                        <p>Technology-enabled learning with modern computer facilities.</p>
+                    </div>
+                </div>
+
+                <div class="facility-item">
+                    <i class="bi bi-eyedropper"></i>
+                    <div>
+                        <h3>Science Laboratories</h3>
+                        <p>Hands-on practical learning in Biology, Chemistry and Physics.</p>
+                    </div>
+                </div>
+
+                <div class="facility-item">
+                    <i class="bi bi-trophy"></i>
+                    <div>
+                        <h3>Sports Facilities</h3>
+                        <p>Encouraging physical fitness, teamwork and leadership.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Right Side -->
+
+        <div class="facilities-image">
+
+            <img
+                src="assets/images/facilities.svg"
+                alt="School Facilities">
+
+            <div class="facility-badge">
+                <strong>40+</strong>
+                <span>Years of Excellence</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ── HEADTEACHER'S MESSAGE ── -->
+<section class="headteacher-section">
+
+    <div class="container headteacher-grid">
+
+        <!-- Image -->
+        <div class="headteacher-image">
+
+            <img
+                src="assets/images/headteacher.jpg"
+                alt="Headteacher">
+
+            <div class="headteacher-role">
+                <strong>Headteacher</strong>
+                <span>Kalinabiri Secondary School</span>
+            </div>
+
+        </div>
+
+        <!-- Content -->
+        <div class="headteacher-content">
+
+            <span class="section-eyebrow">
+                Headteacher's Welcome
+            </span>
+
+            <h2>
+                A Message From Our Headteacher
+            </h2>
+
+            <blockquote>
+                "Welcome to Kalinabiri Secondary School.
+
+                We believe every learner has the potential to achieve
+                excellence through discipline, hard work, integrity and
+                faith. Our commitment is to provide a safe learning
+                environment where students grow academically, socially
+                and morally."
+
+            </blockquote>
+
+            <p>
+
+                Together with our dedicated staff, supportive parents
+                and committed learners, we continue building a school
+                community that prepares young people for university,
+                leadership and responsible citizenship.
+
+            </p>
+
+            <a href="about.php" class="btn btn-primary">
+                Meet Our Leadership
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+<!-- ── STUDENT LIFE ── -->
+<section class="student-life">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <span class="section-eyebrow">
+                Student Life
+            </span>
+
+            <h2>
+                Experience Life Beyond The Classroom
+            </h2>
+
+            <p>
+                Discover how our students grow through academics,
+                sports, leadership, clubs, innovation and community
+                engagement.
+            </p>
+
+        </div>
+
+        <div class="gallery-layout">
+
+            <div class="gallery-large">
+
+                <img src="assets/images/gallery1.jpeg"
+                     alt="Student Life">
+
+            </div>
+
+            <div class="gallery-small">
+
+                <img src="assets/images/gallery2.jpeg"
+                     alt="Sports">
+
+                <img src="assets/images/gallery3.jpeg"
+                     alt="Music">
+
+                <img src="assets/images/gallery4.jpeg"
+                     alt="Leadership">
+
+            </div>
+
+        </div>
+
+        <div class="gallery-tags">
+
+            <span>Classroom</span>
+
+            <span>Sports</span>
+
+            <span>Leadership</span>
+
+            <span>ICT</span>
+
+            <span>Clubs</span>
+
+            <span>Science</span>
+
+        </div>
+
+        <div class="gallery-button">
+
+            <a href="gallery.php" class="btn btn-primary">
+
+                View Full Gallery
+
+            </a>
+
+        </div>
+
+    </div>
+
 </section>
 
 <!-- ── UPCOMING EVENTS ── -->

@@ -21,7 +21,7 @@ $unread = (int)$pdo->query('SELECT COUNT(*) FROM contact_messages WHERE is_read 
             <span class="badge badge-red" style="margin-left:.5rem"><?= $unread ?></span>
             <?php endif; ?>
         </a>
-        <a href="/school-website/" target="_blank">🌐 View Website ↗</a>
+        <a href="/schoolwebsite26/" target="_blank">🌐 View Website ↗</a>
         <a href="logout.php" style="margin-top:2rem;color:#E06C75">🚪 Logout</a>
     </nav>
     <div style="padding:1.5rem;font-size:.8rem;color:#4A6A8A;margin-top:auto">

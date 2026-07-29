@@ -60,7 +60,7 @@ function makeSlug($text) {
 // ----------------------------------------------------------
 function requireAdmin() {
     if (!isset($_SESSION['admin_id'])) {
-        header('Location: /school-website/admin/login.php');
+        header('Location: /schoolwebsite26/admin/login.php');
         exit;
     }
 }

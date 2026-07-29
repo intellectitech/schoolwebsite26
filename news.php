@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 //  news.php — News Listing Page
-//  Open at: http://localhost/school-website/news.php
+//  Open at: http://localhost/schoolwebsite26/news.php
 // ============================================================
 session_start();
 require_once 'config/database.php';
