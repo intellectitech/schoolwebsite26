@@ -13,7 +13,6 @@ $pageTitle = 'Messages - Admin';
 $message = '';
 $error = '';
 
-// Mark as read
 if (isset($_GET['read']) && is_numeric($_GET['read'])) {
     $id = (int)$_GET['read'];
     $stmt = $pdo->prepare("UPDATE contact_messages SET is_read = 1, replied_at = NOW() WHERE id = ?");
@@ -21,7 +20,6 @@ if (isset($_GET['read']) && is_numeric($_GET['read'])) {
     $message = 'Message marked as read.';
 }
 
-// Delete message
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $id = (int)$_GET['delete'];
     $stmt = $pdo->prepare("DELETE FROM contact_messages WHERE id = ?");
@@ -29,7 +27,6 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $message = 'Message deleted.';
 }
 
-// Fetch messages
 $messagesStmt = $pdo->query("
     SELECT * FROM contact_messages 
     ORDER BY is_read ASC, created_at DESC
@@ -46,51 +43,77 @@ $messages = $messagesStmt->fetchAll();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
-        /* Same admin styles */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #fff; min-height: 100vh; }
         .admin-wrapper { display: flex; min-height: 100vh; }
-        .admin-sidebar { width: 260px; background: #0d2617; color: #fff; padding: 30px 20px; min-height: 100vh; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
-        .admin-sidebar .logo { text-align: center; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px; }
-        .admin-sidebar .logo i { font-size: 2.5rem; color: #FFD700; }
-        .admin-sidebar .logo h2 { color: #fff; font-size: 1.2rem; margin-top: 10px; }
-        .admin-sidebar .user { padding: 15px; background: rgba(255,255,255,0.05); border-radius: 8px; margin-bottom: 20px; text-align: center; }
-        .admin-sidebar .user .name { font-weight: 600; }
-        .admin-sidebar .user .role { font-size: 0.8rem; opacity: 0.7; }
-        .admin-sidebar nav a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: rgba(255,255,255,0.7); border-radius: 8px; transition: all 0.3s; margin-bottom: 4px; text-decoration: none; }
-        .admin-sidebar nav a:hover, .admin-sidebar nav a.active { background: rgba(255,215,0,0.1); color: #FFD700; }
-        .admin-sidebar nav a i { width: 20px; }
-        .admin-content { flex: 1; padding: 30px; background: #f5f5f5; }
-        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; }
-        .admin-header h1 { color: #0d2617; }
-        .btn-read { padding: 6px 14px; background: #28a745; color: #fff; border: none; border-radius: 4px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; }
-        .btn-read:hover { background: #218838; color: #fff; }
-        .btn-delete { padding: 6px 14px; background: #dc3545; color: #fff; border: none; border-radius: 4px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s; text-decoration: none; display: inline-block; }
-        .btn-delete:hover { background: #c82333; color: #fff; }
-        .table-container { background: #fff; border-radius: 12px; padding: 20px; overflow-x: auto; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+        .admin-sidebar {
+            width: 260px;
+            background: rgba(255,255,255,0.04);
+            backdrop-filter: blur(40px);
+            padding: 30px 20px;
+            min-height: 100vh;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            border-right: 1px solid rgba(255,255,255,0.06);
+        }
+        .admin-sidebar .logo { text-align: center; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 30px; }
+        .admin-sidebar .logo .icon-wrapper { display: inline-block; width: 55px; height: 55px; background: linear-gradient(135deg, #FF6B00, #e85e00); border-radius: 16px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; box-shadow: 0 10px 30px rgba(255,107,0,0.25); }
+        .admin-sidebar .logo i { font-size: 2rem; color: #fff; }
+        .admin-sidebar .logo h2 { color: #fff; font-size: 1.1rem; font-weight: 700; }
+        .admin-sidebar .user { padding: 15px; background: rgba(255,255,255,0.04); border-radius: 16px; margin-bottom: 20px; text-align: center; border: 1px solid rgba(255,255,255,0.06); }
+        .admin-sidebar .user .name { font-weight: 600; color: #fff; }
+        .admin-sidebar .user .role { font-size: 0.8rem; opacity: 0.5; color: rgba(255,255,255,0.6); }
+        .admin-sidebar nav a { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: rgba(255,255,255,0.5); border-radius: 14px; transition: all 0.3s ease; margin-bottom: 4px; text-decoration: none; }
+        .admin-sidebar nav a:hover, .admin-sidebar nav a.active { background: rgba(255,107,0,0.12); color: #FF6B00; border: 1px solid rgba(255,107,0,0.1); transform: translateX(4px); }
+        .admin-sidebar nav a i { width: 20px; color: rgba(255,255,255,0.3); transition: all 0.3s ease; }
+        .admin-sidebar nav a:hover i, .admin-sidebar nav a.active i { color: #FF6B00; }
+        .logout-btn { background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 16px; width: 100%; font-size: 1rem; font-family: inherit; border-radius: 14px; transition: all 0.3s ease; margin-top: 10px; }
+        .logout-btn:hover { background: rgba(255,0,0,0.08); color: #ff6b6b; border: 1px solid rgba(255,0,0,0.1); }
+
+        .admin-content { flex: 1; padding: 30px; background: #0a0a0a; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 15px; padding: 20px 30px; background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .admin-header h1 { color: #fff; font-size: 1.6rem; font-weight: 700; }
+        .admin-header h1 i { color: #FF6B00; margin-right: 10px; }
+        .admin-header .badge-count { background: rgba(255,107,0,0.15); color: #FF6B00; padding: 6px 16px; border-radius: 50px; font-size: 0.85rem; border: 1px solid rgba(255,107,0,0.1); }
+
+        .btn-read { padding: 6px 14px; background: rgba(76,175,80,0.15); color: #4CAF50; border: 1px solid rgba(76,175,80,0.1); border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
+        .btn-read:hover { background: rgba(76,175,80,0.25); color: #4CAF50; }
+
+        .btn-delete { padding: 6px 14px; background: rgba(255,0,0,0.15); color: #ff6b6b; border: 1px solid rgba(255,0,0,0.1); border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; }
+        .btn-delete:hover { background: rgba(255,0,0,0.25); color: #ff6b6b; }
+
+        .table-container { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border-radius: 20px; padding: 25px; overflow-x: auto; border: 1px solid rgba(255,255,255,0.05); }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 12px 15px; background: #f8f9fa; font-weight: 600; color: #333; border-bottom: 2px solid #e0e0e0; }
-        td { padding: 12px 15px; border-bottom: 1px solid #e0e0e0; vertical-align: middle; }
-        tr:hover { background: #f8f9fa; }
-        tr.unread { background: #f0f7ff; }
-        tr.unread td { font-weight: 500; }
+        th { text-align: left; padding: 12px 15px; color: rgba(255,255,255,0.5); font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; color: rgba(255,255,255,0.8); }
+        tr:hover { background: rgba(255,255,255,0.02); }
+        tr.unread { background: rgba(255,107,0,0.03); }
+
         .status-badge { display: inline-block; padding: 3px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 600; }
-        .status-badge.read { background: #d4edda; color: #155724; }
-        .status-badge.unread { background: #fff3cd; color: #856404; }
-        .alert-success { background: #d4edda; color: #155724; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #c3e6cb; }
-        .alert-danger { background: #f8d7da; color: #721c24; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f5c6cb; }
+        .status-badge.read { background: rgba(76,175,80,0.15); color: #4CAF50; border: 1px solid rgba(76,175,80,0.1); }
+        .status-badge.unread { background: rgba(255,107,0,0.15); color: #FF6B00; border: 1px solid rgba(255,107,0,0.1); }
+
+        .message-preview { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(255,255,255,0.5); }
+
         .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-        .logout-btn { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 12px 16px; width: 100%; font-size: 1rem; font-family: inherit; border-radius: 8px; transition: all 0.3s; }
-        .logout-btn:hover { background: rgba(255,0,0,0.1); color: #ff6b6b; }
-        .message-preview { max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+        .alert-success { background: rgba(76,175,80,0.1); color: #4CAF50; padding: 15px 20px; border-radius: 14px; margin-bottom: 20px; border: 1px solid rgba(76,175,80,0.1); }
+
+        .no-data { text-align: center; padding: 60px 0; color: rgba(255,255,255,0.2); }
+        .no-data i { font-size: 3rem; display: block; margin-bottom: 15px; color: rgba(255,255,255,0.05); }
+
         @media (max-width: 768px) { .admin-sidebar { width: 200px; padding: 20px 15px; } }
-        @media (max-width: 480px) { .admin-wrapper { flex-direction: column; } .admin-sidebar { width: 100%; min-height: auto; height: auto; position: static; } }
+        @media (max-width: 480px) { .admin-wrapper { flex-direction: column; } .admin-sidebar { width: 100%; min-height: auto; height: auto; position: static; } .admin-header { flex-direction: column; align-items: stretch; } }
     </style>
 </head>
 <body>
 <div class="admin-wrapper">
-    <!-- Sidebar -->
     <aside class="admin-sidebar">
         <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
+            <div class="icon-wrapper"><i class="fas fa-graduation-cap"></i></div>
             <h2>School Admin</h2>
         </div>
         <div class="user">
@@ -104,7 +127,6 @@ $messages = $messagesStmt->fetchAll();
             <a href="messages.php" class="active"><i class="fas fa-envelope"></i> Messages</a>
             <a href="enquiries.php"><i class="fas fa-question-circle"></i> Enquiries</a>
             <a href="manage-staff.php"><i class="fas fa-users"></i> Staff</a>
-            <a href="upload-images.php"><i class="fas fa-images"></i> Hero Images</a>
             <a href="manage-gallery.php"><i class="fas fa-images"></i> Gallery</a>
             <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
             <form method="POST" action="logout.php" style="margin-top:20px;">
@@ -113,12 +135,11 @@ $messages = $messagesStmt->fetchAll();
         </nav>
     </aside>
 
-    <!-- Content -->
     <main class="admin-content">
         <div class="admin-header">
             <h1><i class="fas fa-envelope"></i> Contact Messages</h1>
-            <span style="color:#666;">
-                <i class="fas fa-circle" style="color:#ffc107;"></i> 
+            <span class="badge-count">
+                <i class="fas fa-circle" style="color:#FF6B00;font-size:0.5rem;"></i> 
                 <?= $pdo->query("SELECT COUNT(*) FROM contact_messages WHERE is_read = 0")->fetchColumn() ?> unread
             </span>
         </div>
@@ -145,9 +166,9 @@ $messages = $messagesStmt->fetchAll();
                             <tr class="<?= $msg['is_read'] ? '' : 'unread' ?>">
                                 <td>
                                     <strong><?= clean($msg['name']) ?></strong><br>
-                                    <span style="font-size:0.8rem;color:#666;"><?= clean($msg['email']) ?></span>
+                                    <span style="font-size:0.8rem;color:rgba(255,255,255,0.4);"><?= clean($msg['email']) ?></span>
                                     <?php if ($msg['phone']): ?>
-                                        <br><span style="font-size:0.8rem;color:#666;"><i class="fas fa-phone"></i> <?= clean($msg['phone']) ?></span>
+                                        <br><span style="font-size:0.8rem;color:rgba(255,255,255,0.4);"><i class="fas fa-phone"></i> <?= clean($msg['phone']) ?></span>
                                     <?php endif; ?>
                                 </td>
                                 <td><?= clean($msg['subject']) ?></td>
@@ -157,7 +178,7 @@ $messages = $messagesStmt->fetchAll();
                                         <?= $msg['is_read'] ? 'Read' : 'Unread' ?>
                                     </span>
                                 </td>
-                                <td style="font-size:0.85rem;color:#666;">
+                                <td style="font-size:0.85rem;color:rgba(255,255,255,0.4);">
                                     <?= formatDate($msg['created_at'], 'M j, Y g:i A') ?>
                                 </td>
                                 <td>
@@ -173,9 +194,9 @@ $messages = $messagesStmt->fetchAll();
                     </tbody>
                 </table>
             <?php else: ?>
-                <div style="text-align:center;padding:40px 0;">
-                    <i class="fas fa-envelope-open" style="font-size:3rem;color:#ccc;margin-bottom:15px;"></i>
-                    <p style="color:#666;">No messages yet.</p>
+                <div class="no-data">
+                    <i class="fas fa-envelope-open"></i>
+                    <p>No messages yet.</p>
                 </div>
             <?php endif; ?>
         </div>

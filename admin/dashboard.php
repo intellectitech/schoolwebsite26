@@ -4,7 +4,6 @@ session_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
 
-// Require login
 if (!isLoggedIn()) {
     header('Location: login.php');
     exit;
@@ -18,7 +17,6 @@ $totalPublished = $pdo->query("SELECT COUNT(*) FROM news WHERE is_published = 1"
 $totalMessages = $pdo->query("SELECT COUNT(*) FROM contact_messages WHERE is_read = 0")->fetchColumn();
 $totalEnquiries = $pdo->query("SELECT COUNT(*) FROM admissions_enquiries WHERE status = 'new'")->fetchColumn();
 $totalStaff = $pdo->query("SELECT COUNT(*) FROM staff WHERE is_active = 1")->fetchColumn();
-$totalEvents = $pdo->query("SELECT COUNT(*) FROM events WHERE is_published = 1 AND event_date >= CURDATE()")->fetchColumn();
 
 // Recent activity
 $activityStmt = $pdo->query("
@@ -54,16 +52,39 @@ $recentMessages = $pdo->query("
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/style.css">
     <style>
+        /* ============================================
+           LIQUID GLASS ADMIN UI
+           Colors: White, Orange (#FF6B00), Black
+           ============================================ */
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+        }
+
         /* Admin Wrapper */
         .admin-wrapper {
             display: flex;
             min-height: 100vh;
         }
 
-        /* Sidebar */
+        /* ============================================
+           SIDEBAR - Liquid Glass
+           ============================================ */
         .admin-sidebar {
             width: 260px;
-            background: #0d2617;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
             color: #fff;
             padding: 30px 20px;
             min-height: 100vh;
@@ -71,41 +92,59 @@ $recentMessages = $pdo->query("
             top: 0;
             height: 100vh;
             overflow-y: auto;
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05);
         }
 
         .admin-sidebar .logo {
             text-align: center;
             padding-bottom: 30px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             margin-bottom: 30px;
         }
 
+        .admin-sidebar .logo .icon-wrapper {
+            display: inline-block;
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, #FF6B00, #e85e00);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.25);
+        }
+
         .admin-sidebar .logo i {
-            font-size: 2.5rem;
-            color: #FFD700;
+            font-size: 2rem;
+            color: #fff;
         }
 
         .admin-sidebar .logo h2 {
             color: #fff;
-            font-size: 1.2rem;
-            margin-top: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
         }
 
         .admin-sidebar .user {
             padding: 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
             margin-bottom: 20px;
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .admin-sidebar .user .name {
             font-weight: 600;
+            color: #fff;
         }
 
         .admin-sidebar .user .role {
             font-size: 0.8rem;
-            opacity: 0.7;
+            opacity: 0.5;
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .admin-sidebar nav a {
@@ -113,27 +152,36 @@ $recentMessages = $pdo->query("
             align-items: center;
             gap: 12px;
             padding: 12px 16px;
-            color: rgba(255,255,255,0.7);
-            border-radius: 8px;
-            transition: all 0.3s;
+            color: rgba(255, 255, 255, 0.5);
+            border-radius: 14px;
+            transition: all 0.3s ease;
             margin-bottom: 4px;
             text-decoration: none;
         }
 
         .admin-sidebar nav a:hover,
         .admin-sidebar nav a.active {
-            background: rgba(255,215,0,0.1);
-            color: #FFD700;
+            background: rgba(255, 107, 0, 0.12);
+            color: #FF6B00;
+            border: 1px solid rgba(255, 107, 0, 0.1);
+            transform: translateX(4px);
         }
 
         .admin-sidebar nav a i {
             width: 20px;
+            color: rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .admin-sidebar nav a:hover i,
+        .admin-sidebar nav a.active i {
+            color: #FF6B00;
         }
 
         .logout-btn {
             background: none;
             border: none;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.4);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -142,20 +190,32 @@ $recentMessages = $pdo->query("
             width: 100%;
             font-size: 1rem;
             font-family: inherit;
-            border-radius: 8px;
-            transition: all 0.3s;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
         .logout-btn:hover {
-            background: rgba(255,0,0,0.1);
+            background: rgba(255, 0, 0, 0.08);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 0, 0, 0.1);
+        }
+
+        .logout-btn i {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .logout-btn:hover i {
             color: #ff6b6b;
         }
 
-        /* Content */
+        /* ============================================
+           CONTENT AREA
+           ============================================ */
         .admin-content {
             flex: 1;
             padding: 30px;
-            background: #f5f5f5;
+            background: #0a0a0a;
         }
 
         .admin-header {
@@ -165,13 +225,33 @@ $recentMessages = $pdo->query("
             margin-bottom: 30px;
             flex-wrap: wrap;
             gap: 15px;
+            padding: 20px 30px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .admin-header h1 {
-            color: #0d2617;
+            color: #fff;
+            font-size: 1.6rem;
+            font-weight: 700;
         }
 
-        /* Stats Grid */
+        .admin-header h1 i {
+            color: #FF6B00;
+            margin-right: 10px;
+        }
+
+        .admin-header span {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+
+        /* ============================================
+           STATS CARDS - Liquid Glass
+           ============================================ */
         .stats-grid-admin {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -180,54 +260,105 @@ $recentMessages = $pdo->query("
         }
 
         .stat-card {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border-left: 4px solid #FFD700;
-            transition: transform 0.3s;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 107, 0, 0.05), transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         .stat-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
+            border-color: rgba(255, 107, 0, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
         }
 
         .stat-card .number {
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            color: #0d2617;
+            color: #fff;
+            position: relative;
+            z-index: 1;
         }
 
         .stat-card .label {
-            color: #666;
-            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
         }
 
         .stat-card .icon {
             float: right;
             font-size: 2rem;
-            opacity: 0.3;
+            opacity: 0.15;
+            color: #FF6B00;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Activity Log */
+        .stat-card .sub-info {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-card .sub-info.published {
+            color: #4CAF50;
+        }
+
+        .stat-card .sub-info.pending {
+            color: #FF6B00;
+        }
+
+        /* ============================================
+           ACTIVITY LOG - Liquid Glass
+           ============================================ */
         .activity-log {
-            background: #fff;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             margin-bottom: 30px;
         }
 
         .activity-log h3 {
             margin-bottom: 20px;
-            color: #0d2617;
+            color: #fff;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .activity-log h3 i {
+            color: #FF6B00;
         }
 
         .activity-item {
             display: flex;
             justify-content: space-between;
             padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             font-size: 0.9rem;
         }
 
@@ -237,14 +368,26 @@ $recentMessages = $pdo->query("
 
         .activity-item .action {
             font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .activity-item .action .admin-name {
+            color: #FF6B00;
         }
 
         .activity-item .time {
-            color: #999;
+            color: rgba(255, 255, 255, 0.3);
             font-size: 0.8rem;
         }
 
-        /* Recent Tables */
+        .activity-item .table-name {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           RECENT BOXES - Liquid Glass
+           ============================================ */
         .recent-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -252,15 +395,25 @@ $recentMessages = $pdo->query("
         }
 
         .recent-box {
-            background: #fff;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
             padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .recent-box h3 {
             margin-bottom: 20px;
-            color: #0d2617;
+            color: #fff;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recent-box h3 i {
+            color: #FF6B00;
         }
 
         .recent-box table {
@@ -269,58 +422,76 @@ $recentMessages = $pdo->query("
         }
 
         .recent-box td {
-            padding: 8px 0;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .recent-box tr:last-child td {
             border-bottom: none;
         }
 
+        .recent-box .text-muted {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.85rem;
+        }
+
+        /* ============================================
+           STATUS BADGES
+           ============================================ */
         .status-badge {
             display: inline-block;
-            padding: 2px 12px;
+            padding: 3px 14px;
             border-radius: 50px;
             font-size: 0.7rem;
             font-weight: 600;
         }
 
         .status-badge.new {
-            background: #fff3cd;
-            color: #856404;
+            background: rgba(255, 107, 0, 0.15);
+            color: #FF6B00;
+            border: 1px solid rgba(255, 107, 0, 0.1);
         }
 
         .status-badge.contacted {
-            background: #cce5ff;
-            color: #004085;
+            background: rgba(0, 123, 255, 0.15);
+            color: #4d9fff;
+            border: 1px solid rgba(0, 123, 255, 0.1);
         }
 
         .status-badge.enrolled {
-            background: #d4edda;
-            color: #155724;
+            background: rgba(76, 175, 80, 0.15);
+            color: #4CAF50;
+            border: 1px solid rgba(76, 175, 80, 0.1);
         }
 
         .status-badge.declined {
-            background: #f8d7da;
-            color: #721c24;
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 0, 0, 0.1);
         }
 
         .status-badge.read {
-            background: #d4edda;
-            color: #155724;
+            background: rgba(76, 175, 80, 0.15);
+            color: #4CAF50;
+            border: 1px solid rgba(76, 175, 80, 0.1);
         }
 
         .status-badge.unread {
-            background: #fff3cd;
-            color: #856404;
+            background: rgba(255, 107, 0, 0.15);
+            color: #FF6B00;
+            border: 1px solid rgba(255, 107, 0, 0.1);
         }
 
-        .text-muted {
-            color: #999;
-            font-size: 0.85rem;
+        .no-data {
+            color: rgba(255, 255, 255, 0.2);
+            text-align: center;
+            padding: 30px 0;
+            font-size: 0.95rem;
         }
 
-        /* Responsive */
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
         @media (max-width: 992px) {
             .stats-grid-admin {
                 grid-template-columns: repeat(2, 1fr);
@@ -335,6 +506,13 @@ $recentMessages = $pdo->query("
                 width: 200px;
                 padding: 20px 15px;
             }
+            
+            .admin-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+                padding: 20px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -346,6 +524,8 @@ $recentMessages = $pdo->query("
                 min-height: auto;
                 height: auto;
                 position: static;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
             }
             .stats-grid-admin {
                 grid-template-columns: 1fr;
@@ -353,6 +533,8 @@ $recentMessages = $pdo->query("
             .admin-header {
                 flex-direction: column;
                 align-items: stretch;
+                text-align: center;
+                padding: 15px;
             }
         }
     </style>
@@ -362,8 +544,10 @@ $recentMessages = $pdo->query("
     <!-- Sidebar -->
     <aside class="admin-sidebar">
         <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <h2>Mbogo High School</h2>
+            <div class="icon-wrapper">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h2>School Admin</h2>
         </div>
         <div class="user">
             <div class="name"><?= clean($_SESSION['admin_name']) ?></div>
@@ -376,6 +560,7 @@ $recentMessages = $pdo->query("
             <a href="messages.php"><i class="fas fa-envelope"></i> Messages</a>
             <a href="enquiries.php"><i class="fas fa-question-circle"></i> Enquiries</a>
             <a href="manage-staff.php"><i class="fas fa-users"></i> Staff</a>
+            <a href="manage-gallery.php"><i class="fas fa-images"></i> Gallery</a>
             <a href="settings.php"><i class="fas fa-cog"></i> Settings</a>
             <form method="POST" action="logout.php" style="margin-top:20px;">
                 <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
@@ -396,25 +581,25 @@ $recentMessages = $pdo->query("
                 <div class="icon"><i class="fas fa-newspaper"></i></div>
                 <div class="number"><?= $totalNews ?></div>
                 <div class="label">Total News Articles</div>
-                <div style="font-size:0.8rem;color:#4CAF50;"><?= $totalPublished ?> published</div>
+                <div class="sub-info published"><?= $totalPublished ?> published</div>
             </div>
             <div class="stat-card">
                 <div class="icon"><i class="fas fa-envelope"></i></div>
                 <div class="number"><?= $totalMessages ?></div>
                 <div class="label">Unread Messages</div>
-                <div style="font-size:0.8rem;color:#FF6B6B;"><?= $totalMessages ?> need attention</div>
+                <div class="sub-info pending"><?= $totalMessages ?> need attention</div>
             </div>
             <div class="stat-card">
                 <div class="icon"><i class="fas fa-question-circle"></i></div>
                 <div class="number"><?= $totalEnquiries ?></div>
                 <div class="label">New Enquiries</div>
-                <div style="font-size:0.8rem;color:#FFD700;"><?= $totalEnquiries ?> pending</div>
+                <div class="sub-info pending"><?= $totalEnquiries ?> pending</div>
             </div>
             <div class="stat-card">
                 <div class="icon"><i class="fas fa-users"></i></div>
                 <div class="number"><?= $totalStaff ?></div>
                 <div class="label">Active Staff</div>
-                <div style="font-size:0.8rem;color:#4CAF50;"><?= $pdo->query("SELECT COUNT(*) FROM staff WHERE is_management = 1")->fetchColumn() ?> management</div>
+                <div class="sub-info published"><?= $pdo->query("SELECT COUNT(*) FROM staff WHERE is_management = 1")->fetchColumn() ?> management</div>
             </div>
         </div>
 
@@ -425,17 +610,19 @@ $recentMessages = $pdo->query("
                 <?php foreach ($recentActivity as $activity): ?>
                     <div class="activity-item">
                         <span>
-                            <span class="action"><?= clean($activity['admin_name'] ?? 'System') ?></span>
-                            <span style="color:#666;"><?= clean($activity['action']) ?></span>
+                            <span class="action">
+                                <span class="admin-name"><?= clean($activity['admin_name'] ?? 'System') ?></span>
+                                <span style="color:rgba(255,255,255,0.6);"><?= clean($activity['action']) ?></span>
+                            </span>
                             <?php if ($activity['table_name']): ?>
-                                <span style="color:#999;">on <?= clean($activity['table_name']) ?></span>
+                                <span class="table-name">on <?= clean($activity['table_name']) ?></span>
                             <?php endif; ?>
                         </span>
                         <span class="time"><?= formatDate($activity['created_at'], 'M j, Y g:i A') ?></span>
                     </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p style="color:#999;text-align:center;padding:20px;">No activity recorded yet.</p>
+                <div class="no-data">No activity recorded yet.</div>
             <?php endif; ?>
         </div>
 
@@ -449,7 +636,7 @@ $recentMessages = $pdo->query("
                         <?php foreach ($recentEnquiries as $enquiry): ?>
                             <tr>
                                 <td>
-                                    <strong><?= clean($enquiry['student_name']) ?></strong><br>
+                                    <strong style="color:#fff;"><?= clean($enquiry['student_name']) ?></strong><br>
                                     <span class="text-muted"><?= clean($enquiry['parent_name']) ?></span>
                                 </td>
                                 <td>
@@ -462,7 +649,7 @@ $recentMessages = $pdo->query("
                         <?php endforeach; ?>
                     </table>
                 <?php else: ?>
-                    <p style="color:#999;text-align:center;padding:20px;">No enquiries yet.</p>
+                    <div class="no-data">No enquiries yet.</div>
                 <?php endif; ?>
             </div>
 
@@ -474,7 +661,7 @@ $recentMessages = $pdo->query("
                         <?php foreach ($recentMessages as $msg): ?>
                             <tr>
                                 <td>
-                                    <strong><?= clean($msg['name']) ?></strong><br>
+                                    <strong style="color:#fff;"><?= clean($msg['name']) ?></strong><br>
                                     <span class="text-muted"><?= clean($msg['subject']) ?></span>
                                 </td>
                                 <td>
@@ -487,7 +674,7 @@ $recentMessages = $pdo->query("
                         <?php endforeach; ?>
                     </table>
                 <?php else: ?>
-                    <p style="color:#999;text-align:center;padding:20px;">No messages yet.</p>
+                    <div class="no-data">No messages yet.</div>
                 <?php endif; ?>
             </div>
         </div>

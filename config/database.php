@@ -1,7 +1,7 @@
 <?php
 // config/database.php
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'school_website_db');
+define('DB_NAME', 'school_website.db');
 define('DB_USER', 'sadam');
 define('DB_PASS', 'sadam123');
 
