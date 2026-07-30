@@ -1,56 +1,48 @@
 <?php
-// ============================================================
-//  includes/footer.php — Footer & closing HTML
-//  Include at the BOTTOM of every public page.
-// ============================================================
-$schoolName    = isset($pdo) ? getSetting($pdo, 'school_name')    : 'School';
-$schoolAddress = isset($pdo) ? getSetting($pdo, 'school_address') : '';
-$schoolPhone   = isset($pdo) ? getSetting($pdo, 'school_phone')   : '';
-$schoolEmail   = isset($pdo) ? getSetting($pdo, 'school_email')   : '';
+// includes/footer.php
 ?>
-
-<footer class="site-footer">
-    <div class="container footer-grid">
-
-        <!-- About column -->
-        <div class="footer-col">
-            <h3><?= htmlspecialchars($schoolName) ?></h3>
-            <p><?= htmlspecialchars($schoolAddress) ?></p>
-            <p style="margin-top:.5rem">
-                📞 <?= htmlspecialchars($schoolPhone) ?><br>
-                ✉ <?= htmlspecialchars($schoolEmail) ?>
-            </p>
-        </div>
-
-        <!-- Quick links -->
-        <div class="footer-col">
-            <h4>Quick Links</h4>
-            <a href="/school-website/about.php">About Us</a>
-            <a href="/school-website/admissions.php">Admissions</a>
-            <a href="/school-website/news.php">News &amp; Events</a>
-            <a href="/school-website/staff.php">Our Staff</a>
-            <a href="/school-website/contact.php">Contact</a>
-        </div>
-
-        <!-- Academic links -->
-        <div class="footer-col">
-            <h4>Academics</h4>
-            <a href="/school-website/admissions.php#requirements">Entry Requirements</a>
-            <a href="/school-website/admissions.php#downloads">Download Forms</a>
-            <a href="/school-website/gallery.php">Photo Gallery</a>
-            <a href="/school-website/news.php?category=academics">Academic News</a>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
+    </main>
+    <footer class="footer">
         <div class="container">
-            <p>&copy; <?= date('Y') ?> <?= htmlspecialchars($schoolName) ?>. All rights reserved.
-               &nbsp;|&nbsp; Developed by Intellectitech</p>
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h3><?= clean(getSetting($pdo, 'school_name', 'School')) ?></h3>
+                    <p><?= clean(getSetting($pdo, 'school_address', 'P.O. Box 123, Kampala, Uganda')) ?></p>
+                    <p><i class="fas fa-phone"></i> <?= clean(getSetting($pdo, 'school_phone', '+256-700-123456')) ?></p>
+                    <p><i class="fas fa-envelope"></i> <?= clean(getSetting($pdo, 'school_email', 'info@school.ug')) ?></p>
+                </div>
+                <div class="footer-column">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.php">About Us</a></li>
+                        <li><a href="admissions.php">Admissions</a></li>
+                        <li><a href="news.php">News</a></li>
+                        <li><a href="contact.php">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="staff.php">Staff Directory</a></li>
+                        <li><a href="gallery.php">Photo Gallery</a></li>
+                        <li><a href="admissions.php#documents">Download Forms</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe for updates</p>
+                    <form action="subscribe.php" method="POST" class="newsletter-form">
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        <button type="submit" class="btn btn-small">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <?= date('Y') ?> <?= clean(getSetting($pdo, 'school_name', 'School')) ?>. All rights reserved.</p>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
-<script src="/school-website/assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
