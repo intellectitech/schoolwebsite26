@@ -253,7 +253,7 @@ function uploadNewsImage($fileKey)
         return ['path' => null, 'error' => 'Please upload a JPG, PNG, or WEBP image.'];
     }
 
-    $destDir = __DIR__ . '/images/news';
+    $destDir = __DIR__ . '/../images/news';
     if (!is_dir($destDir)) {
         mkdir($destDir, 0755, true);
     }
@@ -306,7 +306,8 @@ function uploadEventImage($fileKey)
         return ['path' => null, 'error' => 'Please upload a JPG, PNG, or WEBP image.'];
     }
 
-    $destDir = __DIR__ . '/images/events';
+    //
+    $destDir = __DIR__ . '/../images/events';
     if (!is_dir($destDir)) {
         mkdir($destDir, 0755, true);
     }
