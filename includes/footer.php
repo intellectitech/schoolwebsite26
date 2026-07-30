@@ -1,56 +1,53 @@
 <?php
-// ============================================================
-//  includes/footer.php — Footer & closing HTML
-//  Include at the BOTTOM of every public page.
-// ============================================================
-$schoolName    = isset($pdo) ? getSetting($pdo, 'school_name')    : 'School';
-$schoolAddress = isset($pdo) ? getSetting($pdo, 'school_address') : '';
-$schoolPhone   = isset($pdo) ? getSetting($pdo, 'school_phone')   : '';
-$schoolEmail   = isset($pdo) ? getSetting($pdo, 'school_email')   : '';
+$schoolName    = getSetting($pdo, 'school_name', "Namugongo Parents' School");
+$schoolAddress = getSetting($pdo, 'school_address');
+$schoolPhone   = getSetting($pdo, 'school_phone');
+$schoolEmail   = getSetting($pdo, 'school_email');
+$facebookUrl   = getSetting($pdo, 'facebook_url', '#');
+$twitterUrl    = getSetting($pdo, 'twitter_url', '#');
+$instagramUrl  = getSetting($pdo, 'instagram_url', '#');
 ?>
+    </main>
 
-<footer class="site-footer">
-    <div class="container footer-grid">
-
-        <!-- About column -->
-        <div class="footer-col">
-            <h3><?= htmlspecialchars($schoolName) ?></h3>
-            <p><?= htmlspecialchars($schoolAddress) ?></p>
-            <p style="margin-top:.5rem">
-                📞 <?= htmlspecialchars($schoolPhone) ?><br>
-                ✉ <?= htmlspecialchars($schoolEmail) ?>
-            </p>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.php" class="nav-link">Home</a></li>
+                    <li><a href="about.php" class="nav-link">About Us</a></li>
+                    <li><a href="staff.php" class="nav-link">Our Staff</a></li>
+                    <li><a href="admissions.php" class="nav-link">Admissions</a></li>
+                    <li><a href="fees.php" class="nav-link">School Fees</a></li>
+                    <li><a href="news.php" class="nav-link">News & Events</a></li>
+                    <li><a href="gallery.php" class="nav-link">Gallery</a></li>
+                    <li><a href="contact.php" class="nav-link">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><?= htmlspecialchars($schoolAddress) ?></li>
+                    <li><?= htmlspecialchars($schoolPhone) ?></li>
+                    <li><?= htmlspecialchars($schoolEmail) ?></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <ul>
+                    <li><a href="<?= htmlspecialchars($facebookUrl) ?>">Facebook</a></li>
+                    <li><a href="<?= htmlspecialchars($twitterUrl) ?>">Twitter</a></li>
+                    <li><a href="<?= htmlspecialchars($instagramUrl) ?>">Instagram</a></li>
+                </ul>
+            </div>
         </div>
-
-        <!-- Quick links -->
-        <div class="footer-col">
-            <h4>Quick Links</h4>
-            <a href="/school-website/about.php">About Us</a>
-            <a href="/school-website/admissions.php">Admissions</a>
-            <a href="/school-website/news.php">News &amp; Events</a>
-            <a href="/school-website/staff.php">Our Staff</a>
-            <a href="/school-website/contact.php">Contact</a>
+        <div class="copyright">
+            <p>&copy; <?= date('Y') ?> <?= htmlspecialchars($schoolName) ?>. All Rights Reserved.
+               &nbsp;|&nbsp; <a href="admin/login.php" style="color:inherit">Admin Login</a></p>
         </div>
+    </footer>
 
-        <!-- Academic links -->
-        <div class="footer-col">
-            <h4>Academics</h4>
-            <a href="/school-website/admissions.php#requirements">Entry Requirements</a>
-            <a href="/school-website/admissions.php#downloads">Download Forms</a>
-            <a href="/school-website/gallery.php">Photo Gallery</a>
-            <a href="/school-website/news.php?category=academics">Academic News</a>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        <div class="container">
-            <p>&copy; <?= date('Y') ?> <?= htmlspecialchars($schoolName) ?>. All rights reserved.
-               &nbsp;|&nbsp; Developed by Intellectitech</p>
-        </div>
-    </div>
-</footer>
-
-<script src="/school-website/assets/js/main.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>

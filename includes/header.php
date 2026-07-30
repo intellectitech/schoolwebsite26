@@ -1,22 +1,19 @@
 <?php
 // ============================================================
-//  includes/header.php — Navigation & <head>
-//  Include at the top of EVERY public page.
-//  The page must set $pageTitle before including this.
+//  includes/header.php — <head>, sliding background & nav
+//  Include at the TOP of every public page. The page must set
+//  $pageTitle (and optionally $pageId for nav highlighting)
+//  before including this.
 // ============================================================
+require_once __DIR__ . '/functions.php';
 
-// Load DB + functions if not already loaded
-if (!isset($pdo)) {
-    require_once __DIR__ . '/../config/database.php';
-}
-require_once __DIR__ . '/../includes/functions.php';
-
-$schoolName  = getSetting($pdo, 'school_name');
+$schoolName  = getSetting($pdo, 'school_name', "Namugongo Parents' School");
 $schoolPhone = getSetting($pdo, 'school_phone');
 $schoolEmail = getSetting($pdo, 'school_email');
 
-// Detect current page for active nav highlight
-$currentPage = basename($_SERVER['PHP_SELF'], '.php');
+// Detect current page for active nav highlight.
+// Pages can override this by setting $pageId before including this file.
+$currentPage = $pageId ?? basename($_SERVER['PHP_SELF'], '.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,51 +21,52 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle ?? $schoolName) ?></title>
-    <link rel="stylesheet" href="/school-website/assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-
-<!-- ── TOP BAR ── -->
-<div class="top-bar">
-    <div class="container top-bar-inner">
-        <span>📞 <?= htmlspecialchars($schoolPhone) ?></span>
-        <span>✉ <?= htmlspecialchars($schoolEmail) ?></span>
-        <a href="/school-website/admin/login.php" class="admin-link">Admin Login</a>
+    <!-- Global Sliding Background -->
+    <div class="page-background">
+        <div class="bg-slide" style="background-image: url('assets/images/images.jpg');"></div>
+        <div class="bg-slide" style="background-image: url('assets/images/image1.jpg');"></div>
+        <div class="bg-slide" style="background-image: url('assets/images/image2.jpg');"></div>
+        <div class="bg-slide" style="background-image: url('assets/images/image3.jpg');"></div>
     </div>
-</div>
+    <div class="bg-overlay"></div>
 
-<!-- ── SITE HEADER ── -->
-<header class="site-header">
-    <div class="container header-inner">
-        <a href="/school-website/" class="logo">
-            <span class="logo-name"><?= htmlspecialchars($schoolName) ?></span>
-            <span class="logo-tagline">Excellence in Education</span>
-        </a>
-
-        <!-- Hamburger button — shown only on mobile -->
-        <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false">
-            <span></span><span></span><span></span>
-        </button>
-
-        <!-- Main navigation -->
-        <nav class="main-nav" id="main-nav" role="navigation" aria-label="Main menu">
-            <?php
-            $navLinks = [
-                'index'      => ['Home',       '/school-website/'],
-                'about'      => ['About',      '/school-website/about.php'],
-                'news'       => ['News',        '/school-website/news.php'],
-                'admissions' => ['Admissions',  '/school-website/admissions.php'],
-                'staff'      => ['Staff',       '/school-website/staff.php'],
-                'gallery'    => ['Gallery',     '/school-website/gallery.php'],
-                'contact'    => ['Contact',     '/school-website/contact.php'],
-            ];
-            foreach ($navLinks as $key => [$label, $href]):
-                $active = ($currentPage === $key) ? 'active' : '';
-            ?>
-            <a href="<?= $href ?>" class="nav-link <?= $active ?>">
-                <?= $label ?>
-            </a>
-            <?php endforeach; ?>
+    <!-- Header & Navigation -->
+    <header>
+        <nav>
+            <div class="logo">
+                <div class="logo-badge-small">
+                    <img src="assets/images/images.jpg" alt="School Badge">
+                </div>
+                <?= htmlspecialchars($schoolName) ?>
+            </div>
+            <ul>
+                <?php
+                $navLinks = [
+                    'home'       => ['Home',           'index.php'],
+                    'about'      => ['About Us',       'about.php'],
+                    'staff'      => ['Our Staff',      'staff.php'],
+                    'admissions' => ['Admissions',     'admissions.php'],
+                    'fees'       => ['School Fees',    'fees.php'],
+                    'news'       => ['News & Events',  'news.php'],
+                    'gallery'    => ['Gallery',        'gallery.php'],
+                    'contact'    => ['Contact',        'contact.php'],
+                ];
+                foreach ($navLinks as $key => [$label, $href]):
+                    $active = ($currentPage === $key) ? 'active' : '';
+                ?>
+                <li><a href="<?= $href ?>" class="nav-link <?= $active ?>"><?= $label ?></a></li>
+                <?php endforeach; ?>
+                <li class="nav-item">
+    <a href="admin/dashboard.php" class="nav-link admin-dashboard-link">
+        <i class="fa fa-tachometer-alt"></i>🔒
+    </a>
+</li>
+            </ul>
         </nav>
-    </div>
-</header>
+    </header>
+
+    <!-- Main Content -->
+    <main>

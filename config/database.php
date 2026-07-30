@@ -1,8 +1,8 @@
 <?php
 // ============================================================
 //  config/database.php — Database Connection
-//  School Website · Intellectitech Ntinda Hub
-//  Include this file on every page that needs the database.
+//  Namugongo Parents' School
+//  Uses the school_website_db schema.
 // ============================================================
 
 define('DB_HOST',    'localhost');
@@ -18,16 +18,13 @@ try {
 
     $pdo = new PDO($dsn, DB_USER, DB_PASS);
 
-    // Show SQL errors clearly during development
     $pdo->setAttribute(PDO::ATTR_ERRMODE,            PDO::ERRMODE_EXCEPTION);
-    // Return rows as associative arrays: $row['name'] not $row[0]
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-    // Use real prepared statements (security)
     $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,   false);
 
 } catch (PDOException $e) {
-    // Log to server error log — never show raw error to visitors
     error_log('DB Connection failed: ' . $e->getMessage());
     die('<p style="font-family:Arial;color:red;padding:2rem">
-        Database unavailable. Please try again later.</p>');
+        Database unavailable. Make sure XAMPP\'s MySQL is running and the
+        "school_website_db" database has been imported. Please try again later.</p>');
 }

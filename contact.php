@@ -1,129 +1,69 @@
 <?php
-// ============================================================
-//  contact.php — Contact Page
-//  Open at: http://localhost/school-website/contact.php
-// ============================================================
-session_start();
-require_once 'config/database.php';
 require_once 'includes/functions.php';
+$pageId = 'contact';
+$pageTitle = getSetting($pdo, 'school_name') . ' — Contact Us';
 
-$pageTitle = 'Contact Us';
-$schoolName = getSetting($pdo, 'school_name');
+$schoolAddress = getSetting($pdo, 'school_address');
+$schoolPhone   = getSetting($pdo, 'school_phone');
+$schoolEmail   = getSetting($pdo, 'school_email');
+$officeHours   = getSetting($pdo, 'office_hours');
 
-// Pick up flash messages set by process_contact.php
-$success = $_SESSION['success'] ?? '';
-$errors  = $_SESSION['errors']  ?? [];
-unset($_SESSION['success'], $_SESSION['errors']);
+$flash = getFlash();
 
-$mapEmbed = getSetting($pdo, 'google_maps_embed');
+// FAQs relevant to general enquiries
+$faqStmt = $pdo->prepare("SELECT * FROM faqs WHERE category = 'general' AND is_published = 1 ORDER BY sort_order ASC");
+$faqStmt->execute();
+$faqs = $faqStmt->fetchAll();
+
+require_once 'includes/header.php';
 ?>
-<?php require_once 'includes/header.php'; ?>
-
-<div class="page-hero">
+<section id="contact" class="page-section active">
     <div class="container">
-        <h1>Contact Us</h1>
-        <p>We'd love to hear from you</p>
-        <div class="breadcrumb"><a href="/">Home</a> &rsaquo; Contact</div>
-    </div>
-</div>
-
-<section class="section">
-    <div class="container">
-        <div class="contact-grid">
-
-            <!-- School details + map -->
+        <h2 class="section-title">Contact Us</h2>
+        <div class="three-col">
+            <img src="assets/images/image10.jpg" alt="Contact Us">
             <div>
-                <h2 style="color:var(--navy);margin-bottom:1.25rem">Get In Touch</h2>
-
-                <div class="contact-detail">
-                    <span class="contact-icon">📍</span>
-                    <div>
-                        <strong>Address</strong><br>
-                        <span style="color:var(--muted)"><?= htmlspecialchars(getSetting($pdo, 'school_address')) ?></span>
-                    </div>
-                </div>
-
-                <div class="contact-detail">
-                    <span class="contact-icon">📞</span>
-                    <div>
-                        <strong>Phone</strong><br>
-                        <a href="tel:<?= htmlspecialchars(getSetting($pdo,'school_phone')) ?>" style="color:var(--muted)">
-                            <?= htmlspecialchars(getSetting($pdo, 'school_phone')) ?>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="contact-detail">
-                    <span class="contact-icon">✉</span>
-                    <div>
-                        <strong>Email</strong><br>
-                        <a href="mailto:<?= htmlspecialchars(getSetting($pdo,'school_email')) ?>" style="color:var(--muted)">
-                            <?= htmlspecialchars(getSetting($pdo, 'school_email')) ?>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Google Maps embed (added in admin → school_info) -->
-                <?php if ($mapEmbed): ?>
-                <div class="map-embed">
-                    <?= $mapEmbed ?>
-                </div>
-                <?php else: ?>
-                <div style="background:var(--off);border-radius:var(--radius);padding:2rem;text-align:center;margin-top:1.5rem;color:var(--muted)">
-                    <p>Map will appear here once added in the admin panel.</p>
-                </div>
-                <?php endif; ?>
+                <h3 class="sub-title">Get In Touch</h3>
+                <p class="contact-item"><strong>Address:</strong> <?= htmlspecialchars($schoolAddress) ?></p>
+                <p class="contact-item"><strong>Phone:</strong> <?= htmlspecialchars($schoolPhone) ?></p>
+                <p class="contact-item"><strong>Email:</strong> <?= htmlspecialchars($schoolEmail) ?></p>
+                <p class="contact-item"><strong>Office Hours:</strong> <?= htmlspecialchars($officeHours) ?></p>
             </div>
-
-            <!-- Contact form -->
-            <div>
-                <h2 style="color:var(--navy);margin-bottom:1.25rem">Send a Message</h2>
-
-                <?php if ($success): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($success) ?></div>
+            <form class="contact-form" method="POST" action="process_contact.php">
+                <?php if ($flash['success']): ?>
+                    <p class="success"><?= htmlspecialchars($flash['success']) ?></p>
+                <?php elseif ($flash['errors']): ?>
+                    <div class="error-list"><ul>
+                        <?php foreach ($flash['errors'] as $err): ?><li><?= htmlspecialchars($err) ?></li><?php endforeach; ?>
+                    </ul></div>
                 <?php endif; ?>
 
-                <?php if ($errors): ?>
-                <div class="alert alert-error">
-                    <?php foreach ($errors as $e): ?>
-                    <p><?= htmlspecialchars($e) ?></p>
-                    <?php endforeach; ?>
-                </div>
-                <?php endif; ?>
+                <!-- Honeypot: hidden from real visitors, only bots fill this in -->
+                <input type="text" name="website" class="hp-field" tabindex="-1" autocomplete="off">
 
-                <form action="process_contact.php" method="POST">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="name">Your Name *</label>
-                            <input type="text" id="name" name="name"
-                                   placeholder="Full name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email"
-                                   placeholder="your@email.com" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="subject">Subject *</label>
-                        <input type="text" id="subject" name="subject"
-                               placeholder="What is your message about?" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message">Message *</label>
-                        <textarea id="message" name="message"
-                                  placeholder="Type your message here..."
-                                  maxlength="2000" required></textarea>
-                    </div>
-
-                    <button type="submit" class="btn btn-blue">Send Message</button>
-                </form>
-            </div>
-
+                <input type="text" name="name" placeholder="Your Name" required value="<?= old($flash['old'], 'name') ?>">
+                <input type="email" name="email" placeholder="Your Email" required value="<?= old($flash['old'], 'email') ?>">
+                <input type="text" name="phone" placeholder="Your Phone (optional)" value="<?= old($flash['old'], 'phone') ?>">
+                <input type="text" name="subject" placeholder="Subject" required value="<?= old($flash['old'], 'subject') ?>">
+                <textarea name="message" rows="5" placeholder="Your Message" required><?= old($flash['old'], 'message') ?></textarea>
+                <button type="submit">Send Message</button>
+            </form>
         </div>
+
+        <?php if ($faqs): ?>
+        <h2 class="section-title" style="margin-top:60px;">Frequently Asked Questions</h2>
+        <div class="faq-list">
+            <?php foreach ($faqs as $f): ?>
+            <div class="faq-item">
+                <button type="button" class="faq-question">
+                    <span><?= htmlspecialchars($f['question']) ?></span>
+                    <span class="faq-icon">+</span>
+                </button>
+                <div class="faq-answer"><p><?= htmlspecialchars($f['answer']) ?></p></div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
     </div>
 </section>
-
 <?php require_once 'includes/footer.php'; ?>

@@ -1,50 +1,45 @@
 <?php
 // ============================================================
 //  process_contact.php — Contact Form Handler
-//  This file receives POST data from contact.php
+//  Receives POST data from contact.php and stores it in the
+//  contact_messages table.
 // ============================================================
-session_start();
-require_once 'config/database.php';
 require_once 'includes/functions.php';
 
-// Only accept POST requests — redirect anything else
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: contact.php');
-    exit;
+    redirectTo('contact.php');
 }
 
-// ── STEP 1: SANITIZE ─────────────────────────────────────────
 $name    = clean($_POST['name']    ?? '');
 $email   = clean($_POST['email']   ?? '');
+$phone   = clean($_POST['phone']   ?? '');
 $subject = clean($_POST['subject'] ?? '');
 $message = clean($_POST['message'] ?? '');
 
-// ── STEP 2: VALIDATE ─────────────────────────────────────────
-$errors = [];
-
-if (empty($name))                              $errors[] = 'Your name is required.';
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Please enter a valid email address.';
-if (empty($subject))                            $errors[] = 'A subject is required.';
-if (empty($message))                            $errors[] = 'Please write a message.';
-if (strlen($message) < 10)                      $errors[] = 'Message must be at least 10 characters.';
-
-if (!empty($errors)) {
-    $_SESSION['errors'] = $errors;
-    header('Location: contact.php');
-    exit;
+// Honeypot — real visitors never see or fill this field in.
+if (!empty($_POST['website'] ?? '')) {
+    redirectTo('contact.php');
 }
 
-// ── STEP 3: SAVE TO DATABASE ─────────────────────────────────
-$stmt = $pdo->prepare(
-    'INSERT INTO contact_messages (name, email, subject, message, ip_address)
-     VALUES (?, ?, ?, ?, ?)'
-);
-$stmt->execute([
-    $name, $email, $subject, $message,
-    $_SERVER['REMOTE_ADDR']
-]);
+$errors = [];
+if ($name === '') $errors[] = 'Your name is required.';
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Please enter a valid email address.';
+if ($phone !== '' && !preg_match('/^[0-9+\-\s()]{7,30}$/', $phone)) $errors[] = 'Please enter a valid phone number.';
+if ($subject === '') $errors[] = 'Please enter a subject.';
+if (mb_strlen($message) < 10) $errors[] = 'Your message must be at least 10 characters.';
+if (mb_strlen($message) > 2000) $errors[] = 'Your message is too long (2000 characters max).';
 
-// ── STEP 4: REDIRECT WITH SUCCESS ────────────────────────────
-$_SESSION['success'] = 'Thank you ' . $name . '! Your message has been received. We will reply within 24 hours.';
-header('Location: contact.php');
-exit;
+if ($errors) {
+    setFlashErrors($errors);
+    setOldInput(['name' => $name, 'email' => $email, 'phone' => $phone, 'subject' => $subject, 'message' => $message]);
+    redirectTo('contact.php');
+}
+
+$stmt = $pdo->prepare(
+    'INSERT INTO contact_messages (name, email, phone, subject, message, ip_addess, is_read, replied_at)
+     VALUES (?, ?, ?, ?, ?, ?, 0, NULL)'
+);
+$stmt->execute([$name, $email, $phone, $subject, $message, $_SERVER['REMOTE_ADDR'] ?? '']);
+
+setFlashSuccess('Thank you, ' . $name . '! Your message has been received. We will reply within two working days.');
+redirectTo('contact.php');
