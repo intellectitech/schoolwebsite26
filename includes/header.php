@@ -35,7 +35,7 @@ $tickerNews = $tickerStmt->fetchAll();
 </head>
 <body>
     <!-- ============================================ -->
-    <!-- TOP BAR WITH CONTACT INFO -->
+    <!-- TOP BAR - Black with Green Accent -->
     <!-- ============================================ -->
     <div class="top-bar">
         <div class="container">
@@ -56,23 +56,23 @@ $tickerNews = $tickerStmt->fetchAll();
     </div>
 
     <!-- ============================================ -->
-    <!-- NEWS TICKER - Between Top Bar and Navigation -->
+    <!-- NEWS TICKER - Red Background, White Text -->
     <!-- ============================================ -->
     <div class="ticker-bar">
         <div class="container">
             <div class="ticker-wrapper">
                 <div class="ticker-label">
-                    <i class="fas fa-bullhorn"></i> Latest News
+                    <i class="fas fa-bullhorn"></i> Latest Updates
                 </div>
                 <div class="ticker-container" id="tickerContainer">
                     <div class="ticker-slide" id="tickerSlide">
-                        <a href="#" id="tickerLink">
-                            <?php if (!empty($tickerNews)): ?>
+                        <?php if (!empty($tickerNews)): ?>
+                            <a href="article.php?slug=<?= clean($tickerNews[0]['slug']) ?>" id="tickerLink">
                                 <?= clean($tickerNews[0]['title']) ?>
-                            <?php else: ?>
-                                No updates available
-                            <?php endif; ?>
-                        </a>
+                            </a>
+                        <?php else: ?>
+                            <a href="#" style="color:rgba(255,255,255,0.7);">No updates available</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -80,7 +80,7 @@ $tickerNews = $tickerStmt->fetchAll();
     </div>
 
     <!-- ============================================ -->
-    <!-- NAVIGATION - STICKY -->
+    <!-- NAVIGATION - Sticky with Glass Effect -->
     <!-- ============================================ -->
     <nav class="main-nav" id="mainNav" role="navigation">
         <div class="container">
@@ -90,7 +90,9 @@ $tickerNews = $tickerStmt->fetchAll();
                         <?php if (!empty($schoolLogo)): ?>
                             <img src="<?= clean($schoolLogo) ?>" alt="<?= clean($schoolName) ?>" class="logo-img">
                         <?php else: ?>
-                            <i class="fas fa-graduation-cap"></i>
+                            <div class="logo-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
                             <span><?= clean($schoolName) ?></span>
                         <?php endif; ?>
                     </a>
@@ -111,6 +113,7 @@ $tickerNews = $tickerStmt->fetchAll();
                     <?php if (isLoggedIn()): ?>
                         <li><a href="admin/dashboard.php"><i class="fas fa-user-cog"></i> Dashboard</a></li>
                     <?php endif; ?>
+                    <li><a href="admissions.php" class="nav-cta">Apply Now</a></li>
                 </ul>
             </div>
         </div>
@@ -120,7 +123,7 @@ $tickerNews = $tickerStmt->fetchAll();
     <!-- PASS PHP DATA TO JAVASCRIPT -->
     <!-- ============================================ -->
     <script>
-        // Pass news data to JavaScript
+        // Pass news data to JavaScript for ticker
         var tickerNewsData = <?php echo json_encode($tickerNews); ?>;
         console.log('Ticker loaded with ' + tickerNewsData.length + ' items');
     </script>

@@ -6,7 +6,7 @@ require_once 'includes/functions.php';
 
 $pageTitle = 'About Us - ' . getSetting($pdo, 'school_name', 'School');
 
-// Fetch leadership team (staff with is_management = 1)
+// Fetch leadership team
 $leadershipStmt = $pdo->query("
     SELECT * FROM staff 
     WHERE is_management = 1 AND is_active = 1 
@@ -14,40 +14,48 @@ $leadershipStmt = $pdo->query("
 ");
 $leadership = $leadershipStmt->fetchAll();
 
-// Fetch staff count by department for stats
-$deptStats = $pdo->query("
-    SELECT d.name, COUNT(s.id) as count 
-    FROM departments d
-    LEFT JOIN staff s ON s.department_id = d.id AND s.is_active = 1
-    GROUP BY d.id
-    ORDER BY d.name
-")->fetchAll();
-
 include 'includes/header.php';
 ?>
 
 <style>
 .about-hero {
-    background: linear-gradient(135deg, #0d2617, #1a4d2e);
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
     color: #fff;
     padding: 80px 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.about-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(ellipse, rgba(0, 200, 83, 0.08), transparent 70%);
+    animation: heroGlow 8s ease-in-out infinite alternate;
 }
 .about-hero h1 {
     color: #fff;
     font-size: 3rem;
 }
+.about-hero h1 .highlight {
+    color: #00C853;
+}
 .about-hero p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.7);
     max-width: 700px;
     margin: 20px auto 0;
 }
+
 .about-section {
     padding: 80px 0;
 }
 .about-section:nth-child(even) {
-    background: #f8f9fa;
+    background: #f5e6d3;
 }
+
 .mission-vision-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -56,19 +64,28 @@ include 'includes/header.php';
 .mission-box, .vision-box {
     background: #fff;
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    border-top: 4px solid #FFD700;
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+    border-top: 4px solid #00C853;
+    transition: transform 0.3s;
 }
-.mission-box h3, .vision-box h3 {
-    color: #1a4d2e;
-    margin-bottom: 15px;
+.mission-box:hover, .vision-box:hover {
+    transform: translateY(-5px);
 }
 .mission-box i, .vision-box i {
-    color: #FFD700;
-    font-size: 2rem;
+    color: #00C853;
+    font-size: 2.5rem;
     margin-bottom: 15px;
 }
+.mission-box h3, .vision-box h3 {
+    color: #0a0a0a;
+    margin-bottom: 15px;
+}
+.mission-box p, .vision-box p {
+    color: #8D6E63;
+    line-height: 1.8;
+}
+
 .core-values {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -79,33 +96,36 @@ include 'includes/header.php';
     text-align: center;
     padding: 30px 20px;
     background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    transition: transform 0.3s;
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+    transition: all 0.3s;
+    border: 1px solid rgba(0,0,0,0.04);
 }
 .core-value:hover {
     transform: translateY(-5px);
+    box-shadow: 0 10px 50px rgba(0,0,0,0.12);
 }
 .core-value .icon {
     width: 60px;
     height: 60px;
-    background: #1a4d2e;
+    background: linear-gradient(135deg, #009624, #00C853);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 15px;
-    color: #FFD700;
+    color: #fff;
     font-size: 1.5rem;
 }
 .core-value h4 {
-    color: #1a4d2e;
+    color: #0a0a0a;
     margin-bottom: 8px;
 }
 .core-value p {
     font-size: 0.9rem;
-    color: #666;
+    color: #8D6E63;
 }
+
 .leadership-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -114,66 +134,82 @@ include 'includes/header.php';
 }
 .leader-card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
     text-align: center;
-    transition: transform 0.3s;
+    transition: all 0.3s;
 }
 .leader-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 10px 50px rgba(0,0,0,0.12);
 }
 .leader-card .photo {
     width: 100%;
     height: 250px;
     object-fit: cover;
-    background: #e9ecef;
+    background: #e0e0e0;
 }
 .leader-card .info {
     padding: 25px;
 }
 .leader-card .info h4 {
-    color: #1a4d2e;
+    color: #0a0a0a;
     margin-bottom: 5px;
 }
 .leader-card .info .role {
-    color: #FFD700;
+    color: #00C853;
     font-weight: 600;
     font-size: 0.9rem;
 }
 .leader-card .info .subjects {
-    color: #666;
+    color: #8D6E63;
     font-size: 0.85rem;
     margin-top: 5px;
 }
+
+.stats-grid-about {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+.stat-item-about {
+    text-align: center;
+    background: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+}
+.stat-item-about .number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #00C853;
+    display: block;
+}
+.stat-item-about .label {
+    color: #8D6E63;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
 @media (max-width: 992px) {
-    .mission-vision-grid {
-        grid-template-columns: 1fr;
-    }
-    .core-values {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .leadership-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .mission-vision-grid { grid-template-columns: 1fr; }
+    .core-values { grid-template-columns: repeat(2, 1fr); }
+    .leadership-grid { grid-template-columns: repeat(2, 1fr); }
+    .stats-grid-about { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 576px) {
-    .core-values {
-        grid-template-columns: 1fr;
-    }
-    .leadership-grid {
-        grid-template-columns: 1fr;
-    }
-    .about-hero h1 {
-        font-size: 2rem;
-    }
+    .core-values { grid-template-columns: 1fr; }
+    .leadership-grid { grid-template-columns: 1fr; }
+    .stats-grid-about { grid-template-columns: 1fr; }
+    .about-hero h1 { font-size: 2rem; }
 }
 </style>
 
 <!-- Hero -->
 <section class="about-hero">
     <div class="container">
-        <h1>About <?= clean(getSetting($pdo, 'school_name', 'Our School')) ?></h1>
+        <h1>About <span class="highlight"><?= clean(getSetting($pdo, 'school_name', 'Our School')) ?></span></h1>
         <p>Discover our rich history, mission, and commitment to excellence in education since <?= clean(getSetting($pdo, 'founded_year', '1985')) ?>.</p>
     </div>
 </section>
@@ -197,10 +233,11 @@ include 'includes/header.php';
 </section>
 
 <!-- Core Values -->
-<section class="about-section" style="background:#f8f9fa;">
+<section class="about-section" style="background:#f5e6d3;">
     <div class="container">
         <div class="section-title">
-            <h2>Our Core Values</h2>
+            <span class="subtitle">What We Stand For</span>
+            <h2>Our Core <span class="highlight-green">Values</span></h2>
             <p>The principles that guide everything we do</p>
         </div>
         <div class="core-values">
@@ -233,7 +270,8 @@ include 'includes/header.php';
 <section class="about-section">
     <div class="container">
         <div class="section-title">
-            <h2>Leadership Team</h2>
+            <span class="subtitle">Our Leaders</span>
+            <h2>Leadership <span class="highlight-green">Team</span></h2>
             <p>Meet the dedicated leaders guiding our school</p>
         </div>
         <div class="leadership-grid">
@@ -242,7 +280,7 @@ include 'includes/header.php';
                     <?php if (!empty($leader['photo'])): ?>
                         <img src="<?= clean($leader['photo']) ?>" alt="<?= clean($leader['first_name']) ?>" class="photo">
                     <?php else: ?>
-                        <div class="photo" style="display:flex;align-items:center;justify-content:center;background:#e9ecef;color:#999;font-size:3rem;">
+                        <div class="photo" style="display:flex;align-items:center;justify-content:center;background:#e0e0e0;color:#999;font-size:3rem;">
                             <i class="fas fa-user"></i>
                         </div>
                     <?php endif; ?>
@@ -261,28 +299,29 @@ include 'includes/header.php';
 <?php endif; ?>
 
 <!-- School Stats -->
-<section class="about-section" style="background:#f8f9fa;">
+<section class="about-section" style="background:#f5e6d3;">
     <div class="container">
         <div class="section-title">
-            <h2>School at a Glance</h2>
+            <span class="subtitle">By The Numbers</span>
+            <h2>School at a <span class="highlight-green">Glance</span></h2>
             <p>Key facts and figures about our institution</p>
         </div>
-        <div class="stats-grid" style="grid-template-columns: repeat(4, 1fr);">
-            <div class="stat-item" style="text-align:center;background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
-                <span class="stat-number" style="color:#1a4d2e;font-size:2.5rem;"><?= clean(getSetting($pdo, 'founded_year', '1985')) ?></span>
-                <span class="stat-label" style="color:#666;text-transform:none;letter-spacing:0;">Year Founded</span>
+        <div class="stats-grid-about">
+            <div class="stat-item-about">
+                <span class="number"><?= clean(getSetting($pdo, 'founded_year', '1985')) ?></span>
+                <span class="label">Year Founded</span>
             </div>
-            <div class="stat-item" style="text-align:center;background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
-                <span class="stat-number" style="color:#1a4d2e;font-size:2.5rem;"><?= clean(getSetting($pdo, 'total_students', '1,200')) ?>+</span>
-                <span class="stat-label" style="color:#666;text-transform:none;letter-spacing:0;">Students</span>
+            <div class="stat-item-about">
+                <span class="number"><?= clean(getSetting($pdo, 'total_students', '1,200')) ?>+</span>
+                <span class="label">Students</span>
             </div>
-            <div class="stat-item" style="text-align:center;background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
-                <span class="stat-number" style="color:#1a4d2e;font-size:2.5rem;"><?= clean(getSetting($pdo, 'total_teachers', '60')) ?>+</span>
-                <span class="stat-label" style="color:#666;text-transform:none;letter-spacing:0;">Teachers</span>
+            <div class="stat-item-about">
+                <span class="number"><?= clean(getSetting($pdo, 'total_teachers', '60')) ?>+</span>
+                <span class="label">Teachers</span>
             </div>
-            <div class="stat-item" style="text-align:center;background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
-                <span class="stat-number" style="color:#1a4d2e;font-size:2.5rem;"><?= clean(getSetting($pdo, 'pass_rate', '86')) ?>%</span>
-                <span class="stat-label" style="color:#666;text-transform:none;letter-spacing:0;">UACE Pass Rate</span>
+            <div class="stat-item-about">
+                <span class="number"><?= clean(getSetting($pdo, 'pass_rate', '86')) ?>%</span>
+                <span class="label">UACE Pass Rate</span>
             </div>
         </div>
     </div>

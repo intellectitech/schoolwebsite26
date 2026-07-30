@@ -6,11 +6,9 @@ require_once 'includes/functions.php';
 
 $pageTitle = 'Staff Directory - ' . getSetting($pdo, 'school_name', 'School');
 
-// Get filter
 $deptFilter = isset($_GET['department']) ? (int)$_GET['department'] : 0;
 $deptCondition = $deptFilter ? "AND s.department_id = $deptFilter" : "";
 
-// Fetch all staff
 $stmt = $pdo->prepare("
     SELECT s.*, d.name as department_name
     FROM staff s
@@ -21,29 +19,43 @@ $stmt = $pdo->prepare("
 $stmt->execute();
 $staff = $stmt->fetchAll();
 
-// Fetch departments for filter
-$deptsStmt = $pdo->query("SELECT * FROM departments ORDER BY name");
-$departments = $deptsStmt->fetchAll();
+$departments = $pdo->query("SELECT * FROM departments ORDER BY name")->fetchAll();
 
 include 'includes/header.php';
 ?>
 
 <style>
 .staff-hero {
-    background: linear-gradient(135deg, #0d2617, #1a4d2e);
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
     color: #fff;
     padding: 60px 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.staff-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(ellipse, rgba(0, 200, 83, 0.08), transparent 70%);
+    animation: heroGlow 8s ease-in-out infinite alternate;
 }
 .staff-hero h1 {
     color: #fff;
     font-size: 2.8rem;
 }
+.staff-hero h1 .highlight {
+    color: #00C853;
+}
 .staff-hero p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.7);
     max-width: 600px;
     margin: 15px auto 0;
 }
+
 .staff-filters {
     display: flex;
     gap: 10px;
@@ -54,18 +66,23 @@ include 'includes/header.php';
 .staff-filters a {
     padding: 8px 20px;
     border-radius: 50px;
-    background: #e9ecef;
+    background: #fff;
     color: #333;
     transition: all 0.3s;
     font-size: 0.9rem;
+    text-decoration: none;
+    border: 1px solid #e0e0e0;
 }
 .staff-filters a:hover,
 .staff-filters a.active {
-    background: #1a4d2e;
+    background: #00C853;
     color: #fff;
+    border-color: #00C853;
 }
+
 .staff-section {
     padding: 40px 0 80px;
+    background: #f5e6d3;
 }
 .staff-grid {
     display: grid;
@@ -74,26 +91,26 @@ include 'includes/header.php';
 }
 .staff-card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
     transition: all 0.3s;
     text-align: center;
 }
 .staff-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 50px rgba(0,0,0,0.12);
 }
 .staff-card .photo {
     width: 100%;
     height: 240px;
     object-fit: cover;
-    background: #e9ecef;
+    background: #e0e0e0;
 }
 .staff-card .photo-placeholder {
     width: 100%;
     height: 240px;
-    background: linear-gradient(135deg, #e9ecef, #dee2e6);
+    background: linear-gradient(135deg, #e0e0e0, #ccc);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -106,7 +123,7 @@ include 'includes/header.php';
 .staff-card .info .management-badge {
     display: inline-block;
     background: #FFD700;
-    color: #1a4d2e;
+    color: #0a0a0a;
     padding: 2px 12px;
     border-radius: 50px;
     font-size: 0.7rem;
@@ -115,59 +132,63 @@ include 'includes/header.php';
     margin-bottom: 8px;
 }
 .staff-card .info h4 {
-    color: #1a4d2e;
+    color: #0a0a0a;
     margin-bottom: 4px;
 }
 .staff-card .info .role {
-    color: #FFD700;
+    color: #00C853;
     font-weight: 600;
     font-size: 0.9rem;
 }
 .staff-card .info .department {
-    color: #666;
+    color: #8D6E63;
     font-size: 0.85rem;
     margin-top: 5px;
 }
 .staff-card .info .subjects {
-    color: #888;
+    color: #999;
     font-size: 0.85rem;
     margin-top: 5px;
 }
 .staff-card .info .qualification {
-    color: #888;
+    color: #999;
     font-size: 0.85rem;
     margin-top: 5px;
 }
+
+.no-staff {
+    text-align: center;
+    padding: 60px 0;
+    color: #8D6E63;
+}
+.no-staff i {
+    font-size: 3rem;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
 @media (max-width: 1200px) {
-    .staff-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
+    .staff-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 992px) {
-    .staff-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .staff-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 576px) {
-    .staff-grid {
-        grid-template-columns: 1fr;
-    }
-    .staff-hero h1 {
-        font-size: 2rem;
-    }
+    .staff-grid { grid-template-columns: 1fr; }
+    .staff-hero h1 { font-size: 2rem; }
 }
 </style>
 
 <!-- Hero -->
 <section class="staff-hero">
     <div class="container">
-        <h1><i class="fas fa-users"></i> Staff Directory</h1>
+        <h1><i class="fas fa-users"></i> Staff <span class="highlight">Directory</span></h1>
         <p>Meet our dedicated team of educators and professionals</p>
     </div>
 </section>
 
 <!-- Filters -->
-<section style="padding-top:0;">
+<section style="padding-top:0;background:#f5e6d3;">
     <div class="container">
         <div class="staff-filters">
             <a href="staff.php" class="<?= $deptFilter == 0 ? 'active' : '' ?>">All Departments</a>
@@ -214,10 +235,10 @@ include 'includes/header.php';
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div style="text-align:center;padding:60px 0;">
-                <i class="fas fa-users" style="font-size:4rem;color:#ccc;margin-bottom:20px;"></i>
+            <div class="no-staff">
+                <i class="fas fa-users"></i>
                 <h3>No Staff Members Found</h3>
-                <p style="color:#666;">Staff directory is being updated.</p>
+                <p>Staff directory is being updated.</p>
             </div>
         <?php endif; ?>
     </div>

@@ -61,26 +61,53 @@ include 'includes/header.php';
 
 <style>
 .admissions-hero {
-    background: linear-gradient(135deg, #0d2617, #1a4d2e);
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
     color: #fff;
     padding: 60px 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.admissions-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(ellipse, rgba(0, 200, 83, 0.08), transparent 70%);
+    animation: heroGlow 8s ease-in-out infinite alternate;
 }
 .admissions-hero h1 {
     color: #fff;
     font-size: 2.8rem;
 }
+.admissions-hero h1 .highlight {
+    color: #00C853;
+}
 .admissions-hero p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.7);
     max-width: 600px;
     margin: 15px auto 0;
 }
+.admissions-hero .open-badge {
+    display: inline-block;
+    margin-top: 20px;
+    background: rgba(0, 200, 83, 0.15);
+    color: #00C853;
+    padding: 8px 24px;
+    border-radius: 50px;
+    font-weight: 600;
+    border: 1px solid rgba(0, 200, 83, 0.2);
+}
+
 .admissions-section {
     padding: 60px 0;
 }
 .admissions-section:nth-child(even) {
-    background: #f8f9fa;
+    background: #f5e6d3;
 }
+
 .requirements-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -88,15 +115,15 @@ include 'includes/header.php';
 }
 .requirements-list {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 30px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
 }
 .requirements-list h3 {
-    color: #1a4d2e;
+    color: #0a0a0a;
     margin-bottom: 20px;
     padding-bottom: 10px;
-    border-bottom: 3px solid #FFD700;
+    border-bottom: 3px solid #00C853;
 }
 .requirements-list .req-item {
     padding: 12px 0;
@@ -107,65 +134,67 @@ include 'includes/header.php';
 }
 .requirements-list .req-item .title {
     font-weight: 600;
-    color: #1a4d2e;
+    color: #0a0a0a;
 }
 .requirements-list .req-item .desc {
-    color: #666;
+    color: #8D6E63;
     font-size: 0.9rem;
     margin-top: 3px;
 }
+
 .documents-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 .doc-card {
     background: #fff;
     padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    transition: transform 0.3s;
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+    transition: all 0.3s;
     text-align: center;
     border: 2px solid transparent;
 }
 .doc-card:hover {
     transform: translateY(-3px);
-    border-color: #FFD700;
+    border-color: #00C853;
 }
 .doc-card i {
     font-size: 2.5rem;
-    color: #1a4d2e;
+    color: #00C853;
     margin-bottom: 10px;
 }
 .doc-card h4 {
-    color: #1a4d2e;
+    color: #0a0a0a;
     margin-bottom: 5px;
 }
 .doc-card p {
-    color: #666;
+    color: #8D6E63;
     font-size: 0.9rem;
 }
 .doc-card .btn-download {
     display: inline-block;
     margin-top: 12px;
     padding: 8px 20px;
-    background: #1a4d2e;
+    background: #00C853;
     color: #fff;
     border-radius: 50px;
     font-size: 0.85rem;
     transition: all 0.3s;
+    text-decoration: none;
 }
 .doc-card .btn-download:hover {
-    background: #2d7a4a;
-    color: #fff;
+    background: #009624;
 }
+
 .enquiry-form {
     max-width: 700px;
     margin: 0 auto;
     background: #fff;
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
 }
 .enquiry-form .form-group {
     margin-bottom: 20px;
@@ -174,7 +203,7 @@ include 'includes/header.php';
     display: block;
     font-weight: 600;
     margin-bottom: 6px;
-    color: #333;
+    color: #0a0a0a;
     font-size: 0.9rem;
 }
 .enquiry-form label .required {
@@ -195,7 +224,7 @@ include 'includes/header.php';
 .enquiry-form select:focus,
 .enquiry-form textarea:focus {
     outline: none;
-    border-color: #1a4d2e;
+    border-color: #00C853;
 }
 .enquiry-form textarea {
     min-height: 120px;
@@ -204,8 +233,8 @@ include 'includes/header.php';
 .enquiry-form .btn-submit {
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #FFD700, #f5c842);
-    color: #1a4d2e;
+    background: linear-gradient(135deg, #009624, #00C853);
+    color: #fff;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
@@ -215,13 +244,14 @@ include 'includes/header.php';
 }
 .enquiry-form .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+    box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4);
 }
 .enquiry-form .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
+
 .alert-success {
     background: #d4edda;
     color: #155724;
@@ -238,36 +268,26 @@ include 'includes/header.php';
     margin-bottom: 20px;
     border: 1px solid #f5c6cb;
 }
+
 @media (max-width: 992px) {
-    .requirements-grid {
-        grid-template-columns: 1fr;
-    }
-    .documents-grid {
-        grid-template-columns: 1fr;
-    }
+    .requirements-grid { grid-template-columns: 1fr; }
+    .documents-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
-    .admissions-hero h1 {
-        font-size: 2rem;
-    }
-    .enquiry-form {
-        padding: 25px;
-    }
-    .enquiry-form .form-row {
-        grid-template-columns: 1fr;
-    }
+    .admissions-hero h1 { font-size: 2rem; }
+    .enquiry-form { padding: 25px; }
+    .enquiry-form .form-row { grid-template-columns: 1fr; }
+    .documents-grid { grid-template-columns: 1fr; }
 }
 </style>
 
 <!-- Hero -->
 <section class="admissions-hero">
     <div class="container">
-        <h1><i class="fas fa-graduation-cap"></i> Admissions</h1>
+        <h1><i class="fas fa-graduation-cap"></i> <span class="highlight">Admissions</span></h1>
         <p>Join <?= clean(getSetting($pdo, 'school_name', 'our school')) ?> - Where excellence meets opportunity</p>
-        <div style="margin-top:20px;">
-            <span style="background:rgba(255,215,0,0.2);color:#FFD700;padding:8px 20px;border-radius:50px;font-size:0.9rem;">
-                <i class="fas fa-calendar-alt"></i> Applications Open for <?= date('Y') . '/' . (date('Y') + 1) ?>
-            </span>
+        <div class="open-badge">
+            <i class="fas fa-calendar-alt"></i> Applications Open for <?= date('Y') . '/' . (date('Y') + 1) ?>
         </div>
     </div>
 </section>
@@ -276,8 +296,9 @@ include 'includes/header.php';
 <section class="admissions-section">
     <div class="container">
         <div class="section-title">
-            <h2>Entry Requirements</h2>
-            <p>What you need to join <?= clean(getSetting($pdo, 'school_name', 'our school')) ?></p>
+            <span class="subtitle">Entry Requirements</span>
+            <h2>What You <span class="highlight-green">Need</span></h2>
+            <p>Requirements to join <?= clean(getSetting($pdo, 'school_name', 'our school')) ?></p>
         </div>
         <div class="requirements-grid">
             <?php
@@ -294,7 +315,7 @@ include 'includes/header.php';
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p style="color:#999;">Requirements coming soon.</p>
+                    <p style="color:#8D6E63;">Requirements coming soon.</p>
                 <?php endif; ?>
             </div>
             <div class="requirements-list">
@@ -307,7 +328,7 @@ include 'includes/header.php';
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p style="color:#999;">Requirements coming soon.</p>
+                    <p style="color:#8D6E63;">Requirements coming soon.</p>
                 <?php endif; ?>
             </div>
         </div>
@@ -316,11 +337,11 @@ include 'includes/header.php';
 
 <!-- Documents -->
 <?php if (!empty($documents)): ?>
-<section class="admissions-section" style="background:#f8f9fa;">
+<section class="admissions-section" style="background:#f5e6d3;">
     <div class="container">
         <div class="section-title">
-            <h2>Downloadable Forms</h2>
-            <p>Download and fill out the necessary application forms</p>
+            <span class="subtitle">Download Forms</span>
+            <h2>Application <span class="highlight-green">Documents</span></h2>
         </div>
         <div class="documents-grid">
             <?php foreach ($documents as $doc): ?>
@@ -348,7 +369,8 @@ include 'includes/header.php';
 <section class="admissions-section">
     <div class="container">
         <div class="section-title">
-            <h2>Request More Information</h2>
+            <span class="subtitle">Get In Touch</span>
+            <h2>Request <span class="highlight-green">Information</span></h2>
             <p>Fill out the form below and our admissions team will get back to you</p>
         </div>
 

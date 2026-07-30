@@ -21,22 +21,39 @@ include 'includes/header.php';
 
 <style>
 .gallery-hero {
-    background: linear-gradient(135deg, #0d2617, #1a4d2e);
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
     color: #fff;
     padding: 60px 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.gallery-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(ellipse, rgba(0, 200, 83, 0.08), transparent 70%);
+    animation: heroGlow 8s ease-in-out infinite alternate;
 }
 .gallery-hero h1 {
     color: #fff;
     font-size: 2.8rem;
 }
+.gallery-hero h1 .highlight {
+    color: #00C853;
+}
 .gallery-hero p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.7);
     max-width: 600px;
     margin: 15px auto 0;
 }
+
 .gallery-section {
     padding: 60px 0 80px;
+    background: #f5e6d3;
 }
 .album-grid {
     display: grid;
@@ -45,15 +62,15 @@ include 'includes/header.php';
 }
 .album-card {
     background: #fff;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
     transition: all 0.3s;
     cursor: pointer;
 }
 .album-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 50px rgba(0,0,0,0.12);
 }
 .album-card .cover {
     position: relative;
@@ -86,25 +103,25 @@ include 'includes/header.php';
     padding: 20px;
 }
 .album-card .info h3 {
-    color: #1a4d2e;
+    color: #0a0a0a;
     margin-bottom: 5px;
 }
 .album-card .info p {
-    color: #666;
+    color: #8D6E63;
     font-size: 0.93rem;
 }
+
 .no-albums {
     text-align: center;
     padding: 60px 0;
+    color: #8D6E63;
 }
 .no-albums i {
-    font-size: 4rem;
+    font-size: 3rem;
     color: #ccc;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
-.no-albums h3 {
-    color: #666;
-}
+
 .lightbox {
     display: none;
     position: fixed;
@@ -112,7 +129,7 @@ include 'includes/header.php';
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.95);
     z-index: 9999;
     align-items: center;
     justify-content: center;
@@ -163,22 +180,14 @@ include 'includes/header.php';
 }
 .lightbox .nav.prev { left: 20px; }
 .lightbox .nav.next { right: 20px; }
+
 @media (max-width: 992px) {
-    .album-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .album-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 576px) {
-    .album-grid {
-        grid-template-columns: 1fr;
-    }
-    .gallery-hero h1 {
-        font-size: 2rem;
-    }
-    .lightbox .nav {
-        font-size: 2rem;
-        padding: 10px;
-    }
+    .album-grid { grid-template-columns: 1fr; }
+    .gallery-hero h1 { font-size: 2rem; }
+    .lightbox .nav { font-size: 2rem; padding: 10px; }
     .lightbox .nav.prev { left: 5px; }
     .lightbox .nav.next { right: 5px; }
 }
@@ -187,7 +196,7 @@ include 'includes/header.php';
 <!-- Hero -->
 <section class="gallery-hero">
     <div class="container">
-        <h1><i class="fas fa-images"></i> Photo Gallery</h1>
+        <h1><i class="fas fa-images"></i> Photo <span class="highlight">Gallery</span></h1>
         <p>Explore life at <?= clean(getSetting($pdo, 'school_name', 'our school')) ?> through our photos</p>
     </div>
 </section>
@@ -213,7 +222,7 @@ include 'includes/header.php';
                             <?php if ($coverPhoto): ?>
                                 <img src="<?= clean($coverPhoto['image_path']) ?>" alt="<?= clean($album['name']) ?>" loading="lazy">
                             <?php else: ?>
-                                <div style="height:100%;background:#e9ecef;display:flex;align-items:center;justify-content:center;color:#999;font-size:3rem;">
+                                <div style="height:100%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;color:#999;font-size:3rem;">
                                     <i class="fas fa-image"></i>
                                 </div>
                             <?php endif; ?>
@@ -234,7 +243,7 @@ include 'includes/header.php';
             <div class="no-albums">
                 <i class="fas fa-images"></i>
                 <h3>No Albums Available</h3>
-                <p style="color:#666;">Check back soon for photo updates.</p>
+                <p>Check back soon for photo updates.</p>
             </div>
         <?php endif; ?>
     </div>

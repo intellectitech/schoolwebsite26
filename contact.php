@@ -6,7 +6,6 @@ require_once 'includes/functions.php';
 
 $pageTitle = 'Contact Us - ' . getSetting($pdo, 'school_name', 'School');
 
-// Handle contact form submission
 $contactSuccess = false;
 $contactError = '';
 
@@ -42,22 +41,39 @@ include 'includes/header.php';
 
 <style>
 .contact-hero {
-    background: linear-gradient(135deg, #0d2617, #1a4d2e);
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
     color: #fff;
     padding: 60px 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(ellipse, rgba(0, 200, 83, 0.08), transparent 70%);
+    animation: heroGlow 8s ease-in-out infinite alternate;
 }
 .contact-hero h1 {
     color: #fff;
     font-size: 2.8rem;
 }
+.contact-hero h1 .highlight {
+    color: #00C853;
+}
 .contact-hero p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.7);
     max-width: 600px;
     margin: 15px auto 0;
 }
+
 .contact-section {
     padding: 60px 0;
+    background: #f5e6d3;
 }
 .contact-grid {
     display: grid;
@@ -67,17 +83,17 @@ include 'includes/header.php';
 .contact-info {
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 20px;
 }
 .contact-card {
     background: #fff;
     padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
     display: flex;
     align-items: flex-start;
     gap: 20px;
-    transition: transform 0.3s;
+    transition: all 0.3s;
 }
 .contact-card:hover {
     transform: translateX(5px);
@@ -86,32 +102,33 @@ include 'includes/header.php';
     width: 50px;
     height: 50px;
     min-width: 50px;
-    background: #1a4d2e;
+    background: linear-gradient(135deg, #009624, #00C853);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #FFD700;
+    color: #fff;
     font-size: 1.2rem;
 }
 .contact-card .content h4 {
-    color: #1a4d2e;
+    color: #0a0a0a;
     margin-bottom: 5px;
 }
 .contact-card .content p {
-    color: #666;
+    color: #8D6E63;
 }
 .contact-card .content a {
-    color: #1a4d2e;
+    color: #00C853;
 }
 .contact-card .content a:hover {
-    color: #FFD700;
+    color: #009624;
 }
+
 .contact-form {
     background: #fff;
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
 }
 .contact-form .form-group {
     margin-bottom: 20px;
@@ -120,7 +137,7 @@ include 'includes/header.php';
     display: block;
     font-weight: 600;
     margin-bottom: 6px;
-    color: #333;
+    color: #0a0a0a;
     font-size: 0.9rem;
 }
 .contact-form label .required {
@@ -139,7 +156,7 @@ include 'includes/header.php';
 .contact-form input:focus,
 .contact-form textarea:focus {
     outline: none;
-    border-color: #1a4d2e;
+    border-color: #00C853;
 }
 .contact-form textarea {
     min-height: 140px;
@@ -148,8 +165,8 @@ include 'includes/header.php';
 .contact-form .btn-submit {
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #FFD700, #f5c842);
-    color: #1a4d2e;
+    background: linear-gradient(135deg, #009624, #00C853);
+    color: #fff;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
@@ -159,19 +176,21 @@ include 'includes/header.php';
 }
 .contact-form .btn-submit:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255,215,0,0.4);
+    box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4);
 }
+
 .map-container {
     margin-top: 40px;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
 }
 .map-container iframe {
     width: 100%;
     height: 400px;
     border: none;
 }
+
 .alert-success {
     background: #d4edda;
     color: #155724;
@@ -188,34 +207,22 @@ include 'includes/header.php';
     margin-bottom: 20px;
     border: 1px solid #f5c6cb;
 }
+
 @media (max-width: 992px) {
-    .contact-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-    }
+    .contact-grid { grid-template-columns: 1fr; gap: 30px; }
 }
 @media (max-width: 768px) {
-    .contact-hero h1 {
-        font-size: 2rem;
-    }
-    .contact-form {
-        padding: 25px;
-    }
-    .contact-card {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-    }
-    .map-container iframe {
-        height: 250px;
-    }
+    .contact-hero h1 { font-size: 2rem; }
+    .contact-form { padding: 25px; }
+    .contact-card { flex-direction: column; text-align: center; align-items: center; }
+    .map-container iframe { height: 250px; }
 }
 </style>
 
 <!-- Hero -->
 <section class="contact-hero">
     <div class="container">
-        <h1><i class="fas fa-envelope"></i> Contact Us</h1>
+        <h1><i class="fas fa-envelope"></i> Contact <span class="highlight">Us</span></h1>
         <p>Get in touch with <?= clean(getSetting($pdo, 'school_name', 'our school')) ?></p>
     </div>
 </section>
@@ -226,8 +233,8 @@ include 'includes/header.php';
         <div class="contact-grid">
             <!-- Contact Info -->
             <div>
-                <h2 style="color:#1a4d2e;margin-bottom:20px;">Get in Touch</h2>
-                <p style="color:#666;margin-bottom:30px;">
+                <h2 style="color:#0a0a0a;margin-bottom:20px;">Get in Touch</h2>
+                <p style="color:#8D6E63;margin-bottom:30px;">
                     We'd love to hear from you. Reach out to us through any of the channels below or fill out the contact form.
                 </p>
                 <div class="contact-info">
@@ -268,7 +275,7 @@ include 'includes/header.php';
 
             <!-- Contact Form -->
             <div>
-                <h2 style="color:#1a4d2e;margin-bottom:20px;">Send Us a Message</h2>
+                <h2 style="color:#0a0a0a;margin-bottom:20px;">Send Us a Message</h2>
                 
                 <?php if ($contactSuccess): ?>
                     <div class="alert-success">

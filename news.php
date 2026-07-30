@@ -45,20 +45,36 @@ include 'includes/header.php';
 
 <style>
 .news-hero {
-    background: linear-gradient(135deg, #0d2617, #1a4d2e);
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
     color: #fff;
     padding: 60px 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.news-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(ellipse, rgba(0, 200, 83, 0.08), transparent 70%);
+    animation: heroGlow 8s ease-in-out infinite alternate;
 }
 .news-hero h1 {
     color: #fff;
     font-size: 2.8rem;
 }
+.news-hero h1 .highlight {
+    color: #00C853;
+}
 .news-hero p {
-    color: rgba(255,255,255,0.8);
+    color: rgba(255,255,255,0.7);
     max-width: 600px;
     margin: 15px auto 0;
 }
+
 .news-filters {
     display: flex;
     gap: 10px;
@@ -69,19 +85,25 @@ include 'includes/header.php';
 .news-filters a {
     padding: 8px 20px;
     border-radius: 50px;
-    background: #e9ecef;
+    background: #fff;
     color: #333;
     transition: all 0.3s;
     font-size: 0.9rem;
+    text-decoration: none;
+    border: 1px solid #e0e0e0;
 }
 .news-filters a:hover,
 .news-filters a.active {
-    background: #1a4d2e;
+    background: #00C853;
     color: #fff;
+    border-color: #00C853;
 }
+
 .news-section {
     padding: 40px 0 80px;
+    background: #f5e6d3;
 }
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -92,40 +114,54 @@ include 'includes/header.php';
     padding: 10px 16px;
     border-radius: 8px;
     background: #fff;
-    color: #1a4d2e;
+    color: #0a0a0a;
     border: 1px solid #e0e0e0;
     transition: all 0.3s;
+    text-decoration: none;
 }
 .pagination a:hover {
-    background: #1a4d2e;
+    background: #00C853;
     color: #fff;
+    border-color: #00C853;
 }
 .pagination .active {
-    background: #1a4d2e;
+    background: #00C853;
     color: #fff;
-    border-color: #1a4d2e;
+    border-color: #00C853;
 }
 .pagination .disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
+.no-news {
+    text-align: center;
+    padding: 60px 0;
+    color: #8D6E63;
+}
+.no-news i {
+    font-size: 3rem;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
 @media (max-width: 768px) {
-    .news-hero h1 {
-        font-size: 2rem;
-    }
+    .news-hero h1 { font-size: 2rem; }
+    .news-filters { gap: 8px; }
+    .news-filters a { font-size: 0.8rem; padding: 6px 14px; }
 }
 </style>
 
 <!-- Hero -->
 <section class="news-hero">
     <div class="container">
-        <h1><i class="fas fa-newspaper"></i> School News</h1>
+        <h1><i class="fas fa-newspaper"></i> School <span class="highlight">News</span></h1>
         <p>Stay updated with the latest happenings at <?= clean(getSetting($pdo, 'school_name', 'our school')) ?></p>
     </div>
 </section>
 
 <!-- Categories -->
-<section style="padding-top:0;">
+<section style="padding-top:0;background:#f5e6d3;">
     <div class="container">
         <div class="news-filters">
             <a href="news.php" class="<?= $categoryFilter == 0 ? 'active' : '' ?>">All News</a>
@@ -152,7 +188,7 @@ include 'includes/header.php';
                         <?php endif; ?>
                         <div class="card-content">
                             <?php if (!empty($article['cat_name'])): ?>
-                                <span class="badge" style="background:<?= clean($article['cat_color'] ?? '#2d7a4a') ?>; color:#fff;">
+                                <span class="badge" style="background:<?= clean($article['cat_color'] ?? '#00C853') ?>; color:#fff;">
                                     <?= clean($article['cat_name']) ?>
                                 </span>
                             <?php endif; ?>
@@ -193,10 +229,10 @@ include 'includes/header.php';
             <?php endif; ?>
 
         <?php else: ?>
-            <div style="text-align:center;padding:60px 0;">
-                <i class="fas fa-newspaper" style="font-size:4rem;color:#ccc;margin-bottom:20px;"></i>
+            <div class="no-news">
+                <i class="fas fa-newspaper"></i>
                 <h3>No News Articles</h3>
-                <p style="color:#666;">Check back soon for updates from our school.</p>
+                <p>Check back soon for updates from our school.</p>
             </div>
         <?php endif; ?>
     </div>

@@ -49,9 +49,21 @@ include 'includes/header.php';
 
 <style>
 .article-hero {
-    background: linear-gradient(135deg, #0d2617, #1a4d2e);
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
     color: #fff;
     padding: 60px 0 40px;
+    position: relative;
+    overflow: hidden;
+}
+.article-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -30%;
+    width: 60%;
+    height: 150%;
+    background: radial-gradient(ellipse, rgba(0, 200, 83, 0.08), transparent 70%);
+    animation: heroGlow 8s ease-in-out infinite alternate;
 }
 .article-hero .category-badge {
     display: inline-block;
@@ -68,19 +80,25 @@ include 'includes/header.php';
     max-width: 800px;
 }
 .article-hero .meta {
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.6);
     font-size: 0.95rem;
     margin-top: 15px;
 }
 .article-hero .meta span {
     margin-right: 20px;
 }
+
 .article-body {
     padding: 50px 0 80px;
+    background: #f5e6d3;
 }
 .article-body .content {
     max-width: 820px;
     margin: 0 auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.08);
 }
 .article-body .content img {
     max-width: 100%;
@@ -89,12 +107,13 @@ include 'includes/header.php';
 }
 .article-body .content h2, 
 .article-body .content h3 {
-    color: #1a4d2e;
+    color: #0a0a0a;
     margin-top: 30px;
 }
 .article-body .content p {
     margin-bottom: 18px;
     font-size: 1.05rem;
+    color: #4a4a4a;
 }
 .article-body .content ul, 
 .article-body .content ol {
@@ -102,6 +121,7 @@ include 'includes/header.php';
 }
 .article-body .content li {
     margin-bottom: 8px;
+    color: #4a4a4a;
 }
 .article-body .featured-image {
     width: 100%;
@@ -110,8 +130,9 @@ include 'includes/header.php';
     border-radius: 12px;
     margin-bottom: 30px;
 }
+
 .related-section {
-    background: #f8f9fa;
+    background: #fff;
     padding: 60px 0;
 }
 .related-grid {
@@ -120,14 +141,14 @@ include 'includes/header.php';
     gap: 30px;
 }
 .related-card {
-    background: #fff;
+    background: #f5e6d3;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    transition: transform 0.3s;
+    transition: all 0.3s;
 }
 .related-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 10px 50px rgba(0,0,0,0.1);
 }
 .related-card img {
     width: 100%;
@@ -142,30 +163,24 @@ include 'includes/header.php';
     margin-bottom: 8px;
 }
 .related-card .info h4 a {
-    color: #1a1a1a;
+    color: #0a0a0a;
 }
 .related-card .info h4 a:hover {
-    color: #1a4d2e;
+    color: #00C853;
 }
 .related-card .info .date {
     font-size: 0.85rem;
-    color: #999;
+    color: #8D6E63;
 }
+
 @media (max-width: 992px) {
-    .related-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .related-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
-    .article-hero h1 {
-        font-size: 1.8rem;
-    }
-    .related-grid {
-        grid-template-columns: 1fr;
-    }
-    .article-body .content p {
-        font-size: 1rem;
-    }
+    .article-hero h1 { font-size: 1.8rem; }
+    .article-body .content { padding: 25px; }
+    .related-grid { grid-template-columns: 1fr; }
+    .article-body .content p { font-size: 1rem; }
 }
 </style>
 
@@ -173,7 +188,7 @@ include 'includes/header.php';
 <section class="article-hero">
     <div class="container">
         <?php if (!empty($article['cat_name'])): ?>
-            <span class="category-badge" style="background:<?= clean($article['cat_color'] ?? '#2d7a4a') ?>; color:#fff;">
+            <span class="category-badge" style="background:<?= clean($article['cat_color'] ?? '#00C853') ?>; color:#fff;">
                 <?= clean($article['cat_name']) ?>
             </span>
         <?php endif; ?>
@@ -199,7 +214,7 @@ include 'includes/header.php';
             <?= $article['body'] ?>
             
             <div style="margin-top:40px;padding-top:30px;border-top:1px solid #e0e0e0;">
-                <p style="font-size:0.9rem;color:#999;">
+                <p style="font-size:0.9rem;color:#8D6E63;">
                     <i class="fas fa-tag"></i> 
                     <?php if (!empty($article['cat_name'])): ?>
                         Category: <?= clean($article['cat_name']) ?>
@@ -217,8 +232,8 @@ include 'includes/header.php';
 <section class="related-section">
     <div class="container">
         <div class="section-title">
-            <h2>Related Articles</h2>
-            <p>You might also find these interesting</p>
+            <span class="subtitle">You May Also Like</span>
+            <h2>Related <span class="highlight-green">Articles</span></h2>
         </div>
         <div class="related-grid">
             <?php foreach ($relatedArticles as $related): ?>
@@ -226,7 +241,7 @@ include 'includes/header.php';
                     <?php if (!empty($related['featured_image'])): ?>
                         <img src="<?= clean($related['featured_image']) ?>" alt="<?= clean($related['title']) ?>" loading="lazy">
                     <?php else: ?>
-                        <div style="height:180px;background:#e9ecef;display:flex;align-items:center;justify-content:center;color:#999;">
+                        <div style="height:180px;background:#e0e0e0;display:flex;align-items:center;justify-content:center;color:#999;">
                             <i class="fas fa-image" style="font-size:2rem;"></i>
                         </div>
                     <?php endif; ?>
