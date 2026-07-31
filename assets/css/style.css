@@ -986,6 +986,9 @@ ul {
 .hero-copy {
   max-width: 48ch;
 }
+.about-hero-img {
+  max-width: 60%;
+}
 .about-hero h1 {
   font-size: clamp(2.2rem, 4.6vw, 3.5rem);
 }
@@ -1340,6 +1343,12 @@ ul {
   justify-content: center;
   margin-bottom: 14px;
   color: var(--soil);
+  overflow: hidden;
+}
+.leader-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 .leader-card h3 {
   font-size: 1rem;
@@ -1406,6 +1415,9 @@ ul {
   .hero-top {
     flex-direction: column;
   }
+  .about-hero-img {
+    max-width: 100%;
+  }
   .hero-sunmark {
     display: none;
   }
@@ -1439,6 +1451,10 @@ ul {
   font-size: 1.1rem;
   color: var(--ink-soft);
   max-width: 58ch;
+}
+.adm-hero .hero-actions {
+  justify-content: flex-start;
+  margin-top: 1.6em;
 }
 
 /* ---------- Admission highlights (why us) ---------- */
@@ -2048,11 +2064,15 @@ ul {
   position: relative;
   overflow: hidden;
 }
-.news-feat-img svg {
+.news-feat-img svg,
+.news-feat-img img {
   width: 100%;
   height: 100%;
   position: absolute;
   inset: 0;
+}
+.news-feat-img img {
+  object-fit: cover;
 }
 .news-feat-body {
   padding: 36px 32px;
@@ -2278,11 +2298,15 @@ ul {
   position: relative;
   overflow: hidden;
 }
-.staff-card-photo svg {
+.staff-card-photo svg,
+.staff-card-photo img {
   width: 100%;
   height: 100%;
   position: absolute;
   inset: 0;
+}
+.staff-card-photo img {
+  object-fit: cover;
 }
 .staff-card-body {
   padding: 20px 20px 22px;
@@ -2463,9 +2487,28 @@ ul {
   position: relative;
   overflow: hidden;
 }
-.gallery-placeholder {
+.gallery-placeholder,
+.gallery-media {
   width: 100%;
   display: block;
+}
+.gallery-empty {
+  text-align: center;
+  padding: 70px 20px;
+  color: var(--ink-soft);
+}
+.gallery-empty svg {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 20px;
+  color: var(--soil);
+}
+.gallery-empty h2 {
+  max-width: none;
+}
+.gallery-empty p {
+  max-width: 46ch;
+  margin: 0 auto;
 }
 .gallery-overlay {
   position: absolute;
@@ -2539,6 +2582,11 @@ ul {
 }
 .lightbox-img-wrap svg {
   width: 100%;
+}
+.lightbox-img-wrap img {
+  width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
 }
 .lightbox-caption {
   padding: 14px 20px;
@@ -2963,11 +3011,9 @@ ul {
 
 /* ---------- Stat cards ---------- */
 .admin-stats-grid {
-  max-width: 100vw;
-  display: flex;
-  flex-flow: row wrap;
-  column-gap: 2%;
-  row-gap: 10%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
   margin-bottom: 32px;
 }
 .admin-stat-card {
@@ -2975,7 +3021,6 @@ ul {
   border-radius: 14px;
   padding: 20px;
   border: 1px solid var(--cream-deep);
-  flex: 1;
 }
 .admin-stat-num {
   text-align: center;
@@ -3007,6 +3052,7 @@ ul {
   padding: 24px;
   border: 1px solid var(--cream-deep);
   margin-bottom: 22px;
+  overflow-x: auto;
 }
 .admin-panel-head {
   display: flex;
@@ -3282,6 +3328,59 @@ ul {
   border-radius: 8px;
   cursor: pointer;
 }
+.field-hint {
+  margin: 6px 0 0;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+.field-hint a {
+  color: var(--soil);
+  text-decoration: underline;
+}
+
+/* ---------- Gallery management: photo grid ---------- */
+.admin-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px;
+}
+.admin-gallery-photo {
+  background: var(--cream);
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--cream-deep);
+  position: relative;
+}
+.admin-gallery-photo img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+.admin-gallery-photo-missing {
+  width: 100%;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  background: var(--cream-deep);
+}
+.admin-gallery-cover-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  margin-left: 0;
+}
+.admin-gallery-photo-body {
+  padding: 12px 14px 14px;
+}
+.admin-gallery-photo-body p {
+  margin: 0 0 10px;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
 
 @media (max-width: 900px) {
   .admin-shell {
@@ -3324,6 +3423,9 @@ ul {
    ========================================================================== */
 .article-section {
   padding: 10px 0 60px;
+}
+.article-section .container {
+  max-width: 760px;
 }
 .article-hero-img {
   width: 100%;

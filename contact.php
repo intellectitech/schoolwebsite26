@@ -102,6 +102,13 @@ $flash = getFlash();
     </div>
   </section>
 
+  <section>
+    <div class="container reveal">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.72504789518!2d32.6561473!3d0.39177670000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177db76c0a2b9777%3A0x1e60675f04a78900!2sUganda%20Martyrs%20Nursery%20and%20Primary%20School%20Namugongo.!5e0!3m2!1sen!2sug!4v1785467070419!5m2!1sen!2sug" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+  </section>
+
+
   <!-- ============================================================
      CONTACT FORM  (reuses shared .contact, .contact-grid, .contact-form, .field)
      ============================================================ -->
