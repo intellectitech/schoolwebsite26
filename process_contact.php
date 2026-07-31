@@ -60,9 +60,10 @@ if (!empty($errors)) {
 }
 
 // ── STEP 4: SAVE TO DATABASE ─────────────────────────────────
-// Column names below match database_patch.sql (ip_address, not
-// the misspelled ip_addess from the raw dump; is_read explicit
-// 0 = unread; replied_at explicit NULL = not replied yet).
+// Column names below match the supplied school_website_db.sql
+// (ip_address, not the misspelled ip_addess from an unpatched raw
+// dump; is_read explicit 0 = unread; replied_at explicit NULL = not
+// replied yet — see README.md §5).
 $stmt = $pdo->prepare(
     'INSERT INTO contact_messages (name, email, phone, subject, message, ip_address, is_read, replied_at)
      VALUES (?, ?, ?, ?, ?, ?, 0, NULL)'

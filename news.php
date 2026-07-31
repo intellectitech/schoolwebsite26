@@ -81,6 +81,7 @@ $flash = getFlash();
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <?php include 'includes/head-meta.php'; ?>
 </head>
 
 <body>
@@ -117,8 +118,7 @@ $flash = getFlash();
           <div class="news-feat-img" aria-hidden="true">
             <?php if ($featured['featured_image'] && file_exists(__DIR__ . '/' . $featured['featured_image'])): ?>
               <img src="<?= htmlspecialchars($featured['featured_image']) ?>"
-                alt="<?= htmlspecialchars($featured['title']) ?>"
-                style="width:100%;height:100%;position:absolute;inset:0;object-fit:cover">
+                alt="<?= htmlspecialchars($featured['title']) ?>">
             <?php else: ?>
               <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
                 <rect width="600" height="400" fill="#16233D" />

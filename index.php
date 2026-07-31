@@ -64,6 +64,7 @@ $contactEmail = getSetting($pdo, 'contact_email') ?: 'info@ugandamartyrsnamugong
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
     rel="stylesheet" />
 
+  <?php include 'includes/head-meta.php'; ?>
 </head>
 
 <body>

@@ -223,15 +223,17 @@ function uniqueSlug($pdo, $table, $column, $baseSlug, $excludeId = null)
 }
 
 // ----------------------------------------------------------
-// NEWS IMAGE UPLOAD — validates and stores an uploaded photo
-// for a news article under images/news/. Returns
-//   ['path' => 'images/news/xyz.jpg', 'error' => null]   on success
-//   ['path' => null, 'error' => null]                    if no file was chosen (not an error)
-//   ['path' => null, 'error' => 'message']                on a real problem
+// IMAGE UPLOAD (shared implementation) — validates and stores an
+// uploaded photo under images/{$subdir}/. Returns
+//   ['path' => 'images/{$subdir}/xyz.jpg', 'error' => null]  on success
+//   ['path' => null, 'error' => null]                        if no file was chosen (not an error)
+//   ['path' => null, 'error' => 'message']                    on a real problem
 // Only JPG / PNG / WEBP are accepted, verified by actually
 // reading the image data (getimagesize), not just the filename.
+// This backs uploadNewsImage() / uploadEventImage() / uploadGalleryImage()
+// / uploadStaffImage() below — each just fixes the subdirectory.
 // ----------------------------------------------------------
-function uploadNewsImage($fileKey)
+function uploadImageTo($fileKey, $subdir)
 {
     if (empty($_FILES[$fileKey]['name'])) {
         return ['path' => null, 'error' => null];
@@ -253,7 +255,7 @@ function uploadNewsImage($fileKey)
         return ['path' => null, 'error' => 'Please upload a JPG, PNG, or WEBP image.'];
     }
 
-    $destDir = __DIR__ . '/../images/news';
+    $destDir = __DIR__ . '/../images/' . $subdir;
     if (!is_dir($destDir)) {
         mkdir($destDir, 0755, true);
     }
@@ -261,17 +263,17 @@ function uploadNewsImage($fileKey)
     if (!move_uploaded_file($file['tmp_name'], $destDir . '/' . $filename)) {
         return ['path' => null, 'error' => 'The server could not save that image.'];
     }
-    return ['path' => 'images/news/' . $filename, 'error' => null];
+    return ['path' => 'images/' . $subdir . '/' . $filename, 'error' => null];
 }
 
 // ----------------------------------------------------------
-// DELETE a news image file when an article's photo is replaced
-// or removed. Restricted to images/news/ so this can never be
-// used to delete an arbitrary file elsewhere on the server.
+// DELETE an uploaded image file, restricted to images/{$subdir}/
+// so this can never be used to delete an arbitrary file elsewhere
+// on the server. Backs the deleteXImageFile() helpers below.
 // ----------------------------------------------------------
-function deleteNewsImageFile($relativePath)
+function deleteImageFrom($relativePath, $subdir)
 {
-    if (!$relativePath || strpos($relativePath, 'images/news/') !== 0) {
+    if (!$relativePath || strpos($relativePath, 'images/' . $subdir . '/') !== 0) {
         return;
     }
     $full = __DIR__ . '/' . $relativePath;
@@ -281,50 +283,54 @@ function deleteNewsImageFile($relativePath)
 }
 
 // ----------------------------------------------------------
-// EVENT IMAGE UPLOAD / DELETE — same rules as uploadNewsImage(),
-// stored under images/events/ instead of images/news/.
+// NEWS IMAGE UPLOAD / DELETE — stored under images/news/.
+// ----------------------------------------------------------
+function uploadNewsImage($fileKey)
+{
+    return uploadImageTo($fileKey, 'news');
+}
+
+function deleteNewsImageFile($relativePath)
+{
+    deleteImageFrom($relativePath, 'news');
+}
+
+// ----------------------------------------------------------
+// EVENT IMAGE UPLOAD / DELETE — stored under images/events/.
 // ----------------------------------------------------------
 function uploadEventImage($fileKey)
 {
-    if (empty($_FILES[$fileKey]['name'])) {
-        return ['path' => null, 'error' => null];
-    }
-    $file = $_FILES[$fileKey];
-
-    if ($file['error'] !== UPLOAD_ERR_OK) {
-        return ['path' => null, 'error' => 'The image failed to upload. Please try again.'];
-    }
-    if ($file['size'] > 3 * 1024 * 1024) {
-        return ['path' => null, 'error' => 'That image is too large (3MB maximum).'];
-    }
-    $info = @getimagesize($file['tmp_name']);
-    if ($info === false) {
-        return ['path' => null, 'error' => 'That file is not a valid image.'];
-    }
-    $allowed = [IMAGETYPE_JPEG => 'jpg', IMAGETYPE_PNG => 'png', IMAGETYPE_WEBP => 'webp'];
-    if (!isset($allowed[$info[2]])) {
-        return ['path' => null, 'error' => 'Please upload a JPG, PNG, or WEBP image.'];
-    }
-
-    //
-    $destDir = __DIR__ . '/../images/events';
-    if (!is_dir($destDir)) {
-        mkdir($destDir, 0755, true);
-    }
-    $filename = bin2hex(random_bytes(8)) . '.' . $allowed[$info[2]];
-    if (!move_uploaded_file($file['tmp_name'], $destDir . '/' . $filename)) {
-        return ['path' => null, 'error' => 'The server could not save that image.'];
-    }
-    return ['path' => 'images/events/' . $filename, 'error' => null];
+    return uploadImageTo($fileKey, 'events');
 }
 
 function deleteEventImageFile($relativePath)
 {
-    if (!$relativePath || strpos($relativePath, 'images/events/') !== 0) {
-        return;
-    }
-    $full = __DIR__ . '/' . $relativePath;
-    if (is_file($full)) {
-        @unlink($full);
-    }
+    deleteImageFrom($relativePath, 'events');
+}
+
+// ----------------------------------------------------------
+// GALLERY IMAGE UPLOAD / DELETE — stored under images/gallery/.
+// Used for both album cover photos and individual gallery photos.
+// ----------------------------------------------------------
+function uploadGalleryImage($fileKey)
+{
+    return uploadImageTo($fileKey, 'gallery');
+}
+
+function deleteGalleryImageFile($relativePath)
+{
+    deleteImageFrom($relativePath, 'gallery');
+}
+
+// ----------------------------------------------------------
+// STAFF PHOTO UPLOAD / DELETE — stored under images/staff/.
+// ----------------------------------------------------------
+function uploadStaffImage($fileKey)
+{
+    return uploadImageTo($fileKey, 'staff');
+}
+
+function deleteStaffImageFile($relativePath)
+{
+    deleteImageFrom($relativePath, 'staff');
 }

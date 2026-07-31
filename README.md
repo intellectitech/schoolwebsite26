@@ -2,22 +2,28 @@
 
 This is the `internship` project with a working PHP backend: real form
 validation, real data storage, and real data retrieval wired up against
-the supplied database, plus a full admin panel including news article
-management. Everything below was tested end-to-end against a fresh
-import of `school_website_db__1_.sql` + `database_patch.sql`.
+the supplied database, plus a full admin panel including news, gallery,
+and staff management. The forms, news system, and admin panel were
+tested end-to-end against a fresh import of the supplied
+`school_website_db.sql`; the gallery/staff admin pages and HTML/CSS fixes
+added since are new in this round and are noted as such in §8.
 
 ## 1. Setup (XAMPP / any Apache+PHP+MySQL stack)
 
 1. Copy this whole folder into your server root (e.g. `htdocs/school-website`).
 2. Create a database called `school_website_db` (matches `database.php`).
-3. Import, **in this exact order**:
-   1. `school_website_db__1_.sql` (the original dump you supplied)
-   2. `database_patch.sql` (fixes described below — **required**, several
-      forms will not work without it)
+3. Import `school_website_db.sql`. (Earlier versions of this project
+   shipped a separate `database_patch.sql` — the fixes it made, listed in
+   §5 below, are already merged into this dump, so there's nothing else
+   to import.)
 4. Open the site. `database.php` is already set to XAMPP's defaults
    (`root` / no password) — edit it if your MySQL user is different.
-5. Make sure `images/news/` is writable by the web server — that's where
-   uploaded article photos are stored.
+5. Make sure `images/news/`, `images/events/`, `images/gallery/`, and
+   `images/staff/` are writable by the web server — that's where uploaded
+   photos are stored. `images/news/` and `images/events/` already exist;
+   `images/gallery/` and `images/staff/` are created automatically the
+   first time someone uploads a photo through the admin panel, but the
+   parent `images/` folder still needs to be writable for that to succeed.
 
 ## 2. Set your own admin password
 
@@ -65,12 +71,54 @@ three seeded sample articles have no real photo behind them (their
 `featured_image` values point at files that were never supplied), so
 they'll show the illustration until you re-save them with a real one.
 
-## 4. Why `database_patch.sql` exists
+## 4. Managing gallery photos & staff from the admin panel
+
+Two more places you no longer need to touch the database:
+
+**Gallery** (sidebar → **Gallery**) is organized as albums, each holding
+any number of photos:
+
+- **Albums** — create an album (name, optional description, optional
+  cover photo, sort order, Published/Draft), then click **Manage Photos**
+  to upload into it. If you don't set a cover photo explicitly, the first
+  photo you upload into an album becomes its cover automatically; you can
+  change this later with **Set as cover** on any photo.
+- **Photos** — upload JPG/PNG/WEBP (3MB max, same validation as news
+  photos), with an optional caption and sort order. Delete removes both
+  the database row and the file on disk.
+- Deleting an album deletes every photo inside it first (files included)
+  — `gallery_photos.album_id` is a foreign key with no cascade, so this
+  has to happen in that order or the database would reject the delete.
+- The public `gallery.php` only ever shows **published** albums, and only
+  photos whose file actually still exists on disk — see §7 for why that
+  matters.
+
+**Staff** (sidebar → **Staff**) manages the `staff` table directly:
+
+- **Add / Edit** — title, name, department, role, subjects taught,
+  qualification, a short bio, email, an optional photo, a Management
+  checkbox, sort order, and Active/Inactive.
+- Departments are managed from a small panel at the bottom of the same
+  page (name + head of department) — the same "no delete, only add"
+  approach as news categories, since staff reference a department by ID.
+- Deactivating a staff member (rather than deleting) hides them from the
+  public site immediately without losing their record — `staff.php` and
+  `about.php` both only query active staff.
+- On the public site, any staff member with a real uploaded photo shows
+  that photo — on `staff.php`'s "Department heads" section and in the
+  smaller leadership list on `about.php`. Anyone without one still shows
+  the hand-drawn illustration, so nothing looks broken either way (the
+  same real-photo-with-illustration-fallback pattern used for news, see
+  §3).
+
+## 5. Why the schema needed a patch
 
 The supplied dump was written against a **secondary-school** template
-(S1–S6, O/A-Level) and reused for a **primary** school (P1–P7). The patch
-fixes the places that mismatch, plus a few unrelated bugs found while
-wiring up the forms:
+(S1–S6, O/A-Level) and reused for a **primary** school (P1–P7). Earlier
+versions of this project applied the fixes below as a separate
+`database_patch.sql`; they're now merged directly into the
+`school_website_db.sql` you import in §1, so there's nothing left to run
+— this table is kept as a record of what changed and why:
 
 | # | Fix | Why |
 |---|-----|-----|
@@ -85,7 +133,7 @@ wiring up the forms:
 | 9 | Drops bogus `UNIQUE` indexes on `news.category_id` and `news.views` | As shipped, only **one article per category ever** and no two articles could share a view count — verified this breaks a second insert on the raw dump, and that the patch fixes it |
 | 10 | Seeds a few extra `school_info` rows | `school_address`, `hero_title`, `hero_subtitle`, `founded_year`, `total_students` — read by the pages but missing from the dump |
 
-## 5. What was fixed in the PHP
+## 6. What was fixed in the PHP
 
 - **`process_contact.php`** — was `require`-ing `config/database.php` and
   `includes/functions.php`, folders that don't exist in this project's flat
@@ -137,16 +185,66 @@ wiring up the forms:
   display escaping happens once, at output. Also added flash-message,
   old-input-repopulation, CSRF, slug-generation, and image-upload helpers
   used across the site and the admin panel.
+- **Every public page had an invalid nested `<head>`** — each page closed
+  its own `<head>`, opened `<body>`, and then `includes/header.php`
+  immediately opened a *second* `<head>...</head>` block inside the body
+  (it held the favicon `<link>` and the Neexa chat-widget script). Split
+  that markup out into `includes/head-meta.php`, which every page now
+  `include`s inside its own real `<head>`; `header.php` now only outputs
+  the actual `<header>` nav markup, where it's included in `<body>`.
+- **`admin/login.php`** had two broken asset paths — `href="../style.css"`
+  (the real file is at `assets/css/style.css`, which is why the login page
+  only ever looked right by accident, sharing a browser cache with a page
+  that loaded the correct path) and a logo `<img src="../images/...">`
+  pointing outside `assets/images/`, a 404 on a fresh checkout. Both fixed
+  to match the path `sidebar.php` already used correctly.
+- **Hardcoded inline styles that fought the responsive layout, moved to
+  CSS classes**: the About page's basilica photo (`style="max-width:
+  60%"` with no override for the breakpoint where its flex row switches
+  to a stacked column — so it shrank to a stranded 60%-width block on
+  tablet/mobile instead of going full-width like the text above it; now
+  `.about-hero-img`, with a `max-width: 100%` override at ≤980px), the
+  News featured-image absolute-fill positioning (now scoped to
+  `.news-feat-img img` in the stylesheet), the article page's
+  `max-width:760px` reading column (now `.article-section .container`),
+  and the Admissions hero's button alignment (now `.adm-hero
+  .hero-actions`, mirroring the same rule already used for `.page-hero`
+  on every other page).
+- **Two real gaps in responsive coverage**: the admin dashboard's stat
+  cards (`.admin-stats-grid`) had no breakpoint at all — they were
+  `flex: 1` with no basis, so on a narrow screen they'd squeeze into an
+  uneven single row instead of wrapping cleanly. Rewritten as a
+  `grid-template-columns: repeat(auto-fit, minmax(160px, 1fr))` grid,
+  which reflows correctly at any width without needing an explicit
+  breakpoint. Admin tables had no horizontal-scroll handling anywhere in
+  the stylesheet, so a wide table (e.g. the 6-column staff list) on a
+  small phone would overflow the page rather than scroll within its own
+  panel; `.admin-panel` now has `overflow-x: auto`.
+- **`admin/gallery.php`, `gallery-form.php`, `gallery-photos.php`,
+  `staff.php`, `staff-form.php`** — didn't exist; see §4.
+  `includes/functions.php` gained `uploadGalleryImage()` /
+  `uploadStaffImage()` and their `delete...ImageFile()` counterparts,
+  refactored (along with the existing news/event ones) off one shared
+  `uploadImageTo()`/`deleteImageFrom()` implementation rather than a third
+  and fourth copy-pasted version.
+- **`gallery.php` / `staff.php` / `about.php`** — real uploaded photos now
+  render where they exist on disk (gallery photos, staff "Department
+  heads" cards, and the small leadership avatars on the About page);
+  everything without one still falls back to the existing hand-drawn
+  illustration, the same pattern already used for news (§3).
 
-## 6. Deliberate scope decisions (not bugs)
+## 7. Deliberate scope decisions (not bugs)
 
-- **`gallery.php`** stays illustrated-SVG-only, per the project's design
-  system ("no real photography"). The `gallery_albums`/`gallery_photos`
-  tables reference `.jpg` files that were never actually supplied, so
-  wiring them in would only produce broken image icons — the opposite of
-  the intended look. News articles are the one deliberate exception to
-  this rule (see §3) — that was a specific choice for news, not a change
-  to the site-wide design system.
+- **`gallery.php`** now shows real uploaded photos (see §4) rather than
+  staying illustrated-only — the earlier version of this project treated
+  "no real photography" as a deliberate design decision because
+  `gallery_albums`/`gallery_photos` referenced `.jpg` files nobody had
+  ever uploaded; now that the admin panel can actually upload into those
+  tables, wiring the public page up to them is the correct behaviour, not
+  a departure from it. An album with no real photos in it simply doesn't
+  render any tiles (see §4) rather than showing a broken image icon; if
+  every album is empty, the page shows a plain "photos are on their way"
+  message instead of anything misleading.
 - **Per-grade class teacher cards** on `staff.php` stay as labelled
   placeholder content — there's no table in the schema for "which teacher
   is assigned to which of P1–P7," so this can't be driven from real data
@@ -158,7 +256,7 @@ wiring up the forms:
   want to replace or edit them via **News & Stories** in the admin panel
   with real primary-school stories and photos.
 
-## 7. Verified end-to-end
+## 8. Verified end-to-end
 
 Tested against a live MariaDB + PHP instance, not just read through:
 
@@ -178,3 +276,16 @@ Tested against a live MariaDB + PHP instance, not just read through:
   return 404 immediately, and publishing brings it back; deleting an
   article removes both the database row and its photo file; adding a
   category from the inline form works without touching the database.
+
+**This round's changes** (gallery/staff admin management, the duplicate-
+`<head>` fix, broken paths, inline-style cleanup, and the responsive
+fixes in §6) were **not** run against a live server — this environment
+doesn't have PHP available to execute them. Instead, each new admin page
+was traced by hand against the actual table definitions and foreign keys
+in the supplied `school_website_db.sql` (in particular, the misspelled
+`staff.is_managemnet` column and the lack of `ON DELETE CASCADE` from
+`gallery_photos.album_id`, both handled explicitly in the code rather
+than assumed), and checked for balanced PHP tags/braces. Please smoke-test
+the gallery and staff admin pages — creating an album, uploading a photo,
+adding a staff member — before relying on them, the same way you'd want
+to for any code you didn't watch run yourself.

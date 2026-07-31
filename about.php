@@ -5,8 +5,6 @@ require_once 'includes/functions.php';
 
 $pageTitle = 'About Us — ' . getSetting($pdo, 'school_name');
 
-// Department heads / staff directory (see database_patch.sql for
-// the vw_staff_directory view — it isn't in the raw dump).
 $leadership = $pdo->query(
     'SELECT * FROM vw_staff_directory WHERE is_active = 1 ORDER BY is_management DESC, sort_order ASC'
 )->fetchAll();
@@ -27,6 +25,7 @@ $leadership = $pdo->query(
         rel="stylesheet">
 
     <link rel="stylesheet" href="assets/css/style.css" />
+    <?php include 'includes/head-meta.php'; ?>
 </head>
 
 <body>
@@ -49,7 +48,7 @@ $leadership = $pdo->query(
                             century.</p>
                     </div>
                     <img src="assets/images/Aerial_view_of_Uganda_martyrs_Basilica_Namugongo_in_Uganda.jpg"
-                        alt="basilica" style="max-width: 60%">
+                        alt="basilica" class="about-hero-img">
                 </div>
             </div>
         </section>
@@ -405,13 +404,19 @@ $leadership = $pdo->query(
                     <p class="lead-note" style="margin-top:2.5rem">Meet some of our staff:</p>
                     <div class="leader-grid">
                         <?php foreach ($leadership as $person): ?>
+                            <?php $hasRealPhoto = $person['photo'] && file_exists(__DIR__ . '/' . $person['photo']); ?>
                             <div class="leader-card">
-                                <div class="leader-avatar" aria-hidden="true">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <circle cx="12" cy="8" r="4" />
-                                        <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
-                                    </svg>
+                                <div class="leader-avatar" aria-hidden="<?= $hasRealPhoto ? 'false' : 'true' ?>">
+                                    <?php if ($hasRealPhoto): ?>
+                                        <img src="<?= htmlspecialchars($person['photo']) ?>"
+                                            alt="<?= htmlspecialchars($person['full_name']) ?>" loading="lazy">
+                                    <?php else: ?>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <circle cx="12" cy="8" r="4" />
+                                            <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" />
+                                        </svg>
+                                    <?php endif; ?>
                                 </div>
                                 <h3><?= htmlspecialchars($person['full_name']) ?></h3>
                                 <span

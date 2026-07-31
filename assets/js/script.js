@@ -106,7 +106,7 @@ document.querySelectorAll(".gallery-item").forEach(function (item) {
     if (lightboxCaption)
       lightboxCaption.textContent = item.dataset.caption || "";
     if (lightboxSvgWrap) {
-      var src = item.querySelector(".gallery-placeholder");
+      var src = item.querySelector(".gallery-placeholder, .gallery-media");
       lightboxSvgWrap.innerHTML = src ? src.outerHTML : "";
     }
     lightboxOverlay.classList.add("open");

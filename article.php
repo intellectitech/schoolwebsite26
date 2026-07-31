@@ -65,6 +65,7 @@ if ($article) {
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <?php include 'includes/head-meta.php'; ?>
 </head>
 
 <body>
@@ -97,7 +98,7 @@ if ($article) {
     </section>
 
     <section class="article-section">
-      <div class="container reveal" style="max-width:760px">
+      <div class="container reveal">
         <?php if ($article['featured_image'] && file_exists(__DIR__ . '/' . $article['featured_image'])): ?>
           <img class="article-hero-img" src="<?= htmlspecialchars($article['featured_image']) ?>"
             alt="<?= htmlspecialchars($article['title']) ?>">

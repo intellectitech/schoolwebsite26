@@ -4,10 +4,6 @@
 //  Receives POST data from admissions.php and stores it in
 //  the admission_enquiries table.
 //
-//  NOTE: admission_enquiries.entry_level ships in the raw dump
-//  as a secondary-school enum ('S1','S2'). Run database_patch.sql
-//  first — it widens the enum to Primary One - Seven ('P1'..'P7')
-//  and makes ple_aggregate optional, both of which this form needs.
 // ============================================================
 session_start();
 require_once 'config/database.php';

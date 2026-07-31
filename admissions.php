@@ -21,6 +21,7 @@ $flash = getFlash();
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <?php include 'includes/head-meta.php'; ?>
 </head>
 
 <body>
@@ -38,7 +39,7 @@ $flash = getFlash();
       <p class="lead">Uganda Martyrs Primary School welcomes pupils from Primary One through Primary Seven. Whether you
         are enrolling a child straight from nursery or transferring mid-stream, here is everything you need to know
         about joining our school.</p>
-      <div class="hero-actions" style="justify-content:flex-start; margin-top:1.6em;">
+      <div class="hero-actions">
         <a href="#how-to-apply" class="btn btn-primary">How to Apply</a>
         <a href="#enquiry" class="btn btn-ghost">Send an Enquiry</a>
       </div>

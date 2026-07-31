@@ -115,7 +115,7 @@ $departments = $pdo->query('SELECT * FROM departments ORDER BY name')->fetchAll(
                   </td>
                   <td>
                     <?= htmlspecialchars(trim($s['title'] . ' ' . $s['first_name'] . ' ' . $s['last_name'])) ?>
-                    <?php if ($s['is_managemnet']): ?><span class="admin-badge admin-badge-featured">Management</span><?php endif; ?>
+                    <?php if ($s['is_management']): ?><span class="admin-badge admin-badge-featured">Management</span><?php endif; ?>
                   </td>
                   <td><?= htmlspecialchars($s['department_name'] ?? '—') ?></td>
                   <td><?= htmlspecialchars($s['role']) ?></td>

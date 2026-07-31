@@ -4,8 +4,6 @@ require_once 'config/database.php';
 require_once 'includes/functions.php';
 
 
-// Department heads / staff directory (see database_patch.sql for
-// the vw_staff_directory view — it isn't in the raw dump).
 $deptHeads = $pdo->query(
   'SELECT * FROM vw_staff_directory WHERE is_active = 1 ORDER BY is_management DESC, sort_order ASC'
 )->fetchAll();
@@ -25,6 +23,7 @@ $deptHeads = $pdo->query(
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
+  <?php include 'includes/head-meta.php'; ?>
 </head>
 
 <body>
@@ -235,14 +234,20 @@ $deptHeads = $pdo->query(
         <h2>Department heads</h2>
         <div class="staff-lead-grid">
           <?php foreach ($deptHeads as $person): ?>
+            <?php $hasRealPhoto = $person['photo'] && file_exists(__DIR__ . '/' . $person['photo']); ?>
             <div class="staff-card">
-              <div class="staff-card-photo" aria-hidden="true">
-                <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-                  <rect width="400" height="200" fill="#16233D" />
-                  <circle cx="200" cy="72" r="48" fill="#2A3A5C" />
-                  <circle cx="200" cy="60" r="26" fill="#F2B705" opacity="0.35" />
-                  <path d="M120,190 C120,150 156,128 200,128 C244,128 280,150 280,190" fill="#F2B705" opacity="0.2" />
-                </svg>
+              <div class="staff-card-photo" aria-hidden="<?= $hasRealPhoto ? 'false' : 'true' ?>">
+                <?php if ($hasRealPhoto): ?>
+                  <img src="<?= htmlspecialchars($person['photo']) ?>"
+                    alt="<?= htmlspecialchars($person['full_name']) ?>" loading="lazy">
+                <?php else: ?>
+                  <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                    <rect width="400" height="200" fill="#16233D" />
+                    <circle cx="200" cy="72" r="48" fill="#2A3A5C" />
+                    <circle cx="200" cy="60" r="26" fill="#F2B705" opacity="0.35" />
+                    <path d="M120,190 C120,150 156,128 200,128 C244,128 280,150 280,190" fill="#F2B705" opacity="0.2" />
+                  </svg>
+                <?php endif; ?>
               </div>
               <div class="staff-card-body">
                 <h3><?= htmlspecialchars($person['full_name']) ?></h3>

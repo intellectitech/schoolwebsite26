@@ -4,9 +4,10 @@
 //  Receives POST data from the newsletter form on news.php and
 //  stores it in the newsletters_subscribers table.
 //
-//  NOTE: run database_patch.sql first — it adds a UNIQUE key on
-//  newsletters_subscribers.email so the same address can't be
-//  stored twice (the raw dump had no such constraint).
+//  NOTE: the supplied school_website_db.sql already has a UNIQUE key on
+//  newsletters_subscribers.email, so the same address can't be stored
+//  twice (an unpatched raw dump had no such constraint — see README.md
+//  §5).
 // ============================================================
 session_start();
 require_once 'config/database.php';
