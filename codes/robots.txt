@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /database.php
+Allow: /
+
+Sitemap: https://stfrancisborgia.ac.ug/sitemap.php
