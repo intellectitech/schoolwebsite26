@@ -1,5 +1,5 @@
 <?php
-// admin/includes/upload.php - COMPLETE UPLOAD HELPER
+// admin/includes/upload.php - FIXED (removed finfo_close)
 
 /**
  * Upload an image file
@@ -28,9 +28,13 @@ function uploadImage($file, $folder = 'uploads', $maxSize = 5242880) {
         return ['success' => false, 'error' => 'Invalid file type. Allowed: JPG, PNG, WEBP, GIF.'];
     }
     
-    // Create upload directory
-    $root = dirname(__DIR__);
+    // Get the root directory (go up from admin/includes to project root)
+    $root = dirname(__DIR__, 2); // Goes up two levels: admin/includes/ -> project root
+    
+    // Create upload directory in assets/images/
     $uploadPath = $root . '/assets/images/' . $folder . '/';
+    
+    // Create folder if it doesn't exist
     if (!is_dir($uploadPath)) {
         mkdir($uploadPath, 0777, true);
     }
@@ -56,7 +60,7 @@ function uploadImage($file, $folder = 'uploads', $maxSize = 5242880) {
 /**
  * Delete an image file
  * 
- * @param string $path The relative path to the image
+ * @param string $path The relative path to the image (e.g., 'assets/images/news/image.jpg')
  * @return bool True on success
  */
 function deleteImage($path) {
@@ -64,7 +68,7 @@ function deleteImage($path) {
         return true;
     }
     
-    $root = dirname(__DIR__);
+    $root = dirname(__DIR__, 2);
     $fullPath = $root . '/' . $path;
     
     if (file_exists($fullPath) && is_file($fullPath)) {
@@ -107,7 +111,7 @@ function validateImage($file, $maxSize = 5242880) {
  * @return array Array of image paths
  */
 function getImagesFromFolder($folder) {
-    $root = dirname(__DIR__);
+    $root = dirname(__DIR__, 2);
     $path = $root . '/assets/images/' . $folder . '/';
     if (!is_dir($path)) {
         return [];
@@ -139,7 +143,7 @@ function getImagesFromFolder($folder) {
  * @return string Formatted file size
  */
 function getImageFileSize($path) {
-    $root = dirname(__DIR__);
+    $root = dirname(__DIR__, 2);
     $fullPath = $root . '/' . $path;
     if (!file_exists($fullPath)) {
         return '0 B';
@@ -167,7 +171,7 @@ function imageExists($path) {
     if (empty($path)) {
         return false;
     }
-    $root = dirname(__DIR__);
+    $root = dirname(__DIR__, 2);
     $fullPath = $root . '/' . $path;
     return file_exists($fullPath) && is_file($fullPath);
 }

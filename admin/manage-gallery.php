@@ -1,5 +1,5 @@
 <?php
-// admin/manage-gallery.php - WITH PHOTO UPLOAD
+// admin/manage-gallery.php - WITH PHOTO UPLOAD FOR EACH ALBUM
 session_start();
 require_once '../config/database.php';
 require_once '../includes/functions.php';
@@ -64,13 +64,14 @@ if (isset($_GET['toggle_album']) && is_numeric($_GET['toggle_album'])) {
     }
 }
 
-// Handle photo upload
+// Handle photo upload for album
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_photo'])) {
     $album_id = (int)$_POST['album_id'];
     $caption = clean($_POST['caption'] ?? '');
     $sort_order = (int)$_POST['sort_order'];
     $uploadedImage = '';
     
+    // Check if image was uploaded
     if (isset($_FILES['photo_image']) && $_FILES['photo_image']['error'] === UPLOAD_ERR_OK) {
         $result = uploadImage($_FILES['photo_image'], 'gallery', 5242880);
         if ($result['success']) {
@@ -94,6 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_photo'])) {
             ");
             $stmt->execute([$album_id, $image_path, $caption, $sort_order]);
             $message = 'Photo added successfully!';
+            
+            // Refresh the page to show new photo
+            header('Location: manage-gallery.php?album_id=' . $album_id . '&success=1');
+            exit;
         } catch (Exception $e) {
             $error = 'Error adding photo: ' . $e->getMessage();
         }
@@ -127,6 +132,52 @@ if ($selectedAlbumId) {
         ");
         $photoStmt->execute([$selectedAlbumId]);
         $photos = $photoStmt->fetchAll();
+    }
+}
+
+// Handle multiple photo upload
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_multiple'])) {
+    $album_id = (int)$_POST['album_id'];
+    $uploaded = 0;
+    $errors = [];
+    
+    if (isset($_FILES['multiple_photos']) && !empty($_FILES['multiple_photos']['name'][0])) {
+        $fileCount = count($_FILES['multiple_photos']['name']);
+        
+        for ($i = 0; $i < $fileCount; $i++) {
+            if ($_FILES['multiple_photos']['error'][$i] === UPLOAD_ERR_OK) {
+                $file = [
+                    'name' => $_FILES['multiple_photos']['name'][$i],
+                    'type' => $_FILES['multiple_photos']['type'][$i],
+                    'tmp_name' => $_FILES['multiple_photos']['tmp_name'][$i],
+                    'error' => $_FILES['multiple_photos']['error'][$i],
+                    'size' => $_FILES['multiple_photos']['size'][$i]
+                ];
+                
+                $result = uploadImage($file, 'gallery', 5242880);
+                if ($result['success']) {
+                    $stmt = $pdo->prepare("
+                        INSERT INTO gallery_photos (album_id, image_path, caption, sort_order) 
+                        VALUES (?, ?, ?, ?)
+                    ");
+                    $stmt->execute([$album_id, $result['path'], '', 0]);
+                    $uploaded++;
+                } else {
+                    $errors[] = 'Image ' . ($i+1) . ': ' . $result['error'];
+                }
+            }
+        }
+        
+        if ($uploaded > 0) {
+            $message = $uploaded . ' photo(s) uploaded successfully!';
+            if (!empty($errors)) {
+                $error = implode('; ', $errors);
+            }
+            header('Location: manage-gallery.php?album_id=' . $album_id . '&success=1');
+            exit;
+        } elseif (!empty($errors)) {
+            $error = implode('; ', $errors);
+        }
     }
 }
 ?>
@@ -194,6 +245,9 @@ if ($selectedAlbumId) {
 
         .btn-submit { padding: 10px 24px; background: linear-gradient(135deg, #009624, #00C853); color: #fff; border: none; border-radius: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,200,83,0.3); }
         .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(0,200,83,0.4); }
+        
+        .btn-upload-multiple { padding: 10px 24px; background: #FF6B00; color: #fff; border: none; border-radius: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(255,107,0,0.3); }
+        .btn-upload-multiple:hover { transform: translateY(-2px); box-shadow: 0 15px 40px rgba(255,107,0,0.4); }
 
         .table-container { background: #fff; border-radius: 20px; padding: 25px; overflow-x: auto; box-shadow: 0 5px 30px rgba(0,0,0,0.05); margin-bottom: 30px; }
         table { width: 100%; border-collapse: collapse; }
@@ -265,6 +319,18 @@ if ($selectedAlbumId) {
 
         .no-photos { text-align: center; padding: 40px 0; color: #999; }
         .no-photos i { font-size: 2.5rem; display: block; margin-bottom: 15px; color: #ccc; }
+        
+        .multiple-upload-box {
+            border: 2px dashed #FF6B00;
+            background: rgba(255,107,0,0.03);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .multiple-upload-box .icon { font-size: 3rem; color: #FF6B00; margin-bottom: 10px; }
+        .multiple-upload-box .text { color: #666; }
+        .multiple-upload-box .text strong { color: #FF6B00; }
 
         @media (max-width: 768px) { .admin-sidebar { width: 200px; padding: 20px 15px; } .form-row { grid-template-columns: 1fr; } }
         @media (max-width: 480px) { .admin-wrapper { flex-direction: column; } .admin-sidebar { width: 100%; min-height: auto; height: auto; position: static; } .admin-header { flex-direction: column; align-items: stretch; } .photo-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); } }
@@ -309,6 +375,7 @@ if ($selectedAlbumId) {
             <div class="alert-danger"><i class="fas fa-exclamation-circle"></i> <?= clean($error) ?></div>
         <?php endif; ?>
 
+        <!-- Albums List -->
         <div class="table-container">
             <h3 style="color:#0a0a0a;margin-bottom:15px;"><i class="fas fa-folder-open" style="color:#00C853;"></i> Albums</h3>
             <?php if (!empty($albums)): ?>
@@ -363,6 +430,7 @@ if ($selectedAlbumId) {
             <?php endif; ?>
         </div>
 
+        <!-- Photos Section for Selected Album -->
         <?php if ($selectedAlbumId && $selectedAlbum): ?>
             <div style="margin-top:30px;">
                 <h3 class="section-title">
@@ -376,9 +444,34 @@ if ($selectedAlbumId) {
                     </a>
                 </h3>
 
+                <!-- Upload Multiple Photos -->
+                <div class="multiple-upload-box">
+                    <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <div class="text">
+                        <strong>Upload Multiple Photos</strong><br>
+                        <span style="font-size:0.9rem;color:#999;">Select multiple images at once (Hold Ctrl/Cmd to select multiple)</span>
+                    </div>
+                    <form method="POST" action="" enctype="multipart/form-data" style="margin-top:15px;">
+                        <input type="hidden" name="album_id" value="<?= $selectedAlbumId ?>">
+                        <div class="file-upload-wrapper" style="min-height:80px;border-color:#FF6B00;">
+                            <input type="file" name="multiple_photos[]" accept="image/*" multiple>
+                            <div class="upload-icon"><i class="fas fa-images" style="color:#FF6B00;"></i></div>
+                            <div class="upload-text">
+                                <strong style="color:#FF6B00;">Click to select multiple photos</strong><br>
+                                <span style="font-size:0.85rem;color:#999;">JPG, PNG, WEBP, GIF (Max 5MB each)</span>
+                            </div>
+                            <div class="preview" id="multiplePreview"></div>
+                        </div>
+                        <button type="submit" name="upload_multiple" class="btn-upload-multiple" style="margin-top:10px;">
+                            <i class="fas fa-upload"></i> Upload All Photos
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Add Single Photo Form -->
                 <div class="form-container">
                     <h4 style="color:#0a0a0a;margin-bottom:15px;font-size:0.95rem;">
-                        <i class="fas fa-plus-circle" style="color:#00C853;"></i> Add Photo to Album
+                        <i class="fas fa-plus-circle" style="color:#00C853;"></i> Add Single Photo
                     </h4>
                     <form method="POST" action="?album_id=<?= $selectedAlbumId ?>" enctype="multipart/form-data">
                         <input type="hidden" name="album_id" value="<?= $selectedAlbumId ?>">
@@ -408,6 +501,7 @@ if ($selectedAlbumId) {
                     </form>
                 </div>
 
+                <!-- Photos Grid -->
                 <?php if (!empty($photos)): ?>
                     <div class="photo-grid">
                         <?php foreach ($photos as $photo): ?>
@@ -424,7 +518,7 @@ if ($selectedAlbumId) {
                 <?php else: ?>
                     <div class="no-photos">
                         <i class="fas fa-image"></i>
-                        <p>No photos in this album yet.</p>
+                        <p>No photos in this album yet. Upload your first photo above!</p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -433,7 +527,7 @@ if ($selectedAlbumId) {
 </div>
 
 <script>
-// Image preview
+// Single image preview
 document.getElementById('photo_image').addEventListener('change', function(e) {
     const preview = document.getElementById('imagePreview');
     preview.innerHTML = '';
@@ -452,7 +546,49 @@ document.getElementById('photo_image').addEventListener('change', function(e) {
     }
 });
 
-// Drag and drop
+// Multiple images preview
+document.querySelector('input[name="multiple_photos[]"]').addEventListener('change', function(e) {
+    const preview = document.getElementById('multiplePreview');
+    preview.innerHTML = '';
+    
+    if (this.files && this.files.length > 0) {
+        const count = this.files.length;
+        
+        const info = document.createElement('div');
+        info.style.padding = '10px';
+        info.style.background = '#fff3e0';
+        info.style.borderRadius = '8px';
+        info.style.color = '#FF6B00';
+        info.style.fontWeight = '600';
+        info.textContent = count + ' photo(s) selected';
+        preview.appendChild(info);
+        
+        // Show first image preview
+        if (this.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxHeight = '60px';
+                img.style.borderRadius = '8px';
+                img.style.border = '1px solid #e0e0e0';
+                img.style.marginTop = '10px';
+                preview.appendChild(img);
+                
+                if (count > 1) {
+                    const note = document.createElement('div');
+                    note.style.fontSize = '0.8rem';
+                    note.style.color = '#999';
+                    note.textContent = '...and ' + (count - 1) + ' more';
+                    preview.appendChild(note);
+                }
+            };
+            reader.readAsDataURL(this.files[0]);
+        }
+    }
+});
+
+// Drag and drop for single upload
 const wrapper = document.getElementById('fileUploadWrapper');
 wrapper.addEventListener('dragover', function(e) {
     e.preventDefault();

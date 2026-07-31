@@ -45,9 +45,10 @@ function uploadFile($file, $folder) {
     }
     
     // Validate actual MIME type (Security Fix)
-    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-    $mimeType = finfo_file($finfo, $file['tmp_name']);
-    finfo_close($finfo);
+    // Updated code - no finfo_close()
+$finfo = finfo_open(FILEINFO_MIME_TYPE);
+$mimeType = finfo_file($finfo, $file['tmp_name']);
+// finfo_close() removed - PHP handles it automatically
     
     $allowedMimes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/x-icon', 'image/vnd.microsoft.icon'];
     if (!in_array($mimeType, $allowedMimes, true)) {
@@ -452,7 +453,7 @@ $images = array_values(array_filter($images));
             <h3 class="section-title"><i class="fas fa-chart-bar"></i> Statistics</h3>
             <div class="form-row">
                 <div class="form-group">
-                    <label for="founded_year">Founded Year</label>
+                    <label for="founded_year">UCE</label>
                     <input type="text" id="founded_year" name="founded_year" value="<?= clean($settings['founded_year'] ?? '1985') ?>">
                 </div>
                 <div class="form-group">

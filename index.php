@@ -1,12 +1,25 @@
 <?php
-// index.php - Updated hero section with settings
+// index.php - With Counting Animation on Status Bar
 session_start();
 require_once 'config/database.php';
 require_once 'includes/functions.php';
 
 $pageTitle = getSetting($pdo, 'school_name', 'School') . ' - Home';
 
-// Fetch data
+// ============================================================
+// STATUS COUNTS FOR HOMEPAGE
+// ============================================================
+
+$totalStudents = getSetting($pdo, 'total_students', '1,200');
+$totalTeachers = $pdo->query("SELECT COUNT(*) FROM staff WHERE is_active = 1")->fetchColumn();
+$passRate = getSetting($pdo, 'pass_rate', '86');
+$foundedYear = getSetting($pdo, 'founded_year', '1985');
+
+// ============================================================
+// FETCH OTHER DATA
+// ============================================================
+
+// News
 $newsStmt = $pdo->query("
     SELECT n.*, nc.name as cat_name, nc.color_code as cat_color
     FROM news n
@@ -17,6 +30,7 @@ $newsStmt = $pdo->query("
 ");
 $latestNews = $newsStmt->fetchAll();
 
+// Events
 $eventsStmt = $pdo->query("
     SELECT * FROM events
     WHERE is_published = 1 AND event_date >= CURDATE()
@@ -25,6 +39,7 @@ $eventsStmt = $pdo->query("
 ");
 $upcomingEvents = $eventsStmt->fetchAll();
 
+// Testimonials
 $testimonialsStmt = $pdo->query("
     SELECT * FROM testimonials
     WHERE is_published = 1
@@ -33,11 +48,10 @@ $testimonialsStmt = $pdo->query("
 ");
 $testimonials = $testimonialsStmt->fetchAll();
 
-// Get hero images from settings
+// Hero Images
 $heroImagesSetting = getSetting($pdo, 'hero_images', '');
 $heroImages = $heroImagesSetting ? array_map('trim', explode(',', $heroImagesSetting)) : [];
 
-// If no images are set, use defaults
 if (empty($heroImages) || (count($heroImages) === 1 && empty($heroImages[0]))) {
     $heroImages = [
         'assets/images/hero1.jpg',
@@ -46,7 +60,6 @@ if (empty($heroImages) || (count($heroImages) === 1 && empty($heroImages[0]))) {
     ];
 }
 
-// Get hero subtitle
 $heroSubtitle = getSetting($pdo, 'hero_subtitle', 'A Center of Academic Excellence and Moral Integrity');
 
 include 'includes/header.php';
@@ -62,7 +75,7 @@ include 'includes/header.php';
                  alt="School Image <?= $index + 1 ?>" 
                  loading="lazy" 
                  class="<?= $index === 0 ? 'active' : '' ?>"
-                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221920%22 height=%221080%22><rect width=%221920%22 height=%221080%22 fill=%22%231a4d2e%22/><text x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2236%22 fill=%22%23FFD700%22 text-anchor=%22middle%22 dy=%22.3em%22>School Image</text></svg>'">
+                 onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%221920%22 height=%221080%22><rect width=%221920%22 height=%221080%22 fill=%22%231a1a1a%22/><text x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2236%22 fill=%22%23444444%22 text-anchor=%22middle%22 dy=%22.3em%22>School Image</text></svg>'">
         <?php endforeach; ?>
     </div>
     <div class="hero-overlay"></div>
@@ -94,20 +107,20 @@ include 'includes/header.php';
     <div class="container">
         <div class="stats-grid">
             <div class="stat-item">
-                <span class="stat-number"><?= clean(getSetting($pdo, 'founded_year', '1985')) ?></span>
-                <span class="stat-label">UCE </span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number"><?= clean(getSetting($pdo, 'total_students', '1,200')) ?>+</span>
+                <span class="stat-number" data-count="<?= $totalStudents ?>">0</span>
                 <span class="stat-label">Students</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number"><?= clean(getSetting($pdo, 'total_teachers', '60')) ?>+</span>
+                <span class="stat-number" data-count="<?= $totalTeachers ?>">0</span>
                 <span class="stat-label">Teachers</span>
             </div>
             <div class="stat-item">
-                <span class="stat-number"><?= clean(getSetting($pdo, 'pass_rate', '86')) ?>%</span>
-                <span class="stat-label">UACE Pass Rate</span>
+                <span class="stat-number" data-count="<?= $passRate ?>">0</span>
+                <span class="stat-label">Pass Rate</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-count="<?= $foundedYear ?>">0</span>
+                <span class="stat-label">UCE</span>
             </div>
         </div>
     </div>
@@ -189,12 +202,12 @@ include 'includes/header.php';
             <div class="why-item">
                 <div class="icon"><i class="fas fa-graduation-cap"></i></div>
                 <h4>Academic Excellence</h4>
-                <p>Consistent top performance with an 86% UACE pass rate and numerous university admissions.</p>
+                <p>Consistent top performance with an <?= $passRate ?>% UACE pass rate and numerous university admissions.</p>
             </div>
             <div class="why-item">
                 <div class="icon"><i class="fas fa-users"></i></div>
                 <h4>Experienced Staff</h4>
-                <p>Over 60 qualified teachers with years of experience dedicated to student success.</p>
+                <p>Over <?= $totalTeachers ?> qualified teachers with years of experience dedicated to student success.</p>
             </div>
             <div class="why-item">
                 <div class="icon"><i class="fas fa-futbol"></i></div>
@@ -262,16 +275,66 @@ include 'includes/header.php';
     </div>
 </section>
 
-<!-- Neexa Widget -->
-<script>
-  window.neexaAsyncInit = function() {
-    window.neexa.init({
-      agent_id: 'a24dd7ec-8092-448d-abe6-b4f34dba983e', mobile_mini_style: 'greeting_only',
-    });
-  };
-</script>
-<script async src="https://chat-widget.neexa.ai/main.js?nonce=1784552208885.7986"></script>
-<!-- End Neexa Widget -->
-
-
 <?php include 'includes/footer.php'; ?>
+
+<!-- ============================================================ -->
+<!-- COUNTING ANIMATION SCRIPT -->
+<!-- ============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animated counter for stats
+    const statNumbers = document.querySelectorAll('.stat-number[data-count]');
+    
+    if (statNumbers.length === 0) return;
+    
+    // Function to animate counting
+    function animateNumber(element) {
+        const target = parseInt(element.getAttribute('data-count'));
+        let current = 0;
+        const duration = 2000; // 2 seconds
+        const steps = 60;
+        const increment = target / steps;
+        const stepTime = duration / steps;
+        
+        // Check if it's a year or percentage
+        const isYear = target === <?= (int)$foundedYear ?>;
+        const isPercentage = element.closest('.stat-item').querySelector('.stat-label')?.textContent === 'Pass Rate';
+        
+        const timer = setInterval(function() {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            
+            // Format the display
+            let displayValue = Math.floor(current);
+            if (isYear) {
+                element.textContent = displayValue;
+            } else if (isPercentage) {
+                element.textContent = displayValue + '%';
+            } else {
+                element.textContent = displayValue.toLocaleString();
+            }
+        }, stepTime);
+    }
+    
+    // Use Intersection Observer to start animation when stats come into view
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const element = entry.target;
+                animateNumber(element);
+                observer.unobserve(element); // Only animate once
+            }
+        });
+    }, {
+        threshold: 0.3
+    });
+    
+    // Observe each stat number
+    statNumbers.forEach(num => {
+        observer.observe(num);
+    });
+});
+</script>
