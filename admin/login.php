@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..600&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 
 <body class="admin-body">
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <div class="admin-login-wrap">
     <div class="admin-login-card reveal in">
       <div class="admin-login-brand">
-        <img src="../images/ESD_69e8c39b15887.webp" alt="School logo" class="admin-login-logo">
+        <img src="../assets/images/ESD_69e8c39b15887.webp" alt="School logo" class="admin-login-logo">
         <h1>Admin Sign In</h1>
         <p>Uganda Martyrs Primary School, Namugongo</p>
       </div>

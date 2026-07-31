@@ -17,6 +17,8 @@ $stats = [
   'published_news' => (int) $pdo->query('SELECT COUNT(*) FROM news WHERE is_published = 1')->fetchColumn(),
   'draft_news' => (int) $pdo->query('SELECT COUNT(*) FROM news WHERE is_published = 0')->fetchColumn(),
   'upcoming_events' => (int) $pdo->query('SELECT COUNT(*) FROM events WHERE event_date >= CURDATE()')->fetchColumn(),
+  'gallery_photos' => (int) $pdo->query('SELECT COUNT(*) FROM gallery_photos')->fetchColumn(),
+  'active_staff' => (int) $pdo->query('SELECT COUNT(*) FROM staff WHERE is_active = 1')->fetchColumn(),
 ];
 
 // ── RECENT ACTIVITY ─────────────────────────────────────────
@@ -81,6 +83,14 @@ $upcomingEvents = $pdo->query('SELECT * FROM events WHERE event_date >= CURDATE(
         <div class="admin-stat-card">
           <span class="admin-stat-num"><?= $stats['upcoming_events'] ?></span>
           <span class="admin-stat-label">Upcoming Events</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-num"><?= $stats['gallery_photos'] ?></span>
+          <span class="admin-stat-label">Gallery Photos</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-num"><?= $stats['active_staff'] ?></span>
+          <span class="admin-stat-label">Active Staff</span>
         </div>
       </div>
 

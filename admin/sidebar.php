@@ -9,6 +9,7 @@ $unreadCount = $pdo->query('SELECT COUNT(*) FROM contact_messages WHERE is_read 
 $newEnquiryCount = $pdo->query("SELECT COUNT(*) FROM admission_enquiries WHERE status = 'new'")->fetchColumn();
 $draftNewsCount = $pdo->query('SELECT COUNT(*) FROM news WHERE is_published = 0')->fetchColumn();
 $upcomingEventsCount = $pdo->query('SELECT COUNT(*) FROM events WHERE event_date >= CURDATE()')->fetchColumn();
+$draftAlbumsCount = $pdo->query('SELECT COUNT(*) FROM gallery_albums WHERE is_published = 0')->fetchColumn();
 ?>
 <aside class="admin-sidebar">
   <div class="admin-sidebar-brand">
@@ -25,6 +26,15 @@ $upcomingEventsCount = $pdo->query('SELECT COUNT(*) FROM events WHERE event_date
       Events
       <?php if ($upcomingEventsCount > 0): ?><span
           class="admin-nav-badge"><?= (int) $upcomingEventsCount ?></span><?php endif; ?>
+    </a>
+    <a href="gallery.php"
+      class="<?= in_array($adminCurrentPage, ['gallery', 'gallery-form', 'gallery-photos'], true) ? 'current' : '' ?>">
+      Gallery
+      <?php if ($draftAlbumsCount > 0): ?><span
+          class="admin-nav-badge"><?= (int) $draftAlbumsCount ?></span><?php endif; ?>
+    </a>
+    <a href="staff.php" class="<?= in_array($adminCurrentPage, ['staff', 'staff-form'], true) ? 'current' : '' ?>">
+      Staff
     </a>
     <a href="messages.php" class="<?= $adminCurrentPage === 'messages' ? 'current' : '' ?>">
       Contact Messages
