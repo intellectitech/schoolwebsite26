@@ -1,0 +1,10 @@
+# The .php data files in this folder are already safe to request
+# directly (they just execute and output nothing). This file adds a
+# second layer of protection on Apache hosts that support .htaccess.
+<IfModule mod_authz_core.c>
+  Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+  Order allow,deny
+  Deny from all
+</IfModule>

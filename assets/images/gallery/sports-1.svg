@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1450a3"/>
+      <stop offset="100%" stop-color="#2e6fd9"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#g)"/>
+  <circle cx="340" cy="40" r="70" fill="#ffffff" opacity="0.06"/>
+  <circle cx="30" cy="270" r="90" fill="#ffffff" opacity="0.06"/>
+  <g transform="translate(200,140)" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="-10" cy="-46" r="13" fill="#ffffff" stroke="none"/>
+  <path d="M-70 -10 C-40 -34 -10 6 20 -18 C40 -34 60 -14 70 -20" />
+  <path d="M-70 20 C-40 -4 -10 36 20 12 C40 -4 60 16 70 10" opacity="0.6"/>
+</g>
+  <text x="200" y="270" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff" opacity="0.85">Sports &amp; Swimming</text>
+</svg>

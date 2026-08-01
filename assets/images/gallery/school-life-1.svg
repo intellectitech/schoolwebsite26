@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b2d5c"/>
+      <stop offset="100%" stop-color="#1450a3"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#g)"/>
+  <circle cx="340" cy="40" r="70" fill="#ffffff" opacity="0.06"/>
+  <circle cx="30" cy="270" r="90" fill="#ffffff" opacity="0.06"/>
+  <g transform="translate(200,140)" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="-46" cy="-30" r="14" fill="#ffffff" stroke="none"/>
+  <path d="M-46 -6 C-64 -6 -70 14 -70 30 H-22 C-22 14 -28 -6 -46 -6 Z" fill="#ffffff" stroke="none"/>
+  <circle cx="0" cy="-38" r="16" fill="#ffd35c" stroke="none"/>
+  <path d="M0 -12 C-20 -12 -28 12 -28 32 H28 C28 12 20 -12 0 -12 Z" fill="#ffd35c" stroke="none"/>
+  <circle cx="48" cy="-30" r="14" fill="#ffffff" stroke="none"/>
+  <path d="M48 -6 C30 -6 24 14 24 30 H72 C72 14 66 -6 48 -6 Z" fill="#ffffff" stroke="none"/>
+</g>
+  <text x="200" y="270" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff" opacity="0.85">School Life</text>
+</svg>

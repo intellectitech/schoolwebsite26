@@ -1,0 +1,59 @@
+# .htaccess
+# ---------------------------------------------------------------
+# Clean, keyword-friendly URLs (SEO) + basic security hardening.
+#
+# Rewrites URLs like:
+#   /about            -> about.php
+#   /news/some-slug   -> news.php?slug=some-slug
+# so search engines and parents see readable paths like
+# mbuyaparentsschool.ug/admissions instead of admissions.php.
+#
+# The .php files still work directly too (nothing is broken by
+# this), but includes/header.php's canonical tag always points to
+# the clean version, so search engines settle on one URL per page.
+# ---------------------------------------------------------------
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Don't rewrite requests for real files or folders (images, CSS,
+  # JS, the admin panel, etc.) — only apply clean URLs to routes
+  # that don't already exist on disk.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # /news/some-post-slug -> news.php?slug=some-post-slug
+  RewriteRule ^news/([a-zA-Z0-9-]+)/?$ news.php?slug=$1 [L,QSA]
+
+  # sitemap.xml -> sitemap.php (so Search Console can be given the
+  # conventional .xml URL, even though it's generated dynamically)
+  RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+  # robots.txt -> robots.php (keeps the domain in one place: SITE_URL)
+  RewriteRule ^robots\.txt$ robots.php [L]
+
+  # Simple one-to-one clean paths -> matching .php file
+  RewriteRule ^about/?$ about.php [L,QSA]
+  RewriteRule ^academics/?$ academics.php [L,QSA]
+  RewriteRule ^events/?$ events.php [L,QSA]
+  RewriteRule ^admissions/?$ admissions.php [L,QSA]
+  RewriteRule ^gallery/?$ gallery.php [L,QSA]
+  RewriteRule ^news/?$ news.php [L,QSA]
+  RewriteRule ^contact/?$ contact.php [L,QSA]
+</IfModule>
+
+# ---------------------------------------------------------------
+# Security: block direct access to sensitive folders even if a
+# request slips past normal navigation.
+# ---------------------------------------------------------------
+<IfModule mod_authz_core.c>
+  <FilesMatch "\.(sql)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "\.(sql)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
