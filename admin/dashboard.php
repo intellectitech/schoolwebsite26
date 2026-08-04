@@ -19,6 +19,7 @@ $stats = [
   'upcoming_events' => (int) $pdo->query('SELECT COUNT(*) FROM events WHERE event_date >= CURDATE()')->fetchColumn(),
   'gallery_photos' => (int) $pdo->query('SELECT COUNT(*) FROM gallery_photos')->fetchColumn(),
   'active_staff' => (int) $pdo->query('SELECT COUNT(*) FROM staff WHERE is_active = 1')->fetchColumn(),
+  'published_testimonials' => (int) $pdo->query('SELECT COUNT(*) FROM testimonials WHERE is_published = 1')->fetchColumn(),
 ];
 
 // ── RECENT ACTIVITY ─────────────────────────────────────────
@@ -91,6 +92,10 @@ $upcomingEvents = $pdo->query('SELECT * FROM events WHERE event_date >= CURDATE(
         <div class="admin-stat-card">
           <span class="admin-stat-num"><?= $stats['active_staff'] ?></span>
           <span class="admin-stat-label">Active Staff</span>
+        </div>
+        <div class="admin-stat-card">
+          <span class="admin-stat-num"><?= $stats['published_testimonials'] ?></span>
+          <span class="admin-stat-label">Published Testimonials</span>
         </div>
       </div>
 

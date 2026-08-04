@@ -276,7 +276,7 @@ function deleteImageFrom($relativePath, $subdir)
     if (!$relativePath || strpos($relativePath, 'images/' . $subdir . '/') !== 0) {
         return;
     }
-    $full = __DIR__ . '/' . $relativePath;
+    $full = __DIR__ . '/../' . $relativePath;
     if (is_file($full)) {
         @unlink($full);
     }
@@ -333,4 +333,37 @@ function uploadStaffImage($fileKey)
 function deleteStaffImageFile($relativePath)
 {
     deleteImageFrom($relativePath, 'staff');
+}
+
+// ----------------------------------------------------------
+// TESTIMONIAL PHOTO UPLOAD / DELETE — stored under images/testimonials/.
+// ----------------------------------------------------------
+function uploadTestimonialImage($fileKey)
+{
+    return uploadImageTo($fileKey, 'testimonials');
+}
+
+function deleteTestimonialImageFile($relativePath)
+{
+    deleteImageFrom($relativePath, 'testimonials');
+}
+
+// ----------------------------------------------------------
+// UPDATE A SETTING — writes a new value to an existing
+// school_info row and stamps who changed it. Returns true if
+// the value actually changed (so callers can skip audit-logging
+// for fields nobody touched).
+// Usage: updateSetting($pdo, $id, $newValue, $adminId);
+// ----------------------------------------------------------
+function updateSetting($pdo, $id, $newValue, $adminId)
+{
+    $stmt = $pdo->prepare('SELECT setting_value FROM school_info WHERE id = ?');
+    $stmt->execute([$id]);
+    $current = $stmt->fetchColumn();
+    if ($current === false || $current === $newValue) {
+        return false;
+    }
+    $pdo->prepare('UPDATE school_info SET setting_value = ?, updated_by = ? WHERE id = ?')
+        ->execute([$newValue, $adminId, $id]);
+    return true;
 }

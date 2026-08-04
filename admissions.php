@@ -2,9 +2,13 @@
 session_start();
 require_once 'config/database.php';
 require_once 'includes/functions.php';
-
-// Flash message set by process_admissions.php after a submit + redirect
+//Flash message set by process_admissions.php after a submit + redirect
 $flash = getFlash();
+
+$schoolName = isset($pdo) ? (getSetting($pdo, 'school_name') ?: 'Uganda Martyrs Primary School') : 'Uganda Martyrs Primary School';
+$schoolAddress = isset($pdo) ? (getSetting($pdo, 'school_address') ?: 'Namugongo, Kira Municipality, Wakiso District') : '';
+$schoolPhone = isset($pdo) ? (getSetting($pdo, 'contact_phone') ?: '+256 700 000 000') : '';
+$schoolEmail = isset($pdo) ? (getSetting($pdo, 'contact_email') ?: 'info@ugandamartyrsnamugongo.sc.ug') : '';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -420,7 +424,7 @@ $flash = getFlash();
               </svg>
               <div>
                 <h4>Phone</h4>
-                <p>+256 700 000 000<br><small>Monday – Friday, 8am – 5pm</small></p>
+                <p><?= htmlspecialchars($schoolPhone) ?><br><small>Monday – Friday, 8am – 5pm</small></p>
               </div>
             </div>
             <div class="enq-contact-item">
@@ -431,7 +435,7 @@ $flash = getFlash();
               </svg>
               <div>
                 <h4>Email</h4>
-                <p>admissions@ugandamartyrsnamugongo.sc.ug</p>
+                <p><?= htmlspecialchars($schoolEmail) ?></p>
               </div>
             </div>
             <div class="enq-contact-item">
@@ -442,7 +446,7 @@ $flash = getFlash();
               </svg>
               <div>
                 <h4>Address</h4>
-                <p>Namugongo, Kira Municipality<br>Wakiso District, Uganda</p>
+                <p><?= htmlspecialchars($schoolAddress) ?><br>Wakiso District, Uganda</p>
               </div>
             </div>
           </div>

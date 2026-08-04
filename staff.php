@@ -238,8 +238,8 @@ $deptHeads = $pdo->query(
             <div class="staff-card">
               <div class="staff-card-photo" aria-hidden="<?= $hasRealPhoto ? 'false' : 'true' ?>">
                 <?php if ($hasRealPhoto): ?>
-                  <img src="<?= htmlspecialchars($person['photo']) ?>"
-                    alt="<?= htmlspecialchars($person['full_name']) ?>" loading="lazy">
+                  <img src="<?= htmlspecialchars($person['photo']) ?>" alt="<?= htmlspecialchars($person['full_name']) ?>"
+                    loading="lazy">
                 <?php else: ?>
                   <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
                     <rect width="400" height="200" fill="#16233D" />

@@ -86,12 +86,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($editId) {
     $pdo->prepare(
       'UPDATE staff SET department_id = ?, first_name = ?, last_name = ?, title = ?, role = ?, subjects = ?,
-              qualification = ?, photo = ?, is_managemnet = ?, sort_order = ?, is_active = ?, bio = ?, email = ?
+              qualification = ?, photo = ?, is_management = ?, sort_order = ?, is_active = ?, bio = ?, email = ?
              WHERE id = ?'
     )->execute([
-          $data['department_id'], $data['first_name'], $data['last_name'], $data['title'], $data['role'],
-          $data['subjects'], $data['qualification'], $photoPath, $data['is_managemnet'], $data['sort_order'],
-          $data['is_active'], $data['bio'], $data['email'], $editId,
+          $data['department_id'],
+          $data['first_name'],
+          $data['last_name'],
+          $data['title'],
+          $data['role'],
+          $data['subjects'],
+          $data['qualification'],
+          $photoPath,
+          $data['is_managemnet'],
+          $data['sort_order'],
+          $data['is_active'],
+          $data['bio'],
+          $data['email'],
+          $editId,
         ]);
     auditLog($pdo, $_SESSION['admin_id'], 'update', 'staff', $editId, 'Updated staff member: ' . $data['first_name'] . ' ' . $data['last_name']);
     setFlashSuccess(trim($data['first_name'] . ' ' . $data['last_name']) . ' has been updated.');
@@ -101,9 +112,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               is_managemnet, sort_order, is_active, bio, email)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     )->execute([
-          $data['department_id'], $data['first_name'], $data['last_name'], $data['title'], $data['role'],
-          $data['subjects'], $data['qualification'], $photoPath, $data['is_managemnet'], $data['sort_order'],
-          $data['is_active'], $data['bio'], $data['email'],
+          $data['department_id'],
+          $data['first_name'],
+          $data['last_name'],
+          $data['title'],
+          $data['role'],
+          $data['subjects'],
+          $data['qualification'],
+          $photoPath,
+          $data['is_managemnet'],
+          $data['sort_order'],
+          $data['is_active'],
+          $data['bio'],
+          $data['email'],
         ]);
     $newId = $pdo->lastInsertId();
     auditLog($pdo, $_SESSION['admin_id'], 'insert', 'staff', $newId, 'Added staff member: ' . $data['first_name'] . ' ' . $data['last_name']);
@@ -204,10 +225,10 @@ $v = function ($key, $default = '') use ($f, $staffMember) {
           </div>
 
           <div class="field">
-            <label for="subjects">Subjects taught <span
-                style="text-transform:none;letter-spacing:normal">(optional, comma-separated)</span></label>
-            <input id="subjects" name="subjects" type="text" maxlength="300" value="<?= htmlspecialchars($v('subjects')) ?>"
-              placeholder="e.g. Mathematics, Additional Mathematics">
+            <label for="subjects">Subjects taught <span style="text-transform:none;letter-spacing:normal">(optional,
+                comma-separated)</span></label>
+            <input id="subjects" name="subjects" type="text" maxlength="300"
+              value="<?= htmlspecialchars($v('subjects')) ?>" placeholder="e.g. Mathematics, Additional Mathematics">
           </div>
 
           <div class="field">
@@ -245,11 +266,12 @@ $v = function ($key, $default = '') use ($f, $staffMember) {
             <div class="field">
               <label for="sort_order">Sort order <span style="text-transform:none;letter-spacing:normal">(lower numbers
                   show first)</span></label>
-              <input id="sort_order" name="sort_order" type="number" value="<?= htmlspecialchars($v('sort_order', '0')) ?>">
+              <input id="sort_order" name="sort_order" type="number"
+                value="<?= htmlspecialchars($v('sort_order', '0')) ?>">
             </div>
             <div class="field" style="display:flex;align-items:flex-end;gap:20px;padding-bottom:12px">
               <label class="admin-checkbox-inline">
-                <input type="checkbox" name="is_management" value="1" <?= $v('is_managemnet', $staffMember ? $staffMember['is_managemnet'] : 0) ? 'checked' : '' ?>>
+                <input type="checkbox" name="is_management" value="1" <?= $v('is_management', $staffMember ? $staffMember['is_management'] : 0) ? 'checked' : '' ?>>
                 Management
               </label>
               <label class="admin-checkbox-inline">

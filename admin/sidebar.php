@@ -10,6 +10,7 @@ $newEnquiryCount = $pdo->query("SELECT COUNT(*) FROM admission_enquiries WHERE s
 $draftNewsCount = $pdo->query('SELECT COUNT(*) FROM news WHERE is_published = 0')->fetchColumn();
 $upcomingEventsCount = $pdo->query('SELECT COUNT(*) FROM events WHERE event_date >= CURDATE()')->fetchColumn();
 $draftAlbumsCount = $pdo->query('SELECT COUNT(*) FROM gallery_albums WHERE is_published = 0')->fetchColumn();
+$hiddenTestimonialsCount = $pdo->query('SELECT COUNT(*) FROM testimonials WHERE is_published = 0')->fetchColumn();
 ?>
 <aside class="admin-sidebar">
   <div class="admin-sidebar-brand">
@@ -36,6 +37,12 @@ $draftAlbumsCount = $pdo->query('SELECT COUNT(*) FROM gallery_albums WHERE is_pu
     <a href="staff.php" class="<?= in_array($adminCurrentPage, ['staff', 'staff-form'], true) ? 'current' : '' ?>">
       Staff
     </a>
+    <a href="testimonials.php"
+      class="<?= in_array($adminCurrentPage, ['testimonials', 'testimonial-form'], true) ? 'current' : '' ?>">
+      Testimonials
+      <?php if ($hiddenTestimonialsCount > 0): ?><span
+          class="admin-nav-badge"><?= (int) $hiddenTestimonialsCount ?></span><?php endif; ?>
+    </a>
     <a href="messages.php" class="<?= $adminCurrentPage === 'messages' ? 'current' : '' ?>">
       Contact Messages
       <?php if ($unreadCount > 0): ?><span class="admin-nav-badge"><?= (int) $unreadCount ?></span><?php endif; ?>
@@ -44,6 +51,9 @@ $draftAlbumsCount = $pdo->query('SELECT COUNT(*) FROM gallery_albums WHERE is_pu
       Admission Enquiries
       <?php if ($newEnquiryCount > 0): ?><span
           class="admin-nav-badge"><?= (int) $newEnquiryCount ?></span><?php endif; ?>
+    </a>
+    <a href="settings.php" class="<?= $adminCurrentPage === 'settings' ? 'current' : '' ?>">
+      Site Settings
     </a>
     <a href="../index.php" target="_blank">View Site ↗</a>
   </nav>

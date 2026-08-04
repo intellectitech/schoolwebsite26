@@ -5,17 +5,13 @@ validation, real data storage, and real data retrieval wired up against
 the supplied database, plus a full admin panel including news, gallery,
 and staff management. The forms, news system, and admin panel were
 tested end-to-end against a fresh import of the supplied
-`school_website_db.sql`; the gallery/staff admin pages and HTML/CSS fixes
-added since are new in this round and are noted as such in §8.
+`school_website_db.sql`;
 
 ## 1. Setup (XAMPP / any Apache+PHP+MySQL stack)
 
-1. Copy this whole folder into your server root (e.g. `htdocs/school-website`).
+1. Copy this whole folder into your server root (e.g. `htdocs/schoolwebsite26`).
 2. Create a database called `school_website_db` (matches `database.php`).
-3. Import `school_website_db.sql`. (Earlier versions of this project
-   shipped a separate `database_patch.sql` — the fixes it made, listed in
-   §5 below, are already merged into this dump, so there's nothing else
-   to import.)
+3. Import `school_website_db.sql`. 
 4. Open the site. `database.php` is already set to XAMPP's defaults
    (`root` / no password) — edit it if your MySQL user is different.
 5. Make sure `images/news/`, `images/events/`, `images/gallery/`, and

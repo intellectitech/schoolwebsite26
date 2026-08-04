@@ -74,7 +74,9 @@ $flash = getFlash();
               d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.7a16 16 0 0 0 6 6z" />
           </svg>
           <h3>Phone</h3>
-          <p><a href="tel:+256700000000">+256 700 000 000</a><br><a href="tel:+256700000001">+256 700 000 001</a><br>Mon
+          <p><a
+              href="tel:<?= htmlspecialchars(preg_replace('/\s+/', '', $schoolPhone)) ?>"><?= htmlspecialchars($schoolPhone) ?><br>
+            </a><br>Mon
             – Fri, 8:00 am – 5:00 pm</p>
         </div>
 
@@ -274,44 +276,15 @@ $flash = getFlash();
             </div>
           </div>
         </div>
-
-        <div class="map-illustration" aria-label="Illustrated map showing location near Namugongo Shrine">
-          <svg viewBox="0 0 380 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <!-- Road grid -->
-            <rect width="380" height="300" fill="#2A3A5C" rx="6" />
-            <!-- Roads -->
-            <rect x="0" y="140" width="380" height="18" fill="#16233D" opacity="0.8" />
-            <rect x="190" y="0" width="16" height="300" fill="#16233D" opacity="0.8" />
-            <line x1="0" y1="80" x2="380" y2="80" stroke="#16233D" stroke-width="8" opacity="0.5" />
-            <!-- Basilica marker -->
-            <g transform="translate(280,100)">
-              <circle r="22" fill="#A6402E" />
-              <polygon points="0,-10 -4,-4 4,-4" fill="#FBF3E6" />
-              <rect x="-2" y="-4" width="4" height="8" fill="#FBF3E6" />
-              <line x1="-7" y1="-7" x2="-4" y2="-4" stroke="#FBF3E6" stroke-width="1" />
-              <line x1="7" y1="-7" x2="4" y2="-4" stroke="#FBF3E6" stroke-width="1" />
-            </g>
-            <text x="280" y="138" text-anchor="middle" font-family="sans-serif" font-size="8"
-              fill="#F8D25C">Basilica</text>
-            <!-- School marker -->
-            <g transform="translate(200,149)">
-              <circle r="18" fill="#F2B705" />
-              <rect x="-7" y="-6" width="14" height="10" fill="#16233D" />
-              <polygon points="0,-11 -10,-3 10,-3" fill="#16233D" />
-            </g>
-            <text x="200" y="182" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#F8D25C">UMPS</text>
-            <!-- Compass -->
-            <g transform="translate(340,30)">
-              <circle r="16" fill="none" stroke="#F2B705" stroke-width="1" opacity="0.6" />
-              <text x="0" y="-6" text-anchor="middle" font-family="sans-serif" font-size="9" fill="#F2B705"
-                font-weight="bold">N</text>
-              <line x1="0" y1="-3" x2="0" y2="3" stroke="#F2B705" stroke-width="2" />
-            </g>
-            <!-- Labels -->
-            <text x="20" y="135" font-family="sans-serif" font-size="9" fill="rgba(251,243,230,0.6)">← To Kampala</text>
-            <text x="185" y="20" font-family="sans-serif" font-size="9" fill="rgba(251,243,230,0.6)">Namugongo Rd</text>
-          </svg>
-        </div>
+        <section>
+          <div class="container reveal map-illustration"
+            aria-label="Illustrated map showing location near Namugongo Shrine">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.72504789518!2d32.6561473!3d0.39177670000000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177db76c0a2b9777%3A0x1e60675f04a78900!2sUganda%20Martyrs%20Nursery%20and%20Primary%20School%20Namugongo.!5e0!3m2!1sen!2sug!4v1785467070419!5m2!1sen!2sug"
+              width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+        </section>
 
       </div>
     </div>
