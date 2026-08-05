@@ -45,8 +45,8 @@ if ($errors) {
 
 $stmt = $pdo->prepare(
     'INSERT INTO admission_enquiries
-        (parent_name, parent_phone, parent_email, student_name, entry_level, current_school, ple_aggregate, message, status, admin_notes)
-     VALUES (?, ?, ?, ?, ?, ?, NULL, ?, ?, ?)'
+        (parent_name, parent_phone, parent_email, student_name, entry_level, current_school, message, status, admin_notes)
+     VALUES (?, ?, ?, ?, ?, NULL, ?, ?, ?)'
 );
 $stmt->execute([$parentName, $parentPhone, $parentEmail, $studentName, $entryLevel, $currentSchool, $message, 'new', '']);
 
