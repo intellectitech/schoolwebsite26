@@ -1,56 +1,40 @@
-<?php
-// ============================================================
-//  includes/footer.php — Footer & closing HTML
-//  Include at the BOTTOM of every public page.
-// ============================================================
-$schoolName    = isset($pdo) ? getSetting($pdo, 'school_name')    : 'School';
-$schoolAddress = isset($pdo) ? getSetting($pdo, 'school_address') : '';
-$schoolPhone   = isset($pdo) ? getSetting($pdo, 'school_phone')   : '';
-$schoolEmail   = isset($pdo) ? getSetting($pdo, 'school_email')   : '';
-?>
-
-<footer class="site-footer">
-    <div class="container footer-grid">
-
-        <!-- About column -->
-        <div class="footer-col">
-            <h3><?= htmlspecialchars($schoolName) ?></h3>
-            <p><?= htmlspecialchars($schoolAddress) ?></p>
-            <p style="margin-top:.5rem">
-                📞 <?= htmlspecialchars($schoolPhone) ?><br>
-                ✉ <?= htmlspecialchars($schoolEmail) ?>
-            </p>
+    <footer>
+        <div class="container footer-grid">
+            <div>
+                <div class="brand-wrap">
+                    <div class="logo-badge"><img src="images/logo.png" alt="School logo"></div>
+                    <div class="brand">Namugongo Model<br>Primary School</div>
+                </div>
+                <p class="footer-tagline">Education Is My Future</p>
+            </div>
+            <div>
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="about.php">About Us</a></li>
+                    <li><a href="admission.php">Admission</a></li>
+                    <li><a href="news.php">News</a></li>
+                    <li><a href="gallery.php">Gallery</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <ul class="footer-links">
+                    <li>📍 <?php echo h(SITE_ADDRESS); ?></li>
+                    <li>📞 <?php echo h(SITE_PHONE); ?></li>
+                    <li>✉ <?php echo h(SITE_EMAIL); ?></li>
+                </ul>
+            </div>
         </div>
-
-        <!-- Quick links -->
-        <div class="footer-col">
-            <h4>Quick Links</h4>
-            <a href="/school-website/about.php">About Us</a>
-            <a href="/school-website/admissions.php">Admissions</a>
-            <a href="/school-website/news.php">News &amp; Events</a>
-            <a href="/school-website/staff.php">Our Staff</a>
-            <a href="/school-website/contact.php">Contact</a>
+        <div class="container footer-bottom">
+            <p>&copy; <?php echo date('Y'); ?> Namugongo Model Primary School. All rights reserved.</p>
         </div>
+    </footer>
+    </main>
 
-        <!-- Academic links -->
-        <div class="footer-col">
-            <h4>Academics</h4>
-            <a href="/school-website/admissions.php#requirements">Entry Requirements</a>
-            <a href="/school-website/admissions.php#downloads">Download Forms</a>
-            <a href="/school-website/gallery.php">Photo Gallery</a>
-            <a href="/school-website/news.php?category=academics">Academic News</a>
-        </div>
+    <!-- Nexa AI School Assistant -->
+    <div id="nexaAiRoot"></div>
 
-    </div>
-
-    <div class="footer-bottom">
-        <div class="container">
-            <p>&copy; <?= date('Y') ?> <?= htmlspecialchars($schoolName) ?>. All rights reserved.
-               &nbsp;|&nbsp; Developed by Intellectitech</p>
-        </div>
-    </div>
-</footer>
-
-<script src="/school-website/assets/js/main.js"></script>
+    <script src="script.js"></script>
+    <script src="assets/js/nexa-ai.js"></script>
 </body>
 </html>

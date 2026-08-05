@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
+  <title id="title">Namugongo Model Primary School Logo</title>
+  <desc id="desc">A simple school badge logo with shield and initials.</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1d6fbf"/>
+      <stop offset="100%" stop-color="#0f4c81"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" rx="28" fill="#f7f9fc"/>
+  <path d="M90 18L148 40V88c0 34-23 56-58 74C55 144 32 122 32 88V40l58-22z" fill="url(#g)"/>
+  <path d="M90 38l42 15v35c0 23-14 40-42 54-28-14-42-31-42-54V53l42-15z" fill="#f5a623" opacity="0.95"/>
+  <text x="90" y="76" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="bold" fill="#0b2540">NMP</text>
+  <text x="90" y="108" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="bold" fill="#0b2540">PRIMARY SCHOOL</text>
+  <text x="90" y="126" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="10" fill="#0b2540">EXCELLENCE • DISCIPLINE • LEARNING</text>
+</svg>
