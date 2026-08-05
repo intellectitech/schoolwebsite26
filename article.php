@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 //  article.php — Single News Article
-//  Open at: article.php?slug=some-article-slug
+//  Open at: /some-article-slug (rewritten via .htaccess to article.php?slug=...)
 // ============================================================
 session_start();
 require_once 'config/database.php';
@@ -10,7 +10,7 @@ require_once 'includes/functions.php';
 $slug = clean($_GET['slug'] ?? '');
 
 if ($slug === '') {
-  header('Location: news.php');
+  header('Location: news');
   exit;
 }
 
@@ -53,12 +53,21 @@ if ($article) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= $article ? htmlspecialchars($article['title']) . ' · ' : 'Story Not Found · ' ?>Uganda Martyrs Primary
-    School, Namugongo</title>
-  <?php if ($article): ?>
-    <meta name="description"
-      content="<?= htmlspecialchars(excerpt($article['excerpt'] ?: strip_tags($article['body']), 160)) ?>">
-  <?php endif; ?>
+  <?php
+  // Per-article SEO: real title/excerpt from the database beat a shared
+  // template here, so this page passes overrides into renderSeoTags()
+  // instead of pulling from seo-config.php.
+  if ($article) {
+    $articleTitle = $article['title'] . ' · Uganda Martyrs Primary School, Namugongo';
+    $articleDesc = excerpt($article['excerpt'] ?: strip_tags($article['body']), 160);
+    $articleImage = ($article['featured_image'] && file_exists(__DIR__ . '/' . $article['featured_image']))
+      ? siteBaseUrl() . '/' . $article['featured_image']
+      : null;
+    renderSeoTags(null, $articleTitle, $articleDesc, $article['slug'], $articleImage);
+  } else {
+    renderSeoTags(null, 'Story Not Found · Uganda Martyrs Primary School, Namugongo', null, 'news');
+  }
+  ?>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -79,7 +88,7 @@ if ($article) {
         <p class="eyebrow">News</p>
         <h1>Story not found</h1>
         <p class="lead">This article may have been moved or unpublished.</p>
-        <div class="hero-actions"><a href="news.php" class="btn btn-primary">← Back to all news</a></div>
+        <div class="hero-actions"><a href="news" class="btn btn-primary">← Back to all news</a></div>
       </div>
     </section>
 
@@ -87,7 +96,7 @@ if ($article) {
 
     <section class="page-hero">
       <div class="container reveal">
-        <p class="eyebrow"><a href="news.php?category=<?= urlencode($article['cat_slug'] ?? '') ?>"
+        <p class="eyebrow"><a href="news?category=<?= urlencode($article['cat_slug'] ?? '') ?>"
             style="color:inherit"><?= htmlspecialchars($article['cat_name'] ?? 'News') ?></a></p>
         <h1><?= htmlspecialchars($article['title']) ?></h1>
         <p class="lead">
@@ -117,7 +126,7 @@ if ($article) {
           <?= nl2br(htmlspecialchars($article['body'])) ?>
         </div>
 
-        <p class="article-back"><a href="news.php" class="btn btn-ghost">← Back to all news</a></p>
+        <p class="article-back"><a href="news" class="btn btn-ghost">← Back to all news</a></p>
       </div>
     </section>
 
@@ -132,7 +141,7 @@ if ($article) {
                 <div class="news-card-img">
                   <?php if ($r['featured_image'] && file_exists(__DIR__ . '/' . $r['featured_image'])): ?>
                     <img class="card-img" src="<?= htmlspecialchars($r['featured_image']) ?>"
-                      alt="<?= htmlspecialchars($r['title']) ?>">
+                      alt="<?= htmlspecialchars($r['title']) ?>" loading="lazy">
                   <?php else: ?>
                     <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
                       <rect width="400" height="240" fill="<?= htmlspecialchars($article['cat_color'] ?? '#16233D') ?>" />
@@ -144,7 +153,7 @@ if ($article) {
                   <p><?= htmlspecialchars(excerpt($r['excerpt'] ?? '', 100)) ?></p>
                 </div>
                 <div class="card-footer">
-                  <a href="article.php?slug=<?= urlencode($r['slug']) ?>" class="news-read-more">Read more →</a>
+                  <a href="<?= urlencode($r['slug']) ?>" class="news-read-more">Read more →</a>
                   <span><?= date('d M Y', strtotime($r['published_at'])) ?></span>
                 </div>
               </div>

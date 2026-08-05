@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /config/
+Disallow: /process_contact.php
+Disallow: /process_admissions.php
+Disallow: /process_newsletter.php
+Allow: /
+
+# Update this to the real production domain once the site is live
+# (it currently matches the placeholder contact-email domain used
+# elsewhere in school_info, e.g. footer.php).
+Sitemap: https://ugandamartyrsnamugongo.sc.ug/sitemap.xml

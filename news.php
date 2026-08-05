@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 //  news.php — News Listing Page
-//  Open at: http://localhost/<your-project-folder>/news.php
+//  Open at: /news (rewritten via .htaccess to news.php)
 // ============================================================
 session_start();
 require_once 'config/database.php';
@@ -72,9 +72,7 @@ $flash = getFlash();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>News & Announcements · Uganda Martyrs Primary School, Namugongo</title>
-  <meta name="description"
-    content="Latest news, events and announcements from Uganda Martyrs Primary School, Namugongo.">
+  <?php renderSeoTags('news', null, null, 'news'); ?>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -118,7 +116,7 @@ $flash = getFlash();
           <div class="news-feat-img" aria-hidden="true">
             <?php if ($featured['featured_image'] && file_exists(__DIR__ . '/' . $featured['featured_image'])): ?>
               <img src="<?= htmlspecialchars($featured['featured_image']) ?>"
-                alt="<?= htmlspecialchars($featured['title']) ?>">
+                alt="<?= htmlspecialchars($featured['title']) ?>" loading="lazy">
             <?php else: ?>
               <svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
                 <rect width="600" height="400" fill="#16233D" />
@@ -150,7 +148,7 @@ $flash = getFlash();
             <p class="news-meta"><?= date('j F Y', strtotime($featured['published_at'])) ?></p>
             <h3><?= htmlspecialchars($featured['title']) ?></h3>
             <p class="news-excerpt"><?= htmlspecialchars(excerpt($featured['excerpt'] ?: '', 220)) ?></p>
-            <a href="article.php?slug=<?= urlencode($featured['slug']) ?>" class="btn btn-primary"
+            <a href="<?= urlencode($featured['slug']) ?>" class="btn btn-primary"
               style="align-self:flex-start">Read the full story →</a>
           </div>
         </div>
@@ -168,9 +166,9 @@ $flash = getFlash();
 
       <!-- Category filter tabs -->
       <div class="news-cat-tabs" role="group" aria-label="Filter news by category">
-        <a href="news.php" class="cat-tab <?= !$catSlug ? 'active' : '' ?>">All</a>
+        <a href="news" class="cat-tab <?= !$catSlug ? 'active' : '' ?>">All</a>
         <?php foreach ($categories as $cat): ?>
-          <a href="news.php?category=<?= urlencode($cat['slug']) ?>"
+          <a href="news?category=<?= urlencode($cat['slug']) ?>"
             class="cat-tab <?= $catSlug === $cat['slug'] ? 'active' : '' ?>"
             style="--tab-color:<?= htmlspecialchars($cat['color']) ?>">
             <?= htmlspecialchars($cat['name']) ?>
@@ -185,7 +183,7 @@ $flash = getFlash();
               <div class="news-card-img">
                 <?php if ($article['featured_image'] && file_exists(__DIR__ . '/' . $article['featured_image'])): ?>
                   <img class="card-img" src="<?= htmlspecialchars($article['featured_image']) ?>"
-                    alt="<?= htmlspecialchars($article['title']) ?>">
+                    alt="<?= htmlspecialchars($article['title']) ?>" loading="lazy">
                 <?php else: ?>
                   <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
                     <rect width="400" height="240" fill="<?= htmlspecialchars($article['cat_color'] ?? '#16233D') ?>" />
@@ -204,7 +202,7 @@ $flash = getFlash();
               </div>
 
               <div class="card-footer">
-                <a href="article.php?slug=<?= urlencode($article['slug']) ?>" class="news-read-more">Read more →</a>
+                <a href="<?= urlencode($article['slug']) ?>" class="news-read-more">Read more →</a>
                 <span><?= date('d M Y', strtotime($article['published_at'])) ?></span>
               </div>
             </div>
@@ -215,16 +213,16 @@ $flash = getFlash();
           <div class="news-pagination">
             <?php if ($page > 1): ?>
               <a class="pagination-btn"
-                href="news.php?page=<?= $page - 1 ?><?= $catSlug ? '&category=' . urlencode($catSlug) : '' ?>"
+                href="news?page=<?= $page - 1 ?><?= $catSlug ? '&category=' . urlencode($catSlug) : '' ?>"
                 aria-label="Previous page">←</a>
             <?php endif; ?>
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
               <a class="pagination-btn <?= $i === $page ? 'active' : '' ?>"
-                href="news.php?page=<?= $i ?><?= $catSlug ? '&category=' . urlencode($catSlug) : '' ?>" <?= $i === $page ? 'aria-current="page"' : '' ?>><?= $i ?></a>
+                href="news?page=<?= $i ?><?= $catSlug ? '&category=' . urlencode($catSlug) : '' ?>" <?= $i === $page ? 'aria-current="page"' : '' ?>><?= $i ?></a>
             <?php endfor; ?>
             <?php if ($page < $totalPages): ?>
               <a class="pagination-btn"
-                href="news.php?page=<?= $page + 1 ?><?= $catSlug ? '&category=' . urlencode($catSlug) : '' ?>"
+                href="news?page=<?= $page + 1 ?><?= $catSlug ? '&category=' . urlencode($catSlug) : '' ?>"
                 aria-label="Next page">→</a>
             <?php endif; ?>
           </div>
@@ -290,8 +288,8 @@ $flash = getFlash();
       <p>Reading about us is a start — but nothing beats a morning in the compound, hearing the choir and meeting the
         teachers.</p>
       <div class="cta-actions">
-        <a href="admissions.php" class="btn btn-primary">Begin Admissions</a>
-        <a href="contact.php#find-us" class="btn btn-on-dark">Plan a Visit</a>
+        <a href="admissions" class="btn btn-primary">Begin Admissions</a>
+        <a href="contact#find-us" class="btn btn-on-dark">Plan a Visit</a>
       </div>
     </div>
   </section>

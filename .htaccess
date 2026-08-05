@@ -1,0 +1,51 @@
+# ============================================================
+#  .htaccess — clean URLs + basic technical SEO/security
+#
+#  URL scheme is deliberately single-segment (e.g. /about,
+#  /some-news-slug) rather than nested (e.g. /news/some-slug).
+#  This codebase uses relative asset paths everywhere
+#  (assets/css/style.css, no leading slash) so pages can be
+#  deployed at the domain root OR a subfolder (see README §1).
+#  A nested URL like /news/some-slug would break every relative
+#  asset/link reference on that page, because the browser
+#  resolves "assets/css/style.css" against the visible URL's
+#  directory — /news/ in that case, not the real site root.
+#  Single-segment URLs avoid that trap entirely while still
+#  giving every page a short, readable, keyword-friendly path.
+# ============================================================
+
+RewriteEngine On
+
+# Don't let Apache list folder contents if someone browses to
+# a directory with no index file (e.g. /images/gallery/)
+Options -Indexes
+
+# Keep source/config folders out of the browser entirely — they
+# have no reason to be crawlable or publicly requestable, and
+# this is a stronger guarantee than robots.txt (which only asks
+# well-behaved crawlers not to index, not real access control).
+RewriteRule ^(includes|config)/ - [F,L]
+
+# --- Dynamic sitemap, served at the conventional /sitemap.xml path ---
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+
+# --- Static top-level pages -> clean URLs ---
+RewriteRule ^about/?$ about.php [L,QSA]
+RewriteRule ^admissions/?$ admissions.php [L,QSA]
+RewriteRule ^contact/?$ contact.php [L,QSA]
+RewriteRule ^gallery/?$ gallery.php [L,QSA]
+RewriteRule ^news/?$ news.php [L,QSA]
+RewriteRule ^staff/?$ staff.php [L,QSA]
+
+# --- News articles: /some-article-slug -> article.php?slug=some-article-slug ---
+# Placed last, and guarded so it only fires for paths that don't
+# already match a real file or folder above (assets/, images/,
+# favicon, admin/, etc. all pass straight through untouched).
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z0-9-]+)/?$ article.php?slug=$1 [L,QSA]
+
+# If this site is deployed in a subfolder (e.g. htdocs/schoolwebsite26
+# on a local XAMPP install) and the rules above don't seem to fire,
+# uncomment the line below and set it to match that subfolder:
+# RewriteBase /schoolwebsite26/

@@ -16,7 +16,7 @@ $leadership = $pdo->query(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us · Uganda Martyrs Primary School, Namugongo</title>
+    <?php renderSeoTags('about', null, null, 'about'); ?>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +48,8 @@ $leadership = $pdo->query(
                             century.</p>
                     </div>
                     <img src="assets/images/Aerial_view_of_Uganda_martyrs_Basilica_Namugongo_in_Uganda.jpg"
-                        alt="basilica" class="about-hero-img">
+                        alt="Aerial view of the Uganda Martyrs Basilica in Namugongo, near the school"
+                        class="about-hero-img">
                 </div>
             </div>
         </section>
@@ -441,8 +442,8 @@ $leadership = $pdo->query(
                 <p>The best way to know the school is to walk the compound, meet a teacher, and hear the morning hymns
                     for yourself.</p>
                 <div class="cta-actions">
-                    <a href="admissions.php" class="btn btn-primary">Begin Admissions</a>
-                    <a href="contact.php#find-us" class="btn btn-on-soil">Plan a Visit</a>
+                    <a href="admissions" class="btn btn-primary">Begin Admissions</a>
+                    <a href="contact#find-us" class="btn btn-on-soil">Plan a Visit</a>
                 </div>
             </div>
         </section>

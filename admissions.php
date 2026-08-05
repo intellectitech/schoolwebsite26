@@ -16,9 +16,7 @@ $schoolEmail = isset($pdo) ? (getSetting($pdo, 'contact_email') ?: 'info@ugandam
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admissions · Uganda Martyrs Primary School, Namugongo</title>
-  <meta name="description"
-    content="Apply to Uganda Martyrs Primary School, Namugongo. Learn about our admission process, requirements, fees, and how to enrol your child in Primary One through Primary Seven.">
+  <?php renderSeoTags('admissions', null, null, 'admissions'); ?>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -556,7 +554,7 @@ $schoolEmail = isset($pdo) ? (getSetting($pdo, 'contact_email') ?: 'info@ugandam
         child's primary years.</p>
       <div class="cta-actions">
         <a href="#enquiry" class="btn btn-primary">Send an Enquiry</a>
-        <a href="contact.php#find-us" class="btn btn-on-dark">Get Directions</a>
+        <a href="contact#find-us" class="btn btn-on-dark">Get Directions</a>
       </div>
     </div>
   </section>

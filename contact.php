@@ -13,9 +13,7 @@ $flash = getFlash();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us · Uganda Martyrs Primary School, Namugongo</title>
-  <meta name="description"
-    content="Get in touch with Uganda Martyrs Primary School, Namugongo. Find our address, phone, email and directions from Kampala.">
+  <?php renderSeoTags('contact', null, null, 'contact'); ?>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -157,7 +155,7 @@ $flash = getFlash();
             <div>
               <h3>Admissions enquiries</h3>
               <p>For questions specifically about joining the school, please use our dedicated <a
-                  href="admissions.php#enquiry" style="color:var(--soil)">admissions enquiry form</a>.</p>
+                  href="admissions#enquiry" style="color:var(--soil)">admissions enquiry form</a>.</p>
             </div>
           </div>
         </div>
@@ -304,8 +302,8 @@ $flash = getFlash();
       <p>Our admissions team is ready to walk you through every step — from the first visit to the first day of school.
       </p>
       <div class="cta-actions">
-        <a href="admissions.php" class="btn btn-primary">Admissions Guide</a>
-        <a href="admissions.php#enquiry" class="btn btn-on-dark">Send an Enquiry</a>
+        <a href="admissions" class="btn btn-primary">Admissions Guide</a>
+        <a href="admissions#enquiry" class="btn btn-on-dark">Send an Enquiry</a>
       </div>
     </div>
   </section>

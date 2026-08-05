@@ -43,9 +43,7 @@ foreach ($albums as $album) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery · Uganda Martyrs Primary School, Namugongo</title>
-  <meta name="description"
-    content="Photos of school life at Uganda Martyrs Primary School, Namugongo — classrooms, sports, ceremonies, events and more.">
+  <?php renderSeoTags('gallery', null, null, 'gallery'); ?>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -150,8 +148,8 @@ foreach ($albums as $album) {
       <h2>Ready to make your own memories here?</h2>
       <p>The best way to see the school is to walk through the gate on a school morning. Come and say hello.</p>
       <div class="cta-actions">
-        <a href="admissions.php" class="btn btn-primary">Begin Admissions</a>
-        <a href="contact.php" class="btn btn-on-dark">Plan a Visit</a>
+        <a href="admissions" class="btn btn-primary">Begin Admissions</a>
+        <a href="contact" class="btn btn-on-dark">Plan a Visit</a>
       </div>
     </div>
   </section>

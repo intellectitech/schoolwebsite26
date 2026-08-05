@@ -1,13 +1,12 @@
-# Uganda Martyrs Primary School — Internship Project (Reassembled)
+# Uganda Martyrs Primary School — Internship Projec
 
 This is the `internship` project with a working PHP backend: real form
-validation, real data storage, and real data retrieval wired up against
-the supplied database, plus a full admin panel including news, gallery,
+validation, real data storage, and real data retrieval wired up against `school_website_db.sql` plus a full admin panel including news, gallery,
 and staff management. The forms, news system, and admin panel were
 tested end-to-end against a fresh import of the supplied
 `school_website_db.sql`;
 
-## 1. Setup (XAMPP / any Apache+PHP+MySQL stack)
+## 1. Setup XAMPP
 
 1. Copy this whole folder into your server root (e.g. `htdocs/schoolwebsite26`).
 2. Create a database called `school_website_db` (matches `database.php`).

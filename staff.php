@@ -14,9 +14,7 @@ $deptHeads = $pdo->query(
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Staff · Uganda Martyrs Primary School, Namugongo</title>
-  <meta name="description"
-    content="Meet the teachers and staff of Uganda Martyrs Primary School, Namugongo — the people who make the school what it is.">
+  <?php renderSeoTags('staff', null, null, 'staff'); ?>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -347,7 +345,7 @@ $deptHeads = $pdo->query(
         </div>
       </div>
       <div style="margin-top:36px">
-        <a href="contact.php" class="btn btn-on-soil">Send your CV to the school office →</a>
+        <a href="contact" class="btn btn-on-soil">Send your CV to the school office →</a>
       </div>
     </div>
   </section>
@@ -366,8 +364,8 @@ $deptHeads = $pdo->query(
       <p>The best impression of any school is the one you get by walking through the gate on a school morning and
         watching the people who run it.</p>
       <div class="cta-actions">
-        <a href="admissions.php" class="btn btn-primary">Begin Admissions</a>
-        <a href="contact.php" class="btn btn-on-dark">Plan a Visit</a>
+        <a href="admissions" class="btn btn-primary">Begin Admissions</a>
+        <a href="contact" class="btn btn-on-dark">Plan a Visit</a>
       </div>
     </div>
   </section>

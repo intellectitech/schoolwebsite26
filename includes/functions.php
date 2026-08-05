@@ -367,3 +367,57 @@ function updateSetting($pdo, $id, $newValue, $adminId)
         ->execute([$newValue, $adminId, $id]);
     return true;
 }
+
+// ----------------------------------------------------------
+// SITE BASE URL — scheme + host + whatever folder the site is
+// deployed under, detected from the current request. Same
+// deployment-folder-agnostic approach requireAdmin() already
+// uses for its redirect, so canonical/OG tags and the sitemap
+// work whether the site lives at the domain root or a subfolder
+// like /schoolwebsite26 on a local XAMPP install.
+// Usage: siteBaseUrl() . '/about'
+// ----------------------------------------------------------
+function siteBaseUrl()
+{
+    $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (($_SERVER['SERVER_PORT'] ?? '') == 443);
+    $scheme = $isHttps ? 'https' : 'http';
+    $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+    $dir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
+    return $scheme . '://' . $host . $dir;
+}
+
+// ----------------------------------------------------------
+// RENDER SEO TAGS — outputs <title>, meta description, the
+// canonical link, and Open Graph tags for one page, straight
+// into its <head>. Pulls copy from includes/seo-config.php by
+// route key; pass $titleOverride/$descriptionOverride for
+// pages (like article.php) whose SEO text comes from the
+// database instead of the static config.
+// Usage:
+//   renderSeoTags('about');                       // static page
+//   renderSeoTags(null, $title, $desc, $slug);     // dynamic page
+// ----------------------------------------------------------
+function renderSeoTags($routeKey, $titleOverride = null, $descriptionOverride = null, $canonicalPath = '', $ogImage = null)
+{
+    static $seoConfig = null;
+    if ($seoConfig === null) {
+        $seoConfig = require __DIR__ . '/seo-config.php';
+    }
+
+    $fallback = ['title' => 'Uganda Martyrs Primary School, Namugongo', 'description' => ''];
+    $entry = $seoConfig[$routeKey] ?? $fallback;
+    $title = $titleOverride ?: $entry['title'];
+    $description = $descriptionOverride ?: $entry['description'];
+    $canonical = siteBaseUrl() . '/' . ltrim($canonicalPath, '/');
+    $image = $ogImage ?: (siteBaseUrl() . '/assets/images/ESD_69e8c39b15887.webp');
+
+    echo '  <title>' . htmlspecialchars($title) . "</title>\n";
+    echo '  <meta name="description" content="' . htmlspecialchars($description) . "\">\n";
+    echo '  <link rel="canonical" href="' . htmlspecialchars($canonical) . "\">\n";
+    echo "  <meta property=\"og:type\" content=\"website\">\n";
+    echo '  <meta property="og:title" content="' . htmlspecialchars($title) . "\">\n";
+    echo '  <meta property="og:description" content="' . htmlspecialchars($description) . "\">\n";
+    echo '  <meta property="og:url" content="' . htmlspecialchars($canonical) . "\">\n";
+    echo '  <meta property="og:image" content="' . htmlspecialchars($image) . "\">\n";
+}

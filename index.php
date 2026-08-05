@@ -56,7 +56,7 @@ $contactEmail = getSetting($pdo, 'contact_email') ?: 'info@ugandamartyrsnamugong
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Uganda Martyrs Primary School · Namugongo</title>
+  <?php renderSeoTags('home'); ?>
   <link rel="stylesheet" href="assets/css/style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -65,6 +65,28 @@ $contactEmail = getSetting($pdo, 'contact_email') ?: 'info@ugandamartyrsnamugong
     rel="stylesheet" />
 
   <?php include 'includes/head-meta.php'; ?>
+
+  <!-- Structured data: tells Google this page describes a School,
+       and can unlock a knowledge-panel-style rich result. Lives only
+       here on the homepage, per SEO deck §4. Pulled from the same
+       school_info settings the header/footer already read. -->
+  <script type="application/ld+json">
+  <?= json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'School',
+    'name' => getSetting($pdo, 'school_name') ?: 'Uganda Martyrs Primary School',
+    'address' => [
+      '@type' => 'PostalAddress',
+      'streetAddress' => getSetting($pdo, 'school_address') ?: 'Namugongo, Kira Municipality',
+      'addressLocality' => 'Namugongo',
+      'addressRegion' => 'Wakiso District',
+      'addressCountry' => 'UG',
+    ],
+    'telephone' => $contactPhone,
+    'email' => $contactEmail,
+    'url' => siteBaseUrl() . '/',
+  ], JSON_UNESCAPED_SLASHES) ?>
+  </script>
 </head>
 
 <body>
@@ -100,8 +122,8 @@ $contactEmail = getSetting($pdo, 'contact_email') ?: 'info@ugandamartyrsnamugong
       </div>
 
       <div class="hero-actions">
-        <a href="admissions.php" class="btn btn-primary">Begin Admissions</a>
-        <a href="contact.php#find-us" class="btn btn-ghost">Plan a Visit</a>
+        <a href="admissions" class="btn btn-primary">Begin Admissions</a>
+        <a href="contact#find-us" class="btn btn-ghost">Plan a Visit</a>
       </div>
     </div>
   </section>
@@ -441,7 +463,7 @@ $contactEmail = getSetting($pdo, 'contact_email') ?: 'info@ugandamartyrsnamugong
                     <div class="news-card-img">
                       <?php if ($article['featured_image'] && file_exists(__DIR__ . '/' . $article['featured_image'])): ?>
                         <img class="card-img" src="<?= htmlspecialchars($article['featured_image']) ?>"
-                          alt="<?= htmlspecialchars($article['title']) ?>">
+                          alt="<?= htmlspecialchars($article['title']) ?>" loading="lazy">
                       <?php else: ?>
                         <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
                           <rect width="400" height="240" fill="<?= htmlspecialchars($article['cat_color'] ?? '#16233D') ?>" />
@@ -456,13 +478,13 @@ $contactEmail = getSetting($pdo, 'contact_email') ?: 'info@ugandamartyrsnamugong
                       <p><?= htmlspecialchars(excerpt($article['excerpt'] ?? '', 100)) ?></p>
                     </div>
                     <div class="card-footer">
-                      <a href="article.php?slug=<?= urlencode($article['slug']) ?>" class="news-read-more">Read more →</a>
+                      <a href="<?= urlencode($article['slug']) ?>" class="news-read-more">Read more →</a>
                       <span><?= date('d M Y', strtotime($article['published_at'])) ?></span>
                     </div>
                   </div>
                 <?php endforeach; ?>
               </div>
-              <p style="margin-top:1.6rem"><a href="news.php" class="btn btn-ghost">View all news</a></p>
+              <p style="margin-top:1.6rem"><a href="news" class="btn btn-ghost">View all news</a></p>
             </div>
           <?php endif; ?>
 
@@ -586,7 +608,7 @@ $contactEmail = getSetting($pdo, 'contact_email') ?: 'info@ugandamartyrsnamugong
       </div>
     </div>
     <div class="hero-actions">
-      <a href="contact.php#contactForm" class="btn btn-ghost">CONTACT US</a>
+      <a href="contact#contactForm" class="btn btn-ghost">CONTACT US</a>
     </div>
   </section>
 
