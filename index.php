@@ -1,302 +1,122 @@
-   <?php
-// Include your existing database connection file
-require_once 'db_connect.php';
-
-// Normalize the database connection variable ($pdo from db_connect.php)
-$conn = $conn ?? $pdo ?? null;
+<?php
+require_once __DIR__ . '/includes/config.php';
+$pageTitle = 'Home';
+$pageDescription = SITE_DESCRIPTION;
+require_once __DIR__ . '/includes/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bbina Islamic Primary School | Strive for Excellence</title>
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Link to external CSS stylesheet -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <!-- Top Utility Contacts Bar -->
-    <div class="top-bar">
-        <div class="top-bar-contact">
-            <span><i class="fa-solid fa-location-dot"></i> Kampala, Uganda</span>
-            <span><i class="fa-solid fa-envelope"></i> infob@bbina.ac.ug</span>
-            <span><i class="fa-solid fa-phone"></i> +256 772605229</span>
-        </div>
-        <div class="top-bar-social">
-            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-    </div>
-
-    <!-- Main Header & Navigation -->
-    <header>
-        <a href="#" class="logo-container">
-            <div class="logo-placeholder">
-                <img class="logo-placeholder" src="images/bina.png" alt="Bbina Islamic Primary School Logo">
-            </div>
-            <div class="logo-text">
-                <h1>Bbina Islamic Primary School</h1>
-                <span>Primary</span>
-            </div>
-        </a>
-        <nav>
-            <ul>
-                <li><a href="index.php" class="active">Home</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="admmissions.php">Admissions</a></li>
-                <li><a href="contact.php">Contact</a></li>
-                <li><a href="news.php">News & Gallery</a></li>
-                <li><a href="admmissions.php" class="btn-apply">Apply Now</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <section style="background-image: url('images/hero5.jpg');" class="hero-banner">
-        <div class="hero-content">
-            <h2>WELCOME TO BBINA ISLAMIC PRIMARY SCHOOL</h2>
-            <p>Bbina Islamic Primary School is a leading educational institution dedicated to providing comprehensive and high-quality learning experiences in Uganda.</p>
-            <a href="#" class="btn-explore">Explore Our Programs <i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-    </section>
-
-    <!-- Student and Parent Portal Badges -->
-    <div class="portal-bar">
-        <a href="#" class="portal-item"><i class="fa-solid fa-user-graduate"></i> Student Portal Login</a>
-        <a href="#" class="portal-item"><i class="fa-solid fa-users"></i> Parent Portal (SchoolPay)</a>
-        <a href="#" class="portal-item"><i class="fa-solid fa-book-open"></i> E-Learning Platform</a>
-    </div>
-
-    <!-- Main Container Content Layout Split -->
-    <div class="main-layout">
-        
-        <!-- Left Column: Primary Content Block -->
-        <main>
-            <section class="welcome-box">
-                <h3 class="section-title">ABOUT US</h3>
-                <p>Since our establishment, Bbina Islamic Primary School has consistently stood as a beacon of scholastic distinction and holistic growth within Central Uganda. We embrace a student-centered educational philosophy that empowers young minds to thrive in an ever-changing global climate.</p>
-                <p>We provide a rich learning setting for standard UNEB evaluation models, ensuring every child achieves premium performance outcomes.</p>
-                <a href="#" class="btn-inline">Read Message from the Headteacher <i class="fa-solid fa-angles-right"></i></a>
-            </section>
-
-            <section>
-                <h3 class="section-title">Core Institutional Pillars</h3>
-                <div class="grid-2">
-                    <div class="value-card">
-                        <h4><i class="fa-solid fa-star" style="color: var(--accent-color);"></i> Academic Excellence</h4>
-                        <p>Consistently ranking among top division earners nationwide through rigorous instructional methodologies.</p>
-                    </div>
-                    <div class="value-card">
-                        <h4><i class="fa-solid fa-shield-halved"></i> Character & Integrity</h4>
-                        <p>Instilling firm moral values, discipline, and community accountability into our learners.</p>
-                    </div>
-                    <div class="value-card">
-                        <h4><i class="fa-solid fa-volleyball"></i> Holistic Development</h4>
-                        <p>Thriving sports clubs, award-winning drama setups, and practical computer programming boot camps.</p>
-                    </div>
-                    <div class="value-card">
-                        <h4><i class="fa-solid fa-seedling"></i> Modern Facilities</h4>
-                        <p>Fully equipped scientific laboratories, standard boarding amenities, and safe transportation loops.</p>
+        <section id="home" class="hero reveal">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <h1>Education Is My Future</h1>
+                    <p>Namugongo Model Primary School provides a safe, caring and inspiring learning environment where every child can grow academically, socially and morally.</p>
+                    <div class="hero-buttons">
+                        <a class="btn" href="about.php">Learn About Us</a>
+                        <a class="btn btn-outline" href="admission.php">Apply for Admission</a>
                     </div>
                 </div>
-            </section>
+                <div>
+                    <img class="hero-image" src="images/pipils.jpg" alt="Pupils at Namugongo Model Primary School">
+                </div>
+            </div>
+        </section>
 
-            <section>
-                <h3 class="section-title">Latest News & Announcements</h3>
-                
-                <div class="news-card">
-                    <div class="news-img" style="background-image: url('https://unsplash.com');"></div>
-                    <div class="news-info">
-                        <h4><a href="#">Term One Online Registration Framework Activated</a></h4>
-                        <p class="news-date"><i class="fa-regular fa-calendar"></i> January 10, 2026</p>
+        <section id="about" class="section reveal">
+            <div class="container">
+                <h2>About the School</h2>
+                <p class="section-intro">For over a decade, our school has shaped young learners through strong academics, purposeful character formation, and warm community partnerships.</p>
+                <div class="grid">
+                    <div class="image-card reveal">
+                        <img src="images/girl guides.jpg" alt="Classroom learning">
+                        <h3>Our Mission</h3>
+                        <p>To provide excellent and inclusive education that develops learners into confident, disciplined, and responsible citizens.</p>
+                    </div>
+                    <div class="image-card reveal">
+                        <img src="images/pipils.jpg" alt="Students and teacher">
+                        <h3>Our Vision</h3>
+                        <p>To be a leading model school known for academic excellence, character formation, and community service.</p>
+                    </div>
+                    <div class="image-card reveal">
+                        <img src="images/Compound.jpg" alt="School environment">
+                        <h3>Core Values</h3>
+                        <p>Integrity, respect, curiosity, teamwork, and excellence guide our daily school life.</p>
                     </div>
                 </div>
 
-                <div class="news-card">
-                    <div class="news-img" style="background-image: url('https://unsplash.com');"></div>
-                    <div class="news-info">
-                        <h4><a href="#">Bbina Islamic Primary School Dominates Regional Inter-School Sports Gala</a></h4>
-                        <p class="news-date"><i class="fa-regular fa-calendar"></i> November 14, 2025</p>
-                    </div>
-                </div>
-            </section>
-        </main>
-
-        <!-- Right Column: Sidebar Component Blocks -->
-        <aside>
-            <div class="sidebar-widget">
-                <h4 class="sidebar-title">Upcoming Events</h4>
-                
-                <?php
-                if (!$conn) {
-                    echo "<p style='color: #d9534f; font-size: 0.9rem;'>Unable to connect to the database.</p>";
-                } else {
-                    try {
-                        // Query fetching upcoming events using your exact table columns
-                        $sql = "SELECT title, event_date, location FROM events WHERE event_date >= CURDATE() ORDER BY event_date ASC LIMIT 5";
-                        
-                        if ($conn instanceof PDO) {
-                            $stmt = $conn->prepare($sql);
-                            $stmt->execute();
-                            $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        } else {
-                            $result = $conn->query($sql);
-                            $events = ($result && $result->num_rows > 0) ? $result->fetch_all(MYSQLI_ASSOC) : [];
-                        }
-
-                        if (!empty($events)) {
-                            foreach ($events as $row) {
-                                $event_timestamp = strtotime($row['event_date']);
-                                $day = date('d', $event_timestamp);
-                                $month = date('M', $event_timestamp);
-                                $title = htmlspecialchars($row['title']);
-                                $location = !empty($row['location']) ? htmlspecialchars($row['location']) : '';
-                                ?>
-                                <div class="event-item">
-                                    <div class="event-date-box">
-                                        <span class="event-day"><?php echo $day; ?></span>
-                                        <span class="event-month"><?php echo $month; ?></span>
-                                    </div>
-                                    <div class="event-title">
-                                        <?php echo $title; ?>
-                                        <?php if ($location): ?>
-                                            <br><small style="color: #777; font-size: 0.8rem;"><i class="fa-solid fa-location-dot"></i> <?php echo $location; ?></small>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                                <?php
-                            }
-                        } else {
-                            echo "<p class='no-events' style='font-size: 0.9rem; color: #666;'>No upcoming events scheduled at the moment.</p>";
-                        }
-                    } catch (Exception $e) {
-                        echo "<p style='color: #d9534f; font-size: 0.9rem;'>Database query error: " . htmlspecialchars($e->getMessage()) . "</p>";
-                    }
-                }
-                ?>
-            </div>
-
-            <div class="sidebar-widget">
-                <h4 class="sidebar-title">Quick Links</h4>
-                <ul class="links-list">
-                    <li><a href="#"><i class="fa-solid fa-file-pdf"></i> Download Fees Structure 2026</a></li>
-                    <li><a href="#"><i class="fa-solid fa-file-arrow-download"></i> Admissions Application Form</a></li>
-                    <li><a href="#"><i class="fa-solid fa-graduation-cap"></i> Recent UNEB Performance Results</a></li>
-                    <li><a href="#"><i class="fa-solid fa-clipboard-list"></i> School Requirement Checklist</a></li>
-                </ul>
-            </div>
-
-            <div class="sidebar-widget">
-                <h4 class="sidebar-title">Contact Us</h4>
-                <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Thank you for reaching out! We will contact you soon.');">
-                    <div class="form-group">
-                        <label>Your Full Name</label>
-                        <input type="text" class="form-control" required placeholder="John Doe">
-                    </div>
-                    <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" class="form-control" required placeholder="johndoe@gmail.com">
-                    </div>
-                    <div class="form-group">
-                        <label>Message Subject</label>
-                        <input type="text" class="form-control" required placeholder="Admission Inquiry">
-                    </div>
-                    <div class="form-group">
-                        <label>Your Message</label>
-                        <textarea class="form-control" rows="3" required placeholder="Enter your message here..."></textarea>
-                    </div>
-                    <button type="submit" class="btn-submit" style="margin-top: 10px;">Send Message</button>
-                </form>
-            </div>
-        </aside>
-
-    </div>
-
-    <!-- PREMIUM ARCHITECTURE FOOTER COMPONENT -->
-    <footer class="premium-footer">
-        <div class="footer-matrix-grid">
-            
-            <!-- Column One: School Profile & Social Media -->
-            <div class="footer-matrix-col school-profile-summary">
-                <div class="footer-brand-logo">
-                    <div class="brand-crest-mini">
-                        <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <h3>Bbina Islamic Primary School</h3>
-                </div>
-                <p class="school-motto-statement">"Strive For Excellence"</p>
-                <p class="school-description">A premier standard-setting educational hub in Uganda dedicated to fostering technical competency networks, analytical thinking skillsets, and empathetic leadership values.</p>
-                <div class="social-icon-networks">
-                    <a href="#" class="network-badge facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="network-badge x-twitter"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="#" class="network-badge youtube"><i class="fa-brands fa-youtube"></i></a>
-                    <a href="#" class="network-badge linkedin"><i class="fa-brands fa-linkedin-in"></i></a>
+                <div class="stats">
+                    <div class="stat reveal"><h3 class="stat-number" data-target="12" data-suffix="+">0</h3><p>Academic Clubs</p></div>
+                    <div class="stat reveal"><h3 class="stat-number" data-target="18" data-suffix="+">0</h3><p>Dedicated Staff</p></div>
+                    <div class="stat reveal"><h3 class="stat-number" data-target="96" data-suffix="%">0</h3><p>Parent Satisfaction</p></div>
+                    <div class="stat reveal"><h3 class="stat-number" data-target="7" data-suffix="/7">0</h3><p>Student Care</p></div>
                 </div>
             </div>
+        </section>
 
-            <!-- Column Two: Quick Portals Links -->
-            <div class="footer-matrix-col">
-                <h4 class="footer-col-title">Quick Portals</h4>
-                <ul class="footer-links-list">
-                    <li><a href="#"><i class="fa-solid fa-angle-right"></i> Digital Student Portal</a></li>
-                    <li><a href="#"><i class="fa-solid fa-angle-right"></i> E-Learning Framework</a></li>
-                    <li><a href="#"><i class="fa-solid fa-angle-right"></i> UNEB Center Details</a></li>
-                    <li><a href="#"><i class="fa-solid fa-angle-right"></i> Alumni Resource Circle</a></li>
-                    <li><a href="#"><i class="fa-solid fa-angle-right"></i> Vacancies & Staff Hiring</a></li>
-                </ul>
-            </div>
-
-            <!-- Column Three: Ministry Registration & Fees Channels -->
-            <div class="footer-matrix-col">
-                <h4 class="footer-col-title">Verification & Fees</h4>
-                <p class="verification-meta">Fully registered by the Ministry of Education and Sports (MoES).</p>
-                <p class="verification-meta"><strong>EMIS Number:</strong> 5558/130119</p>
-                
-                <h5 class="payment-title-heading">Supported Payment Channels</h5>
-                <div class="payment-platforms-wrapper">
-                    <div class="payment-badge-node" title="SchoolPay Framework Enabled">
-                        <i class="fa-solid fa-wallet"></i> <span>SchoolPay Channel</span>
+        <section id="news" class="section reveal">
+            <div class="container">
+                <h2>Latest News</h2>
+                <p class="section-intro">Keep up with school activities, student achievements, and important announcements that keep our community moving forward.</p>
+                <div class="grid">
+                    <div class="news-item reveal">
+                        <img src="images/news.jpg" alt="Sports event">
+                        <h3>Inter-House Sports</h3>
+                        <p>Students competed with great energy and sportsmanship across all houses in a successful athletic day.</p>
                     </div>
-                    <div class="payment-badge-node" title="Mobile Money Routes Approved">
-                        <i class="fa-solid fa-mobile-screen-button"></i> <span>Mobile Money Pay</span>
+                    <div class="news-item reveal">
+                        <img src="images/admissions.jpg" alt="Science projects">
+                        <h3>Science Fair</h3>
+                        <p>Our learners presented creative projects that highlighted their curiosity and investigative skills.</p>
+                    </div>
+                    <div class="news-item reveal">
+                        <img src="images/speech.jpg" alt="Parent meeting">
+                        <h3>Parent Meeting</h3>
+                        <p>Teachers and parents worked together to review progress and set goals for the upcoming term.</p>
+                    </div>
+                </div>
+                <p style="margin-top:24px;"><a class="btn" href="news.php">View All News</a></p>
+            </div>
+        </section>
+
+        <section id="gallery" class="section reveal">
+            <div class="container">
+                <h2>School Gallery</h2>
+                <p class="section-intro">A glimpse at our vibrant campus life, learning moments, and special school events.</p>
+                <div class="gallery">
+                    <img src="images/band.jpg" alt="School band">
+                    <img src="images/marching.jpg" alt="Marching students">
+                    <img src="images/speech.jpg" alt="Student speech">
+                    <img src="images/swimming.jpg" alt="Swimming activity">
+                    <img src="images/top graduation.jpg" alt="Graduation ceremony">
+                    <img src="images/PE.jpg" alt="PE class">
+                </div>
+                <p style="margin-top:24px;"><a class="btn" href="gallery.php">View Full Gallery</a></p>
+            </div>
+        </section>
+
+        <section id="contact" class="section reveal">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <p class="section-intro">Have a question or want to book a school visit? Send us a message and our admissions team will respond promptly.</p>
+                <div class="grid">
+                    <div class="card reveal">
+                        <h3>Contact Information</h3>
+                        <p><strong>Phone:</strong> <?php echo h(SITE_PHONE); ?></p>
+                        <p><strong>Email:</strong> <?php echo h(SITE_EMAIL); ?></p>
+                        <p><strong>Location:</strong> <?php echo h(SITE_ADDRESS); ?></p>
+                    </div>
+                    <div class="form-card reveal">
+                        <h3>Send a Message</h3>
+                        <form id="contactForm" action="submit_contact.php" method="POST">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" required>
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" required></textarea>
+                            <button type="submit" class="btn">Send Message</button>
+                        </form>
+                        <p id="messageOutput"></p>
                     </div>
                 </div>
             </div>
-
-            <!-- Column Four: Physical Address & Coordination Details -->
-            <div class="footer-matrix-col">
-                <h4 class="footer-col-title">Contact & Location</h4>
-                <ul class="footer-contact-coordinates">
-                    <li>
-                        <i class="fa-solid fa-location-dot coordinate-icon"></i>
-                        <span>P.O box 76 Kampala,<br>Butabika road, Bbina, Nakawa Division</span>
-                    </li>
-                    <li>
-                        <i class="fa-solid fa-envelope-open coordinate-icon"></i>
-                        <span>admissions@bbina.ac.ug</span>
-                    </li>
-                    <li>
-                        <i class="fa-solid fa-headset coordinate-icon"></i>
-                        <span>+256 772605229</span>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-
-        <!-- Bottom Copyright & Legal Row Component -->
-        <div class="footer-bottom-legal-row">
-            <p>&copy; 2026 Bbina Islamic Primary School. All Rights Reserved. Authoritative Platform Dashboard. Developed by Edtech</p>
-            <div class="legal-utilities-sub-links">
-                <a href="#">Privacy Framework</a>
-                <a href="#">Terms of Use</a>
-                <a href="#">Web Portal Sitemap</a>
-            </div>
-        </div>
-    </footer>
-
-</body>
-</html>
+        </section>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

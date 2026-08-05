@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin_login.php
+Disallow: /dashboard.php
+Disallow: /includes/
+Disallow: /assets/js/nexa-ai.js
+
+Sitemap: https://www.namugongomodelschool.edu.ug/sitemap.xml
