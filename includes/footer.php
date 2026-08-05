@@ -59,7 +59,7 @@ $schoolEmail = isset($pdo) ? (getSetting($pdo, 'contact_email') ?: 'info@ugandam
         </span>
 
       </div>
-      <span>Courage to Learn, Faith to Rise. <br> Developed by Intellectitech
+      <span>Courage to Learn, Faith to Rise. <br> Developed by KIWALYA NICHOLAS
       </span>
     </div>
   </div>
