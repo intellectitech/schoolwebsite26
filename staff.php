@@ -13,7 +13,7 @@ $leaders = $pdo->query(
     "SELECT s.*, d.name AS department_name
      FROM staff s
      LEFT JOIN departments d ON d.id = s.department_id
-     WHERE s.is_active = 1 AND s.is_managemnet = 1
+     WHERE s.is_active = 1 AND s.is_management = 1
      ORDER BY s.sort_order ASC"
 )->fetchAll();
 
@@ -22,7 +22,7 @@ $teachers = $pdo->query(
     "SELECT s.*, d.name AS department_name
      FROM staff s
      LEFT JOIN departments d ON d.id = s.department_id
-     WHERE s.is_active = 1 AND s.is_managemnet = 0
+     WHERE s.is_active = 1 AND s.is_management = 0
      ORDER BY d.name ASC, s.sort_order ASC"
 )->fetchAll();
 

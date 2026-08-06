@@ -9,8 +9,14 @@ $notice = '';
 
 if (isset($_GET['delete'])) {
     $id = (int) $_GET['delete'];
-    $pdo->prepare('DELETE FROM events WHERE id = ?')->execute([$id]);
-    auditLog($pdo, $_SESSION['admin_id'], 'DELETE', 'events', $id, 'Deleted event');
+    $stmt = $pdo->prepare('SELECT featured_img FROM events WHERE id = ?');
+    $stmt->execute([$id]);
+    $row = $stmt->fetch();
+    if ($row) {
+        deleteLocalImage($row['featured_img']);
+        $pdo->prepare('DELETE FROM events WHERE id = ?')->execute([$id]);
+        auditLog($pdo, $_SESSION['admin_id'], 'DELETE', 'events', $id, 'Deleted event');
+    }
     header('Location: events.php?msg=deleted');
     exit;
 }
@@ -33,6 +39,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($title === '' || $eventDate === '') {
         $notice = 'Title and event date are required.';
     } else {
+        $upload = saveUploadedImage($_FILES['photo'] ?? [], 'events');
+        if (!empty($upload['skipped'])) {
+            // keep existing path from hidden field
+        } elseif (!$upload['ok']) {
+            $notice = $upload['error'];
+        } else {
+            deleteLocalImage($image);
+            $image = $upload['path'];
+        }
+
+        if ($notice === '') {
         if ($id) {
             $pdo->prepare(
                 'UPDATE events SET title=?, description=?, location=?, event_date=?, start_time=?, end_time=?, featured_img=?, is_published=? WHERE id=?'
@@ -47,6 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         header('Location: events.php?msg=saved');
         exit;
+        }
     }
 }
 
@@ -77,12 +95,14 @@ function timeOnly($dt) {
     <p class="admin-sub">Manage upcoming and past school events.</p>
 
     <?php if ($notice): ?><div class="admin-alert admin-alert-error"><?= htmlspecialchars($notice) ?></div><?php endif; ?>
-    <?php if (isset($_GET['msg'])): ?><div class="admin-alert admin-alert-success">Saved successfully.</div><?php endif; ?>
+    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'saved'): ?><div class="admin-alert admin-alert-success">Saved successfully.</div><?php endif; ?>
+    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'deleted'): ?><div class="admin-alert admin-alert-success">Event deleted.</div><?php endif; ?>
 
     <div class="admin-card">
         <h2 style="margin-bottom:10px"><?= $editRow ? 'Edit Event' : 'Add New Event' ?></h2>
-        <form method="POST" class="admin-form">
+        <form method="POST" enctype="multipart/form-data" class="admin-form">
             <input type="hidden" name="id" value="<?= $editRow['id'] ?? '' ?>">
+            <input type="hidden" name="featured_img" value="<?= htmlspecialchars($editRow['featured_img'] ?? '') ?>">
             <label>Title</label>
             <input type="text" name="title" required value="<?= htmlspecialchars($editRow['title'] ?? '') ?>">
 
@@ -101,8 +121,12 @@ function timeOnly($dt) {
             <label>End Time</label>
             <input type="time" name="end_time" value="<?= htmlspecialchars(isset($editRow['end_time']) ? timeOnly($editRow['end_time']) : '') ?>">
 
-            <label>Featured Image (path)</label>
-            <input type="text" name="featured_img" value="<?= htmlspecialchars($editRow['featured_img'] ?? '') ?>">
+            <label>Featured Image (JPG, PNG, GIF, or WebP, max 5 MB)</label>
+            <input type="file" name="photo" accept="image/jpeg,image/png,image/gif,image/webp">
+            <?php if (!empty($editRow['featured_img'])): ?>
+            <p style="margin-top:8px;color:#6b7280;font-size:14px">Current: <?= htmlspecialchars($editRow['featured_img']) ?></p>
+            <img class="thumb" src="../<?= htmlspecialchars($editRow['featured_img']) ?>" style="margin-top:8px" alt="">
+            <?php endif; ?>
 
             <label style="display:flex;align-items:center;gap:8px;margin-top:16px">
                 <input type="checkbox" name="is_published" style="width:auto"

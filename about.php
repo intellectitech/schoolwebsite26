@@ -16,7 +16,7 @@ $facilities = $content['facilities'] ?? '';
 $leaders = $pdo->query(
     "SELECT s.*, d.name AS department_name FROM staff s
      LEFT JOIN departments d ON d.id = s.department_id
-     WHERE s.is_active = 1 AND s.is_managemnet = 1
+     WHERE s.is_active = 1 AND s.is_management = 1
      ORDER BY s.sort_order ASC LIMIT 3"
 )->fetchAll();
 

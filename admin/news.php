@@ -10,8 +10,14 @@ $editRow = null;
 
 if (isset($_GET['delete'])) {
     $id = (int) $_GET['delete'];
-    $pdo->prepare('DELETE FROM news WHERE id = ?')->execute([$id]);
-    auditLog($pdo, $_SESSION['admin_id'], 'DELETE', 'news', $id, 'Deleted news article');
+    $stmt = $pdo->prepare('SELECT featured_image FROM news WHERE id = ?');
+    $stmt->execute([$id]);
+    $row = $stmt->fetch();
+    if ($row) {
+        deleteLocalImage($row['featured_image']);
+        $pdo->prepare('DELETE FROM news WHERE id = ?')->execute([$id]);
+        auditLog($pdo, $_SESSION['admin_id'], 'DELETE', 'news', $id, 'Deleted news article');
+    }
     header('Location: news.php?msg=deleted');
     exit;
 }
@@ -34,6 +40,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (!$categoryId) {
         $notice = 'Please select a category.';
     } else {
+        $upload = saveUploadedImage($_FILES['photo'] ?? [], 'news');
+        if (!empty($upload['skipped'])) {
+            // keep existing path from hidden field
+        } elseif (!$upload['ok']) {
+            $notice = $upload['error'];
+        } else {
+            deleteLocalImage($featuredImage);
+            $featuredImage = $upload['path'];
+        }
+
+        if ($notice === '') {
         if ($id) {
             $pdo->prepare(
                 'UPDATE news SET category_id=?, title=?, slug=?, excerpt=?, body=?, featured_image=?, author_id=?, is_published=?, is_featured=?, published_at=?, updated_at=NOW() WHERE id=?'
@@ -48,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         header('Location: news.php?msg=saved');
         exit;
+        }
     }
 }
 
@@ -84,8 +102,9 @@ $newsList = $pdo->query(
 
     <div class="admin-card">
         <h2 style="margin-bottom:10px"><?= $editRow ? 'Edit Article' : 'Add New Article' ?></h2>
-        <form method="POST" class="admin-form">
+        <form method="POST" enctype="multipart/form-data" class="admin-form">
             <input type="hidden" name="id" value="<?= $editRow['id'] ?? '' ?>">
+            <input type="hidden" name="featured_image" value="<?= htmlspecialchars($editRow['featured_image'] ?? '') ?>">
             <label>Title</label>
             <input type="text" name="title" required value="<?= htmlspecialchars($editRow['title'] ?? '') ?>">
 
@@ -105,8 +124,12 @@ $newsList = $pdo->query(
             <label>Full Article Body</label>
             <textarea name="body" rows="6"><?= htmlspecialchars($editRow['body'] ?? '') ?></textarea>
 
-            <label>Featured Image (path, e.g. assets/images/image1.jpg)</label>
-            <input type="text" name="featured_image" value="<?= htmlspecialchars($editRow['featured_image'] ?? '') ?>">
+            <label>Featured Image (JPG, PNG, GIF, or WebP, max 5 MB)</label>
+            <input type="file" name="photo" accept="image/jpeg,image/png,image/gif,image/webp">
+            <?php if (!empty($editRow['featured_image'])): ?>
+            <p style="margin-top:8px;color:#6b7280;font-size:14px">Current: <?= htmlspecialchars($editRow['featured_image']) ?></p>
+            <img class="thumb" src="../<?= htmlspecialchars($editRow['featured_image']) ?>" style="margin-top:8px" alt="">
+            <?php endif; ?>
 
             <label>Published Date</label>
             <input type="text" name="published_at" placeholder="YYYY-MM-DD HH:MM:SS"

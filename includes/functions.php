@@ -181,3 +181,64 @@ function getFlash() {
 function old($oldData, $key, $default = '') {
     return htmlspecialchars($oldData[$key] ?? $default, ENT_QUOTES, 'UTF-8');
 }
+
+/**
+ * Remove a locally stored image path (ignores external URLs).
+ */
+function deleteLocalImage($path) {
+    if (!$path || strpos($path, 'http') === 0) {
+        return;
+    }
+    $fullPath = __DIR__ . '/../' . ltrim($path, '/');
+    if (is_file($fullPath)) {
+        @unlink($fullPath);
+    }
+}
+
+/**
+ * Validate and save an uploaded image to assets/images/.
+ * Returns ['ok' => true, 'path' => 'assets/images/...'] on success,
+ * ['ok' => false, 'skipped' => true] when no file was sent,
+ * or ['ok' => false, 'error' => '...'] on failure.
+ */
+function saveUploadedImage(array $file, string $prefix = 'upload') {
+    if (!isset($file['error'])) {
+        return ['ok' => false, 'error' => 'No file received.'];
+    }
+    if ($file['error'] === UPLOAD_ERR_NO_FILE) {
+        return ['ok' => false, 'skipped' => true];
+    }
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['ok' => false, 'error' => 'Upload failed. Please try again.'];
+    }
+
+    $allowedMimes = [
+        'image/jpeg' => 'jpg',
+        'image/png'  => 'png',
+        'image/gif'  => 'gif',
+        'image/webp' => 'webp',
+    ];
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+    $mime = finfo_file($finfo, $file['tmp_name']);
+    finfo_close($finfo);
+
+    if (!isset($allowedMimes[$mime])) {
+        return ['ok' => false, 'error' => 'Only JPG, PNG, GIF, and WebP images are allowed.'];
+    }
+    if ($file['size'] > 5 * 1024 * 1024) {
+        return ['ok' => false, 'error' => 'Image must be 5 MB or smaller.'];
+    }
+
+    $uploadDir = __DIR__ . '/../assets/images/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+    }
+    $basename = preg_replace('/[^a-z0-9-]/', '', strtolower($prefix)) . '-'
+        . date('Ymd-His') . '-' . bin2hex(random_bytes(4)) . '.' . $allowedMimes[$mime];
+    $dest = $uploadDir . $basename;
+    if (!move_uploaded_file($file['tmp_name'], $dest)) {
+        return ['ok' => false, 'error' => 'Could not save the uploaded file.'];
+    }
+
+    return ['ok' => true, 'path' => 'assets/images/' . $basename];
+}

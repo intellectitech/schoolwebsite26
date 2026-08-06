@@ -17,23 +17,38 @@ if (!$defaultAlbum) {
 
 if (isset($_GET['delete'])) {
     $id = (int) $_GET['delete'];
-    $pdo->prepare('DELETE FROM gallery_photos WHERE id = ?')->execute([$id]);
+    $stmt = $pdo->prepare('SELECT filename FROM gallery_photos WHERE id = ?');
+    $stmt->execute([$id]);
+    $row = $stmt->fetch();
+    if ($row) {
+        deleteLocalImage($row['filename']);
+        $pdo->prepare('DELETE FROM gallery_photos WHERE id = ?')->execute([$id]);
+        auditLog($pdo, $_SESSION['admin_id'], 'DELETE', 'gallery_photos', $id, 'Deleted gallery photo');
+    }
     header('Location: gallery.php?msg=deleted');
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $filename  = trim($_POST['filename'] ?? '');
     $caption   = trim($_POST['caption'] ?? '');
     $sortOrder = (int) ($_POST['sort_order'] ?? 0);
     $albumId   = (int) ($_POST['album_id'] ?? $defaultAlbum);
+    $filename  = '';
 
-    if ($filename === '') {
-        $notice = 'Image path is required (e.g. assets/images/image1.jpg).';
+    $upload = saveUploadedImage($_FILES['photo'] ?? [], 'gallery');
+    if (!empty($upload['skipped'])) {
+        $notice = 'Please choose a photo to upload.';
+    } elseif (!$upload['ok']) {
+        $notice = $upload['error'];
     } else {
+        $filename = $upload['path'];
+    }
+
+    if ($notice === '' && $filename !== '') {
         $pdo->prepare(
             'INSERT INTO gallery_photos (album_id, filename, caption, sort_order, uploaded_by) VALUES (?,?,?,?,?)'
         )->execute([$albumId, $filename, $caption, $sortOrder, $_SESSION['admin_id']]);
+        auditLog($pdo, $_SESSION['admin_id'], 'INSERT', 'gallery_photos', (int) $pdo->lastInsertId(), 'Uploaded: ' . $filename);
         header('Location: gallery.php?msg=saved');
         exit;
     }
@@ -57,22 +72,23 @@ $images = $pdo->query(
 <?php include 'sidebar.php'; ?>
 <main class="admin-main">
     <h1>Gallery</h1>
-    <p class="admin-sub">Photos shown on the public Gallery page. Upload images to <code>assets/images/</code> via FTP/file manager first, then add their path here.</p>
+    <p class="admin-sub">Photos shown on the public Gallery page. Choose a file below to upload directly (JPG, PNG, GIF, or WebP, max 5 MB).</p>
 
     <?php if ($notice): ?><div class="admin-alert admin-alert-error"><?= htmlspecialchars($notice) ?></div><?php endif; ?>
-    <?php if (isset($_GET['msg'])): ?><div class="admin-alert admin-alert-success">Saved successfully.</div><?php endif; ?>
+    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'saved'): ?><div class="admin-alert admin-alert-success">Photo uploaded successfully.</div><?php endif; ?>
+    <?php if (isset($_GET['msg']) && $_GET['msg'] === 'deleted'): ?><div class="admin-alert admin-alert-success">Photo removed.</div><?php endif; ?>
 
     <div class="admin-card">
         <h2 style="margin-bottom:10px">Add Photo</h2>
-        <form method="POST" class="admin-form">
+        <form method="POST" enctype="multipart/form-data" class="admin-form">
             <label>Album</label>
             <select name="album_id">
                 <?php foreach ($albums as $a): ?>
                 <option value="<?= (int)$a['id'] ?>"><?= htmlspecialchars($a['name']) ?></option>
                 <?php endforeach; ?>
             </select>
-            <label>Image Path</label>
-            <input type="text" name="filename" required placeholder="assets/images/image24.jpg">
+            <label>Photo</label>
+            <input type="file" name="photo" accept="image/jpeg,image/png,image/gif,image/webp" required>
             <label>Caption</label>
             <input type="text" name="caption" placeholder="School Photo">
             <label>Sort Order</label>
