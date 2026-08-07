@@ -8,6 +8,7 @@ $adminLinks = [
     'dashboard'    => ['Dashboard',      'dashboard.php', 0],
     'news'         => ['News Articles',  'news.php', 0],
     'events'       => ['Events',         'events.php', 0],
+    'staff'        => ['Staff',          'staff.php', 0],
     'enquiries'    => ['Admissions',     'enquiries.php', $newEnquiryCount],
     'testimonials' => ['Testimonials',   'testimonials.php', 0],
     'gallery'      => ['Gallery',        'gallery.php', 0],
