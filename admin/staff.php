@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($notice === '') {
             if ($id) {
                 $pdo->prepare(
-                    'UPDATE staff SET department_id=?, first_name=?, last_name=?, title=?, role=?, subjects=?, qualification=?, photo=?, is_managemnet=?, sort_order=?, is_active=?, bio=?, email=? WHERE id=?'
+                    'UPDATE staff SET department_id=?, first_name=?, last_name=?, title=?, role=?, subjects=?, qualification=?, photo=?, is_management=?, sort_order=?, is_active=?, bio=?, email=? WHERE id=?'
                 )->execute([$departmentId, $firstName, $lastName, $title, $role, $subjects, $qualification, $photo, $isManagement, $sortOrder, $isActive, $bio, $email, $id]);
                 auditLog($pdo, $_SESSION['admin_id'], 'UPDATE', 'staff', $id, 'Updated: ' . $firstName . ' ' . $lastName);
             } else {
