@@ -335,6 +335,19 @@ function deleteStaffImageFile($relativePath)
     deleteImageFrom($relativePath, 'staff');
 }
 
+// Neutral "no photo on file" placeholder for a staff card — shown only
+// when a staff member has no uploaded photo. Not a stand-in portrait for
+// any particular person, just a generic default avatar.
+function staffPlaceholderPhoto()
+{
+    return '<svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">'
+        . '<rect width="400" height="200" fill="#16233D" />'
+        . '<circle cx="200" cy="72" r="48" fill="#2A3A5C" />'
+        . '<circle cx="200" cy="60" r="26" fill="#F2B705" opacity="0.35" />'
+        . '<path d="M120,190 C120,150 156,128 200,128 C244,128 280,150 280,190" fill="#F2B705" opacity="0.2" />'
+        . '</svg>';
+}
+
 // ----------------------------------------------------------
 // TESTIMONIAL PHOTO UPLOAD / DELETE — stored under images/testimonials/.
 // ----------------------------------------------------------

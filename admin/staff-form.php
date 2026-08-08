@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   } else {
     $pdo->prepare(
       'INSERT INTO staff (department_id, first_name, last_name, title, role, subjects, qualification, photo,
-              is_managemnet, sort_order, is_active, bio, email)
+              is_management, sort_order, is_active, bio, email)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
     )->execute([
           $data['department_id'],
